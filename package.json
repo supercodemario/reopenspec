@@ -1,0 +1,55 @@
+{
+  "name": "reopenspec",
+  "version": "0.2.0",
+  "description": "ReOpenSpec CLI — spec-driven architecture baseline, drift checks, and IDE workflow injection.",
+  "license": "MIT",
+  "author": "Ajithkumar S",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "reo": "./bin/run.js"
+  },
+  "files": [
+    "/bin",
+    "/dist",
+    "/oclif.manifest.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc && oclif manifest",
+    "reo": "node bin/run.js",
+    "vscode:compile": "npm run compile --prefix editors/vscode"
+  },
+  "oclif": {
+    "bin": "reo",
+    "dirname": "reopenspec",
+    "commands": "./dist/commands",
+    "topicSeparator": " "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajithnow/reopenspec.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ajithnow/reopenspec/issues"
+  },
+  "homepage": "https://github.com/ajithnow/reopenspec#readme",
+  "keywords": [
+    "spec-driven",
+    "ast-grep",
+    "architecture",
+    "cli"
+  ],
+  "dependencies": {
+    "@ast-grep/napi": "^0.42.0",
+    "@oclif/core": "^4.10.3",
+    "fast-glob": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "oclif": "^4.22.96",
+    "typescript": "^6.0.2"
+  }
+}

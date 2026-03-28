@@ -1,0 +1,499 @@
+{
+  "commands": {
+    "config": {
+      "aliases": [],
+      "args": {
+        "action": {
+          "description": "print (default) | path | init",
+          "name": "action",
+          "required": false
+        }
+      },
+      "description": "Inspect or create reopenspec.json (baseline paths, specs dir, drift options).",
+      "examples": [
+        "<%= config.bin %> config",
+        "<%= config.bin %> config path",
+        "<%= config.bin %> config init"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "force": {
+          "description": "Overwrite existing reopenspec.json (init only)",
+          "name": "force",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "config",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "config.js"
+      ]
+    },
+    "diff": {
+      "aliases": [],
+      "args": {},
+      "description": "Run drift check only (alias for drift): compare baseline to specs/*/api-contracts.json.",
+      "examples": [
+        "<%= config.bin %> diff",
+        "<%= config.bin %> diff --skipScan"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "baseline": {
+          "description": "Path to arch-baseline.json (overrides reopenspec.json)",
+          "name": "baseline",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "output": {
+          "char": "o",
+          "description": "Drift report output path (overrides reopenspec.json)",
+          "name": "output",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "skipScan": {
+          "description": "Do not rescan; require existing baseline file",
+          "name": "skipScan",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "strictUncovered": {
+          "description": "Warn on exports not referenced by any contract",
+          "name": "strictUncovered",
+          "allowNo": true,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "diff",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "diff.js"
+      ]
+    },
+    "drift": {
+      "aliases": [],
+      "args": {},
+      "description": "Compare arch-baseline.json against specs/*/api-contracts.json and emit drift-report.json.",
+      "examples": [
+        "<%= config.bin %> drift",
+        "<%= config.bin %> drift --strictUncovered",
+        "<%= config.bin %> drift --baseline ./arch-baseline.json --skip-scan"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "baseline": {
+          "description": "Path to arch-baseline.json (overrides reopenspec.json)",
+          "name": "baseline",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "output": {
+          "char": "o",
+          "description": "Drift report output path (overrides reopenspec.json)",
+          "name": "output",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "skipScan": {
+          "description": "Do not rescan; require existing baseline file",
+          "name": "skipScan",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "strictUncovered": {
+          "description": "Warn on exports not referenced by any contract",
+          "name": "strictUncovered",
+          "allowNo": true,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "drift",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "drift.js"
+      ]
+    },
+    "init": {
+      "aliases": [],
+      "args": {},
+      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows.",
+      "examples": [
+        "<%= config.bin %> init",
+        "<%= config.bin %> init -c . --force"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "force": {
+          "description": "Overwrite existing reopenspec.json",
+          "name": "force",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "skipInject": {
+          "description": "Do not write Cursor / .ai-context workflow files",
+          "name": "skipInject",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "init",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "init.js"
+      ]
+    },
+    "inject": {
+      "aliases": [],
+      "args": {},
+      "description": "Write IDE workflow files (Cursor rules, .ai-context) for detected editors.",
+      "examples": [
+        "<%= config.bin %> inject"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "inject",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "inject.js"
+      ]
+    },
+    "scan": {
+      "aliases": [],
+      "args": {},
+      "description": "Scan the workspace with ast-grep and write arch-baseline.json (Stage 1: TypeScript).",
+      "examples": [
+        "<%= config.bin %> scan",
+        "<%= config.bin %> scan --cwd ./app -o baseline.json"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root to scan",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "output": {
+          "char": "o",
+          "description": "Output path (overrides reopenspec.json baselinePath)",
+          "name": "output",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "scan",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "scan.js"
+      ]
+    },
+    "status": {
+      "aliases": [],
+      "args": {},
+      "description": "Print baseline metadata, config paths, and drift summary.",
+      "examples": [
+        "<%= config.bin %> status"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "status",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "status.js"
+      ]
+    },
+    "sync": {
+      "aliases": [],
+      "args": {},
+      "description": "Write arch-baseline.json and drift-report.json (Stage 2: contracts vs baseline).",
+      "examples": [
+        "<%= config.bin %> sync",
+        "<%= config.bin %> sync -c . --strictUncovered"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "baseline": {
+          "char": "b",
+          "description": "Baseline output path (overrides reopenspec.json)",
+          "name": "baseline",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "drift": {
+          "char": "d",
+          "description": "Drift report output path (overrides reopenspec.json)",
+          "name": "drift",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "strictUncovered": {
+          "description": "Warn on exports not referenced by any api-contracts.json (OR reopenspec.strictUncovered)",
+          "name": "strictUncovered",
+          "allowNo": true,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "sync",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "sync.js"
+      ]
+    },
+    "hooks:install": {
+      "aliases": [],
+      "args": {},
+      "description": "Install a git pre-commit hook that runs reo sync.",
+      "examples": [
+        "<%= config.bin %> hooks install"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Git workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "force": {
+          "description": "Replace an existing ReOpenSpec hook block",
+          "name": "force",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "hooks:install",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "hooks",
+        "install.js"
+      ]
+    },
+    "hooks:uninstall": {
+      "aliases": [],
+      "args": {},
+      "description": "Remove the ReOpenSpec block from .git/hooks/pre-commit.",
+      "examples": [
+        "<%= config.bin %> hooks uninstall"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Git workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "hooks:uninstall",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "hooks",
+        "uninstall.js"
+      ]
+    },
+    "spec:new": {
+      "aliases": [],
+      "args": {
+        "slug": {
+          "description": "Feature folder name (e.g. order-management)",
+          "name": "slug",
+          "required": true
+        }
+      },
+      "description": "Scaffold specs/{feature-slug}/ with overview, architecture, api-contracts, tasks, decisions, and .spec-meta.json.",
+      "examples": [
+        "<%= config.bin %> spec new my-feature"
+      ],
+      "flags": {
+        "cwd": {
+          "char": "c",
+          "description": "Workspace root",
+          "name": "cwd",
+          "default": "/Users/ajith/Projects/reopenspec",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "spec:new",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "spec",
+        "new.js"
+      ]
+    }
+  },
+  "version": "0.2.0"
+}

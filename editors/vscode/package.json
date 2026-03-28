@@ -1,0 +1,57 @@
+{
+  "name": "reopenspec",
+  "displayName": "ReOpenSpec",
+  "description": "Configure ReOpenSpec (reopenspec.json) and run reo sync from the editor.",
+  "version": "0.2.0",
+  "publisher": "reopenspec",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:reopenspec.configPanel"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "reopenspec.openConfig",
+        "title": "ReOpenSpec: Open configuration"
+      },
+      {
+        "command": "reopenspec.runSync",
+        "title": "ReOpenSpec: Run sync (baseline + drift)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "reopenspec",
+          "title": "ReOpenSpec",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "views": {
+      "reopenspec": [
+        {
+          "type": "webview",
+          "id": "reopenspec.configPanel",
+          "name": "Config"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.5.0"
+  }
+}
