@@ -6,8 +6,8 @@ description: Blueprint the repository — project YAML, architecture, docs, and 
 
 ## Traceable workflow (where this fits)
 
-1. **`reo init`** — CLI lays down IDE rules + copies slash commands + `reopenspec.project.yaml` when missing (omit with **`reo init --skip-workflow`**).
-2. **`/reo:blueprint`** (this command) — **Initial** pass: classify greenfield vs brownfield, write **`reopenspec.project.yaml`**, architecture + guidelines, `.cursor/rules`, gold-standard files.
+1. **`reo init`** — CLI lays down IDE rules + copies slash commands + `reopenspec.project.yaml` when missing (omit with **`reo init --skip-workflow`**). It also adds `.reopenspec.user.yaml` to `.gitignore`.
+2. **`/reo:blueprint`** (this command) — **Initial** pass: classify greenfield vs brownfield, write **`reopenspec.project.yaml`**, architecture + guidelines, IDE rules (reading local `.reopenspec.user.yaml` for tool choice), gold-standard files.
 3. **`/reo-plan`** — Pull story/task via **configured** skills/MCP (see `reopenspec.project.yaml`), compute **delta vs `specs/`**, then after approval write **`change/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`).
 4. **`/reo-proceed-plan`** — Start implementation for a traced change folder.
 
@@ -48,7 +48,9 @@ If GREENFIELD:
 
 Create initial:
 
-`.cursor/rules/*`  
+Create initial:
+
+(Target IDE rules path based on `.reopenspec.user.yaml`, e.g., `.cursor/rules/*` or `.windsurfrules/*`)
 `docs/*`
 
 Then proceed.
@@ -274,15 +276,23 @@ These must NOT be used as references.
 
 ---
 
-STEP 4 — Generate Cursor Rules
+STEP 4 — Generate IDE Rules
 
-Create or update under `.cursor/rules/` (names may vary; prefer `.mdc` where the project uses it):
+Read `.reopenspec.user.yaml` (at the workspace root) to detect the preferred `ide` (e.g., `cursor`, `windsurf`, `roo`).
+If the file doesn't exist, create it with `{ide: "cursor"}` (and ensure it's in `.gitignore`).
 
-- `system-architecture.mdc`
-- `backend-architecture.mdc`
-- `backend-code-quality.mdc`
-- `frontend-standards.mdc`
-- `testing-standards.mdc`
+Based on the `ide`, create or update the architectural rules in the corresponding directory:
+- **Cursor**: `.cursor/rules/*.mdc`
+- **Windsurf/Cascade**: `.windsurfrules/*.md` (or `.cascade/`)
+- **Roo/Cline**: `.roo/*.md` (or `.cline/`)
+
+Create the following core rules:
+
+- `system-architecture`
+- `backend-architecture`
+- `backend-code-quality`
+- `frontend-standards`
+- `testing-standards`
 
 Rules must:
 

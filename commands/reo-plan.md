@@ -20,9 +20,9 @@ Do NOT:
 
 1. Load **`reopenspec.project.yaml`** (if missing, stop and ask user to run **`/reo-blueprint`** or `reo init` — or **`reo init --skip-workflow`** was used and they need the YAML template).
 2. Resolve **work-item integration** from **`reopenspec.project.yaml`**, **`.cursor/config.json`**, and any **skills** the project added (no hard-coded vendor — adapters are config- and skill-driven).
-3. Depending on input, follow **Story path** or **Task path** (see `/reo-story-skill`, `/reo-task-skill` for detailed fetch rules — this command orchestrates them).
+3. Depending on input, follow **Story path** or **Task path** (see `templates/skills/reo-story-skill.md`, `templates/skills/reo-task-skill.md` for detailed fetch rules — this command orchestrates them).
 4. Load **main-line specs** (`specs/**`, `reopenspec.json`, `specs/.meta/arch-baseline.json`) and summarize **delta** (scope added/changed vs baseline).
-5. Show **plan + design + tasks + delta** in chat; after **`approved`**, write files under **`change/<change-domain-id>/`**.
+5. Show **plan + design + tasks + delta** in chat; After you type **`approved`**, creates **`change/<change-domain-id>/`**: `change.yaml`, `plan.md`, `design.md`, `tasks.md`, `delta.md`.
 
 ---
 
@@ -55,7 +55,7 @@ Resolve from `$ARGUMENTS` and conversation:
 - **Work item id** (format depends on your integration — numeric id, key string, etc.)
 - Optional **`-comments`** flag: include latest discussion/comments in extraction
 
-Derive **`change-domain-id`**: stable filesystem-safe slug, e.g. `wi-12345-short-title` (prefix + id + short title).
+Derive **`change-domain-id`**: stable filesystem-safe slug in the format `<work-item-type>-<id>-<short-slug>` (e.g. `story-1232-user-auth-system` or `task-6568-implement-login-form`).
 
 ---
 
@@ -63,12 +63,12 @@ STEP 2 — Fetch work item (if not manual)
 
 **If** the project has a configured work-item path (`platforms.work_tracking` not `none`, and skills/MCP available):
 
-- **Story / feature-level item**: use **`/reo-story-skill`** behavior — load title, description, acceptance criteria, links.
-- **Task-level item**: use **`/reo-task-skill`** behavior — load task, parent context, predecessors/dependencies, blocked state.
+- **Story / feature-level item**: use **`templates/skills/reo-story-skill.md`** behavior — load title, description, acceptance criteria, links.
+- **Task-level item**: use **`templates/skills/reo-task-skill.md`** behavior — load task, parent context, predecessors/dependencies, blocked state.
 
 **If `none` or integration unavailable:** switch to **manual** mode — ask the user to paste title, AC, and scope; still produce delta vs `specs/`.
 
-Detailed fetch steps are aligned with **`/reo-story-skill`** and **`/reo-task-skill`**; do not skip dependency checks for tasks.
+Detailed fetch steps are aligned with **`templates/skills/reo-story-skill.md`** and **`templates/skills/reo-task-skill.md`**; do not skip dependency checks for tasks.
 
 ---
 
@@ -121,16 +121,21 @@ STEP 7 — After `approved` (write files)
 
 Create:
 
-`<change.root>/<change-domain-id>/meta.json` — minimal traceability:
+`<change.root>/<change-domain-id>/change.yaml` — rich traceability schema:
 
-```json
-{
-  "change_domain_id": "<change-domain-id>",
-  "work_item_type": "story|task|manual",
-  "work_item_id": "<id or null>",
-  "integration": "<adapter id from config/skills, or null>",
-  "created_at": "<ISO8601>"
-}
+```yaml
+version: "1"
+change_id: "<change-domain-id>"
+work_item:
+  type: "story|task|manual"
+  id: "<id or null>"
+  title: "<title parsed or provided>"
+  url: "<link to system, if any>"
+integration: "<adapter id from config/skills, or null>"
+state:
+  status: "planned"
+  dependencies: [] # listed blockers or precursors
+created_at: "<ISO8601>"
 ```
 
 `<change.root>/<change-domain-id>/plan.md`  

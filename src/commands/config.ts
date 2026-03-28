@@ -26,7 +26,7 @@ export default class Config extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     force: Flags.boolean({

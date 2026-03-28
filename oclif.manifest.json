@@ -20,7 +20,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -60,7 +60,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -122,7 +122,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -184,7 +184,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -235,7 +235,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -269,7 +269,7 @@
           "char": "c",
           "description": "Workspace root to scan",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -310,7 +310,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -344,7 +344,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -399,7 +399,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -439,7 +439,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -479,7 +479,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"

@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { buildBaseline } from '../lib/baseline.js'
 import { injectForIdes } from '../lib/injector.js'
@@ -25,7 +25,7 @@ export default class Init extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     force: Flags.boolean({
@@ -49,6 +49,18 @@ export default class Init extends Command {
 
     mkdirSync(join(cwd, 'specs', '.meta'), { recursive: true })
     mkdirSync(join(cwd, 'specs'), { recursive: true })
+
+    const gitignorePath = join(cwd, '.gitignore')
+    if (existsSync(gitignorePath)) {
+      const gitignoreContent = readFileSync(gitignorePath, 'utf8')
+      if (!gitignoreContent.includes('.reopenspec.user.yaml')) {
+        appendFileSync(gitignorePath, '\n# ReOpenSpec local user profile\n.reopenspec.user.yaml\n')
+        this.log('Added .reopenspec.user.yaml to .gitignore')
+      }
+    } else {
+      writeFileSync(gitignorePath, '# ReOpenSpec local user profile\n.reopenspec.user.yaml\n')
+      this.log('Created .gitignore and added .reopenspec.user.yaml')
+    }
 
     const before = loadResolvedConfig(cwd)
     if (!before.fileExists || flags.force) {

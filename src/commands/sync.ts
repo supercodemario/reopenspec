@@ -15,7 +15,7 @@ export default class Sync extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     baseline: Flags.string({

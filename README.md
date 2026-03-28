@@ -33,7 +33,14 @@ node bin/run.js --help
 
    This creates `specs/` and `specs/.meta/`, writes `reopenspec.json` if missing, runs a scan, injects Cursor rules (or `.ai-context/AGENTS.md` as a fallback), copies **slash-command templates** to `.cursor/commands/`, and adds **`reopenspec.project.yaml`** when missing. Use **`reo init --skip-workflow`** if you only want baseline + config without those files.
 
-2. **Traceable feature flow (IDE):** run **`/reo-blueprint`** once, then **`/reo-plan`** (story/task via MCP) → after approval materializes **`change/<id>/`** → **`/reo-proceed-plan`**. See [`commands/README.md`](commands/README.md). (Skip copying commands/YAML with `reo init --skip-workflow` if you do not want them.)
+2. **Traceable feature flow (IDE)** follows a true 5-step lifecycle:
+   - **`reo init`**: Sets up folders, ignores your local IDE profile (`.reopenspec.user.yaml`), and copies IDE workflows.
+   - **`/reo-blueprint`**: Generates architecture specs and rules native to your IDE choice (Cursor, Roo, Windsurf).
+   - **`/reo-plan`**: Connects via Project Management MCPs (Azure/Jira), tracks dependencies, and provisions a traced scaffold like `change/story-1234-feature/` driven by a strict `change.yaml`.
+   - **`/reo-proceed-plan`**: Reads the change folder and implements the feature.
+   - **`/reo-completed`**: Carefully syncs your built delta back into the main `specs/` (your living source of truth) and safely archives the execution to `archive/YYYY-MM-DD-story.../`.
+   
+   See [`commands/README.md`](commands/README.md) for full context.
 
 3. Add or scaffold main-line specs (optional if you only use `change/` folders):
 
@@ -53,18 +60,18 @@ node bin/run.js --help
 
 ## Commands
 
-| Command | Purpose |
-|--------|---------|
-| `reo init` | First-time: dirs, config, scan, inject IDE snippets, copy slash commands to `.cursor/commands/`, add `reopenspec.project.yaml` if missing |
-| `reo init --skip-workflow` | Same as above but without copying slash commands or adding `reopenspec.project.yaml` |
-| `reo sync` | Full scan + drift report |
-| `reo scan` | Baseline only |
-| `reo drift` / `reo diff` | Drift vs `specs/*/api-contracts.json` |
-| `reo spec new <slug>` | Scaffold feature folder + `.spec-meta.json` |
-| `reo inject` | Re-apply injected rules |
-| `reo config` | Show or create `reopenspec.json` |
-| `reo status` | Config paths + baseline/drift summary |
-| `reo hooks install` / `uninstall` | Git pre-commit hook (`reo sync`) |
+| Command                           | Purpose                                                                                                                                   |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `reo init`                        | First-time: dirs, config, scan, inject IDE snippets, copy slash commands to `.cursor/commands/`, add `reopenspec.project.yaml` if missing |
+| `reo init --skip-workflow`        | Same as above but without copying slash commands or adding `reopenspec.project.yaml`                                                      |
+| `reo sync`                        | Full scan + drift report                                                                                                                  |
+| `reo scan`                        | Baseline only                                                                                                                             |
+| `reo drift` / `reo diff`          | Drift vs `specs/*/api-contracts.json`                                                                                                     |
+| `reo spec new <slug>`             | Scaffold feature folder + `.spec-meta.json`                                                                                               |
+| `reo inject`                      | Re-apply injected rules                                                                                                                   |
+| `reo config`                      | Show or create `reopenspec.json`                                                                                                          |
+| `reo status`                      | Config paths + baseline/drift summary                                                                                                     |
+| `reo hooks install` / `uninstall` | Git pre-commit hook (`reo sync`)                                                                                                          |
 
 Run `reo <command> --help` for flags.
 
@@ -83,10 +90,7 @@ A minimal extension lives under `editors/vscode/` (config editor + run sync). Bu
 
 ## Docs in this repo
 
-- [`requirements.md`](requirements.md) — full product specification  
-- [`IMPLEMENTATION.md`](IMPLEMENTATION.md) — what is implemented vs planned  
-- [`baseline.md`](baseline.md) — technical design notes  
-- [`commands/README.md`](commands/README.md) — optional Cursor slash-command templates (`/reo-*`) aligned with `specs/`  
+- [`commands/README.md`](commands/README.md) — optional Cursor slash-command templates (`/reo-*`) aligned with `specs/`
 
 ## License
 
