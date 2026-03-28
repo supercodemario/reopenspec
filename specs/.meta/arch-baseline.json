@@ -2,13 +2,13 @@
   "schemaVersion": "0.2.0",
   "meta": {
     "version": "1",
-    "generated_at": "2026-03-28T15:37:59.143Z",
-    "commit_hash": "5633854449f9aea412eb64595357859b49bd11da",
+    "generated_at": "2026-03-28T15:56:54.671Z",
+    "commit_hash": "d4dc90ebe96e407cf410120b284ac1cff73cb043",
     "languages": [
       "typescript"
     ]
   },
-  "generatedAt": "2026-03-28T15:37:59.143Z",
+  "generatedAt": "2026-03-28T15:56:54.671Z",
   "workspaceRoot": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
   "languageProfile": {
     "primary": "typescript",
@@ -179,15 +179,6 @@
       "depends_on": []
     },
     {
-      "id": "src/commands/spec/new",
-      "path": "src/commands/spec/new.ts",
-      "language": "typescript",
-      "exports": [
-        "SpecNew"
-      ],
-      "depends_on": []
-    },
-    {
       "id": "src/commands/hooks/install",
       "path": "src/commands/hooks/install.ts",
       "language": "typescript",
@@ -202,6 +193,15 @@
       "language": "typescript",
       "exports": [
         "HooksUninstall"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/spec/new",
+      "path": "src/commands/spec/new.ts",
+      "language": "typescript",
+      "exports": [
+        "SpecNew"
       ],
       "depends_on": []
     }
@@ -546,14 +546,6 @@
       "column": 1
     },
     {
-      "id": "src/commands/spec/new.ts:15:export.class:SpecNew",
-      "kind": "export.class",
-      "name": "SpecNew",
-      "file": "src/commands/spec/new.ts",
-      "line": 15,
-      "column": 1
-    },
-    {
       "id": "src/commands/hooks/install.ts:34:export.class:HooksInstall",
       "kind": "export.class",
       "name": "HooksInstall",
@@ -567,6 +559,14 @@
       "name": "HooksUninstall",
       "file": "src/commands/hooks/uninstall.ts",
       "line": 17,
+      "column": 1
+    },
+    {
+      "id": "src/commands/spec/new.ts:15:export.class:SpecNew",
+      "kind": "export.class",
+      "name": "SpecNew",
+      "file": "src/commands/spec/new.ts",
+      "line": 15,
       "column": 1
     }
   ],
@@ -979,46 +979,6 @@
       ]
     },
     {
-      "id": "editors/vscode/src/extension.ts:1:import:node:child_process",
-      "kind": "imports",
-      "fromFile": "editors/vscode/src/extension.ts",
-      "line": 1,
-      "moduleSpecifier": "node:child_process",
-      "names": [
-        "cp"
-      ]
-    },
-    {
-      "id": "editors/vscode/src/extension.ts:2:import:node:fs",
-      "kind": "imports",
-      "fromFile": "editors/vscode/src/extension.ts",
-      "line": 2,
-      "moduleSpecifier": "node:fs",
-      "names": [
-        "fs"
-      ]
-    },
-    {
-      "id": "editors/vscode/src/extension.ts:3:import:node:path",
-      "kind": "imports",
-      "fromFile": "editors/vscode/src/extension.ts",
-      "line": 3,
-      "moduleSpecifier": "node:path",
-      "names": [
-        "path"
-      ]
-    },
-    {
-      "id": "editors/vscode/src/extension.ts:4:import:vscode",
-      "kind": "imports",
-      "fromFile": "editors/vscode/src/extension.ts",
-      "line": 4,
-      "moduleSpecifier": "vscode",
-      "names": [
-        "vscode"
-      ]
-    },
-    {
       "id": "src/lib/baseline-dart.ts:1:import:node:fs",
       "kind": "imports",
       "fromFile": "src/lib/baseline-dart.ts",
@@ -1321,57 +1281,43 @@
       ]
     },
     {
-      "id": "src/commands/spec/new.ts:1:import:@oclif/core",
+      "id": "editors/vscode/src/extension.ts:1:import:node:child_process",
       "kind": "imports",
-      "fromFile": "src/commands/spec/new.ts",
+      "fromFile": "editors/vscode/src/extension.ts",
       "line": 1,
-      "moduleSpecifier": "@oclif/core",
+      "moduleSpecifier": "node:child_process",
       "names": [
-        "Args",
-        "Command",
-        "Flags"
+        "cp"
       ]
     },
     {
-      "id": "src/commands/spec/new.ts:2:import:node:fs",
+      "id": "editors/vscode/src/extension.ts:2:import:node:fs",
       "kind": "imports",
-      "fromFile": "src/commands/spec/new.ts",
+      "fromFile": "editors/vscode/src/extension.ts",
       "line": 2,
       "moduleSpecifier": "node:fs",
       "names": [
-        "mkdirSync",
-        "writeFileSync"
+        "fs"
       ]
     },
     {
-      "id": "src/commands/spec/new.ts:3:import:node:path",
+      "id": "editors/vscode/src/extension.ts:3:import:node:path",
       "kind": "imports",
-      "fromFile": "src/commands/spec/new.ts",
+      "fromFile": "editors/vscode/src/extension.ts",
       "line": 3,
       "moduleSpecifier": "node:path",
       "names": [
-        "join",
-        "resolve"
+        "path"
       ]
     },
     {
-      "id": "src/commands/spec/new.ts:4:import:../../lib/git.js",
+      "id": "editors/vscode/src/extension.ts:4:import:vscode",
       "kind": "imports",
-      "fromFile": "src/commands/spec/new.ts",
+      "fromFile": "editors/vscode/src/extension.ts",
       "line": 4,
-      "moduleSpecifier": "../../lib/git.js",
+      "moduleSpecifier": "vscode",
       "names": [
-        "getGitHeadCommit"
-      ]
-    },
-    {
-      "id": "src/commands/spec/new.ts:5:import:../../lib/reopenspec-config.js",
-      "kind": "imports",
-      "fromFile": "src/commands/spec/new.ts",
-      "line": 5,
-      "moduleSpecifier": "../../lib/reopenspec-config.js",
-      "names": [
-        "loadResolvedConfig"
+        "vscode"
       ]
     },
     {
@@ -1441,6 +1387,60 @@
       "names": [
         "join",
         "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Args",
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:4:import:../../lib/git.js",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 4,
+      "moduleSpecifier": "../../lib/git.js",
+      "names": [
+        "getGitHeadCommit"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:5:import:../../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 5,
+      "moduleSpecifier": "../../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
       ]
     }
   ],
