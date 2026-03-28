@@ -6,7 +6,7 @@
   "author": "Ajithkumar S",
   "type": "commonjs",
   "bin": {
-    "reo": "./bin/run.js"
+    "reo": "bin/run.js"
   },
   "files": [
     "bin",
