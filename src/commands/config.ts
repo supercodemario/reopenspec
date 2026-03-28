@@ -2,14 +2,18 @@ import { Args, Command, Flags } from '@oclif/core'
 import { resolve } from 'node:path'
 import {
   configFilePath,
+  ensureLocalConfigInGitignore,
+  isLocalUserRole,
   loadResolvedConfig,
+  type LocalUserRole,
   writeDefaultConfigFile,
+  writeLocalProfile,
 } from '../lib/reopenspec-config.js'
 
 export default class Config extends Command {
   static override id = 'config'
   static override description =
-    'Inspect or create reopenspec.json (baseline paths, specs dir, drift options).'
+    'Inspect or create reopenspec.json. Hero name, role, and emoji live in gitignored reopenspec.local.json.'
   static override examples = [
     '<%= config.bin %> config',
     '<%= config.bin %> config path',
@@ -33,6 +37,16 @@ export default class Config extends Command {
       default: false,
       description: 'Overwrite existing reopenspec.json (init only)',
     }),
+    heroName: Flags.string({
+      description: 'Hero name → reopenspec.local.json (init only)',
+    }),
+    role: Flags.string({
+      description: 'developer | manager (init only, with --hero-name)',
+      options: ['developer', 'manager'],
+    }),
+    emoji: Flags.string({
+      description: 'Emoji override (init only, with --hero-name)',
+    }),
   }
 
   async run(): Promise<void> {
@@ -50,8 +64,19 @@ export default class Config extends Command {
 
     if (action === 'init') {
       try {
+        ensureLocalConfigInGitignore(cwd)
         const p = writeDefaultConfigFile(cwd, flags.force)
         this.log(`Wrote ${p}`)
+        if (flags.heroName !== undefined) {
+          const role: LocalUserRole =
+            flags.role !== undefined && isLocalUserRole(flags.role) ? flags.role : 'developer'
+          const lp = writeLocalProfile(cwd, {
+            heroName: flags.heroName,
+            role,
+            emoji: flags.emoji,
+          })
+          if (lp) this.log(`Wrote ${lp} (local only)`)
+        }
       } catch (e) {
         this.error(e instanceof Error ? e.message : String(e))
       }

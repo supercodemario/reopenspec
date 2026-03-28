@@ -65,6 +65,9 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
+# ReOpenSpec: machine-local only (never commit)
+reopenspec.local.json
+
 # dotenv environment variable files
 .env
 .env.*

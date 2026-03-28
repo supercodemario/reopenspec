@@ -1,0 +1,7 @@
+{
+  "version": "0.1.0",
+  "baselinePath": "specs/.meta/arch-baseline.json",
+  "driftReportPath": "specs/.meta/drift-report.json",
+  "specsDir": "specs",
+  "strictUncovered": false
+}

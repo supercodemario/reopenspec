@@ -1,7 +1,31 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import {
+  type LocalUserRole,
+  DEFAULT_ROLE_EMOJI,
+  isLocalUserRole,
+  resolveHeroEmoji,
+} from './reopenspec-local-profile.js'
+
+export type { LocalUserRole, LocalProfileOnDisk } from './reopenspec-local-profile.js'
+/** Hero emoji defaults & UI list — edit in `reopenspec-local-profile.ts` (see file header for sync steps). */
+export {
+  DEFAULT_ROLE_EMOJI,
+  HERO_EMOJI_SUGGESTIONS,
+  isLocalUserRole,
+} from './reopenspec-local-profile.js'
 
 export const REOPENSPEC_CONFIG_FILENAME = 'reopenspec.json'
+
+/** Machine-local hero profile (gitignored). */
+export const REOPENSPEC_LOCAL_CONFIG_FILENAME = 'reopenspec.local.json'
+
+/** Saved in `reopenspec.local.json` — IDE scan + multi-select targets for skills/workflows. */
+export type LocalIdeSetup = {
+  detectedInWorkspace: string[]
+  targets: string[]
+  updatedAt?: string
+}
 
 /** Supported version in on-disk JSON (bump when shape changes). */
 export const REOPENSPEC_CONFIG_VERSION = '0.1.0' as const
@@ -17,6 +41,10 @@ export type ReopenSpecConfigFile = {
 
 /** Effective paths after merge with defaults. */
 export type ResolvedReopenSpecConfig = {
+  heroName: string
+  role: LocalUserRole
+  /** Effective emoji (custom or default for `role`). */
+  heroEmoji: string
   baselinePath: string
   driftReportPath: string
   specsDir: string
@@ -24,6 +52,9 @@ export type ResolvedReopenSpecConfig = {
 }
 
 const defaults: ResolvedReopenSpecConfig = {
+  heroName: '',
+  role: 'developer',
+  heroEmoji: DEFAULT_ROLE_EMOJI.developer,
   baselinePath: 'specs/.meta/arch-baseline.json',
   driftReportPath: 'specs/.meta/drift-report.json',
   specsDir: 'specs',
@@ -52,6 +83,140 @@ export function resolveExistingConfigPath(workspaceRoot: string): string | null 
 /** Default path for new config files (`reopenspec.json` at workspace root). */
 export function configFilePath(workspaceRoot: string): string {
   return configFilePathWorkspaceRoot(workspaceRoot)
+}
+
+/** Local-only config at workspace root (not committed). */
+export function localConfigFilePath(workspaceRoot: string): string {
+  return resolve(workspaceRoot, REOPENSPEC_LOCAL_CONFIG_FILENAME)
+}
+
+function parseLocalProfileFile(raw: unknown, path: string): {
+  heroName: string
+  role: LocalUserRole
+  emoji?: string
+} {
+  if (!raw || typeof raw !== 'object') throw new Error(`${path}: expected JSON object`)
+  const o = raw as Record<string, unknown>
+
+  let heroName = ''
+  if (typeof o.heroName === 'string') heroName = o.heroName.trim()
+  else if (typeof o.userName === 'string') heroName = o.userName.trim()
+
+  let role: LocalUserRole = 'developer'
+  if (o.role !== undefined) {
+    if (typeof o.role !== 'string' || !isLocalUserRole(o.role)) {
+      throw new Error(`${path}: role must be "developer" or "manager"`)
+    }
+    role = o.role
+  }
+
+  let emoji: string | undefined
+  if (o.emoji !== undefined) {
+    if (typeof o.emoji !== 'string') throw new Error(`${path}: emoji must be a string`)
+    const t = o.emoji.trim()
+    emoji = t === '' ? undefined : t
+  }
+
+  return { heroName, role, emoji }
+}
+
+function parseLocalIdeSetup(raw: unknown): LocalIdeSetup | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined
+  const o = raw as Record<string, unknown>
+  const dw = o.detectedInWorkspace
+  const tg = o.targets
+  if (!Array.isArray(dw) || !Array.isArray(tg)) return undefined
+  if (!dw.every((x) => typeof x === 'string') || !tg.every((x) => typeof x === 'string')) {
+    return undefined
+  }
+  const updatedAt =
+    o.updatedAt !== undefined && typeof o.updatedAt === 'string' ? o.updatedAt : undefined
+  const out: LocalIdeSetup = {
+    detectedInWorkspace: dw as string[],
+    targets: tg as string[],
+  }
+  if (updatedAt !== undefined) out.updatedAt = updatedAt
+  return out
+}
+
+/** Read machine-local hero profile from `reopenspec.local.json`. */
+export function loadLocalProfile(workspaceRoot: string): {
+  heroName: string
+  role: LocalUserRole
+  heroEmoji: string
+  ideSetup?: LocalIdeSetup
+} {
+  const p = localConfigFilePath(workspaceRoot)
+  if (!existsSync(p)) {
+    return {
+      heroName: '',
+      role: 'developer',
+      heroEmoji: DEFAULT_ROLE_EMOJI.developer,
+    }
+  }
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(readFileSync(p, 'utf8')) as unknown
+  } catch (e) {
+    throw new Error(`${p}: invalid JSON (${e instanceof Error ? e.message : String(e)})`)
+  }
+  const { heroName, role, emoji } = parseLocalProfileFile(parsed, p)
+  const ideSetup = parseLocalIdeSetup((parsed as Record<string, unknown>).ideSetup)
+  return {
+    heroName,
+    role,
+    heroEmoji: resolveHeroEmoji(role, emoji),
+    ...(ideSetup !== undefined ? { ideSetup } : {}),
+  }
+}
+
+/** If `.gitignore` exists at the workspace root, ensure `reopenspec.local.json` is listed (idempotent). */
+export function ensureLocalConfigInGitignore(workspaceRoot: string): void {
+  const gi = resolve(workspaceRoot, '.gitignore')
+  if (!existsSync(gi)) return
+  const text = readFileSync(gi, 'utf8')
+  if (/^\s*reopenspec\.local\.json\s*$/m.test(text)) return
+  const block = `\n# ReOpenSpec: machine-local (do not commit)\nreopenspec.local.json\n`
+  writeFileSync(gi, `${text.replace(/\s*$/, '')}${block}`, 'utf8')
+}
+
+/** Write or remove `reopenspec.local.json` (empty hero name removes the file). */
+export function writeLocalProfile(
+  workspaceRoot: string,
+  profile: {
+    heroName: string
+    role: LocalUserRole
+    emoji?: string
+    ideSetup?: LocalIdeSetup
+  },
+): string | null {
+  const p = localConfigFilePath(workspaceRoot)
+  const name = profile.heroName.trim()
+  if (name === '') {
+    if (existsSync(p)) unlinkSync(p)
+    return null
+  }
+  const defaultEm = DEFAULT_ROLE_EMOJI[profile.role]
+  const custom = profile.emoji?.trim()
+  const body: Record<string, unknown> = { heroName: name, role: profile.role }
+  if (custom && custom !== defaultEm) body.emoji = custom
+
+  let ideSetup: LocalIdeSetup | undefined = profile.ideSetup
+  if (ideSetup === undefined && existsSync(p)) {
+    try {
+      const prev = JSON.parse(readFileSync(p, 'utf8')) as Record<string, unknown>
+      const prevIde = prev.ideSetup
+      if (prevIde && typeof prevIde === 'object' && !Array.isArray(prevIde)) {
+        ideSetup = prevIde as LocalIdeSetup
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  if (ideSetup !== undefined) body.ideSetup = ideSetup
+
+  writeFileSync(p, `${JSON.stringify(body, null, 2)}\n`, 'utf8')
+  return p
 }
 
 function parseFile(raw: unknown, path: string): ReopenSpecConfigFile {
@@ -90,10 +255,16 @@ export function loadResolvedConfig(workspaceRoot: string): {
   const existing = resolveExistingConfigPath(workspaceRoot)
   const filePath = existing ?? configFilePath(workspaceRoot)
   if (!existing) {
+    const local = loadLocalProfile(workspaceRoot)
     return {
       filePath,
       fileExists: false,
-      merged: { ...defaults },
+      merged: {
+        ...defaults,
+        heroName: local.heroName,
+        role: local.role,
+        heroEmoji: local.heroEmoji,
+      },
       raw: null,
     }
   }
@@ -107,7 +278,11 @@ export function loadResolvedConfig(workspaceRoot: string): {
     )
   }
   const raw = parseFile(parsed, existing)
+  const local = loadLocalProfile(workspaceRoot)
   const merged: ResolvedReopenSpecConfig = {
+    heroName: local.heroName,
+    role: local.role,
+    heroEmoji: local.heroEmoji,
     baselinePath: raw.baselinePath ?? defaults.baselinePath,
     driftReportPath: raw.driftReportPath ?? defaults.driftReportPath,
     specsDir: raw.specsDir ?? defaults.specsDir,

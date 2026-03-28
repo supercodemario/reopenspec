@@ -46,13 +46,18 @@ export default class SpecNew extends Command {
 
     const commit = getGitHeadCommit(cwd) ?? ''
 
+    const authorLine =
+      cfg.heroName.trim() !== ''
+        ? `**Hero**: ${cfg.heroEmoji} ${cfg.heroName.trim()} (${cfg.role})\n`
+        : ''
+
     writeFileSync(
       join(base, 'overview.md'),
       `# ${slug}
 
 **Status**: draft  
 **Last updated**: ${new Date().toISOString().slice(0, 10)}
-
+${authorLine}
 ## Summary
 
 (Feature summary — fill in.)

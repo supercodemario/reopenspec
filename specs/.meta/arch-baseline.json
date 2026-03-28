@@ -1,0 +1,1448 @@
+{
+  "schemaVersion": "0.2.0",
+  "meta": {
+    "version": "1",
+    "generated_at": "2026-03-28T15:37:59.143Z",
+    "commit_hash": "5633854449f9aea412eb64595357859b49bd11da",
+    "languages": [
+      "typescript"
+    ]
+  },
+  "generatedAt": "2026-03-28T15:37:59.143Z",
+  "workspaceRoot": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+  "languageProfile": {
+    "primary": "typescript",
+    "manifests": [
+      "package.json",
+      "tsconfig.json"
+    ]
+  },
+  "modules": [
+    {
+      "id": "src/commands/config",
+      "path": "src/commands/config.ts",
+      "language": "typescript",
+      "exports": [
+        "Config"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/diff",
+      "path": "src/commands/diff.ts",
+      "language": "typescript",
+      "exports": [
+        "Diff"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/drift",
+      "path": "src/commands/drift.ts",
+      "language": "typescript",
+      "exports": [
+        "Drift"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/init",
+      "path": "src/commands/init.ts",
+      "language": "typescript",
+      "exports": [
+        "Init"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/inject",
+      "path": "src/commands/inject.ts",
+      "language": "typescript",
+      "exports": [
+        "Inject"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/scan",
+      "path": "src/commands/scan.ts",
+      "language": "typescript",
+      "exports": [
+        "Scan"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/status",
+      "path": "src/commands/status.ts",
+      "language": "typescript",
+      "exports": [
+        "Status"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/sync",
+      "path": "src/commands/sync.ts",
+      "language": "typescript",
+      "exports": [
+        "Sync"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/baseline-modules",
+      "path": "src/lib/baseline-modules.ts",
+      "language": "typescript",
+      "exports": [
+        "BaselineModule",
+        "BaselineInterface",
+        "ApiEntryPoint",
+        "DependencyGraph"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/baseline",
+      "path": "src/lib/baseline.ts",
+      "language": "typescript",
+      "exports": [
+        "BaselineNodeKind",
+        "BaselineNode",
+        "BaselineEdge",
+        "ArchBaseline"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/detect-profile",
+      "path": "src/lib/detect-profile.ts",
+      "language": "typescript",
+      "exports": [
+        "LanguageProfile"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/drift",
+      "path": "src/lib/drift.ts",
+      "language": "typescript",
+      "exports": [
+        "DriftCategory",
+        "DriftSeverity",
+        "DriftFinding",
+        "DriftReport"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/injector",
+      "path": "src/lib/injector.ts",
+      "language": "typescript",
+      "exports": [
+        "DetectedIde",
+        "InjectionResult"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/reopenspec-config",
+      "path": "src/lib/reopenspec-config.ts",
+      "language": "typescript",
+      "exports": [
+        "LocalIdeSetup",
+        "ReopenSpecConfigFile",
+        "ResolvedReopenSpecConfig"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/reopenspec-local-profile",
+      "path": "src/lib/reopenspec-local-profile.ts",
+      "language": "typescript",
+      "exports": [
+        "LocalUserRole",
+        "HeroEmojiSuggestion",
+        "LocalProfileOnDisk"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/spec-types",
+      "path": "src/lib/spec-types.ts",
+      "language": "typescript",
+      "exports": [
+        "ApiContractsFile",
+        "ApiContract",
+        "LoadedFeatureSpec"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/spec/new",
+      "path": "src/commands/spec/new.ts",
+      "language": "typescript",
+      "exports": [
+        "SpecNew"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/hooks/install",
+      "path": "src/commands/hooks/install.ts",
+      "language": "typescript",
+      "exports": [
+        "HooksInstall"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/commands/hooks/uninstall",
+      "path": "src/commands/hooks/uninstall.ts",
+      "language": "typescript",
+      "exports": [
+        "HooksUninstall"
+      ],
+      "depends_on": []
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "Config",
+      "module": "src/commands/config",
+      "methods": []
+    },
+    {
+      "id": "Diff",
+      "module": "src/commands/diff",
+      "methods": []
+    },
+    {
+      "id": "Drift",
+      "module": "src/commands/drift",
+      "methods": []
+    },
+    {
+      "id": "HooksInstall",
+      "module": "src/commands/hooks/install",
+      "methods": []
+    },
+    {
+      "id": "HooksUninstall",
+      "module": "src/commands/hooks/uninstall",
+      "methods": []
+    },
+    {
+      "id": "Init",
+      "module": "src/commands/init",
+      "methods": []
+    },
+    {
+      "id": "Inject",
+      "module": "src/commands/inject",
+      "methods": []
+    },
+    {
+      "id": "Scan",
+      "module": "src/commands/scan",
+      "methods": []
+    },
+    {
+      "id": "SpecNew",
+      "module": "src/commands/spec/new",
+      "methods": []
+    },
+    {
+      "id": "Status",
+      "module": "src/commands/status",
+      "methods": []
+    },
+    {
+      "id": "Sync",
+      "module": "src/commands/sync",
+      "methods": []
+    }
+  ],
+  "api_entry_points": [],
+  "dependency_graph": {
+    "nodes": [
+      "src/commands/config",
+      "src/commands/diff",
+      "src/commands/drift",
+      "src/commands/hooks/install",
+      "src/commands/hooks/uninstall",
+      "src/commands/init",
+      "src/commands/inject",
+      "src/commands/scan",
+      "src/commands/spec/new",
+      "src/commands/status",
+      "src/commands/sync",
+      "src/lib/baseline",
+      "src/lib/baseline-modules",
+      "src/lib/detect-profile",
+      "src/lib/drift",
+      "src/lib/injector",
+      "src/lib/reopenspec-config",
+      "src/lib/reopenspec-local-profile",
+      "src/lib/spec-types"
+    ],
+    "edges": []
+  },
+  "nodes": [
+    {
+      "id": "src/commands/config.ts:13:export.class:Config",
+      "kind": "export.class",
+      "name": "Config",
+      "file": "src/commands/config.ts",
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": "src/commands/diff.ts:4:export.class:Diff",
+      "kind": "export.class",
+      "name": "Diff",
+      "file": "src/commands/diff.ts",
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": "src/commands/drift.ts:8:export.class:Drift",
+      "kind": "export.class",
+      "name": "Drift",
+      "file": "src/commands/drift.ts",
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": "src/commands/init.ts:132:export.class:Init",
+      "kind": "export.class",
+      "name": "Init",
+      "file": "src/commands/init.ts",
+      "line": 132,
+      "column": 1
+    },
+    {
+      "id": "src/commands/inject.ts:5:export.class:Inject",
+      "kind": "export.class",
+      "name": "Inject",
+      "file": "src/commands/inject.ts",
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": "src/commands/scan.ts:7:export.class:Scan",
+      "kind": "export.class",
+      "name": "Scan",
+      "file": "src/commands/scan.ts",
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": "src/commands/status.ts:6:export.class:Status",
+      "kind": "export.class",
+      "name": "Status",
+      "file": "src/commands/status.ts",
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": "src/commands/sync.ts:9:export.class:Sync",
+      "kind": "export.class",
+      "name": "Sync",
+      "file": "src/commands/sync.ts",
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:5:export.type:BaselineModule",
+      "kind": "export.type",
+      "name": "BaselineModule",
+      "file": "src/lib/baseline-modules.ts",
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:13:export.type:BaselineInterface",
+      "kind": "export.type",
+      "name": "BaselineInterface",
+      "file": "src/lib/baseline-modules.ts",
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:24:export.type:ApiEntryPoint",
+      "kind": "export.type",
+      "name": "ApiEntryPoint",
+      "file": "src/lib/baseline-modules.ts",
+      "line": 24,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:31:export.type:DependencyGraph",
+      "kind": "export.type",
+      "name": "DependencyGraph",
+      "file": "src/lib/baseline-modules.ts",
+      "line": 31,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline.ts:18:export.type:BaselineNodeKind",
+      "kind": "export.type",
+      "name": "BaselineNodeKind",
+      "file": "src/lib/baseline.ts",
+      "line": 18,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline.ts:24:export.type:BaselineNode",
+      "kind": "export.type",
+      "name": "BaselineNode",
+      "file": "src/lib/baseline.ts",
+      "line": 24,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline.ts:33:export.type:BaselineEdge",
+      "kind": "export.type",
+      "name": "BaselineEdge",
+      "file": "src/lib/baseline.ts",
+      "line": 33,
+      "column": 1
+    },
+    {
+      "id": "src/lib/baseline.ts:43:export.type:ArchBaseline",
+      "kind": "export.type",
+      "name": "ArchBaseline",
+      "file": "src/lib/baseline.ts",
+      "line": 43,
+      "column": 1
+    },
+    {
+      "id": "src/lib/detect-profile.ts:4:export.type:LanguageProfile",
+      "kind": "export.type",
+      "name": "LanguageProfile",
+      "file": "src/lib/detect-profile.ts",
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": "src/lib/drift.ts:6:export.type:DriftCategory",
+      "kind": "export.type",
+      "name": "DriftCategory",
+      "file": "src/lib/drift.ts",
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": "src/lib/drift.ts:12:export.type:DriftSeverity",
+      "kind": "export.type",
+      "name": "DriftSeverity",
+      "file": "src/lib/drift.ts",
+      "line": 12,
+      "column": 1
+    },
+    {
+      "id": "src/lib/drift.ts:14:export.type:DriftFinding",
+      "kind": "export.type",
+      "name": "DriftFinding",
+      "file": "src/lib/drift.ts",
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": "src/lib/drift.ts:24:export.type:DriftReport",
+      "kind": "export.type",
+      "name": "DriftReport",
+      "file": "src/lib/drift.ts",
+      "line": 24,
+      "column": 1
+    },
+    {
+      "id": "src/lib/injector.ts:5:export.type:DetectedIde",
+      "kind": "export.type",
+      "name": "DetectedIde",
+      "file": "src/lib/injector.ts",
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": "src/lib/injector.ts:185:export.type:InjectionResult",
+      "kind": "export.type",
+      "name": "InjectionResult",
+      "file": "src/lib/injector.ts",
+      "line": 185,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:24:export.type:LocalIdeSetup",
+      "kind": "export.type",
+      "name": "LocalIdeSetup",
+      "file": "src/lib/reopenspec-config.ts",
+      "line": 24,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:34:export.type:ReopenSpecConfigFile",
+      "kind": "export.type",
+      "name": "ReopenSpecConfigFile",
+      "file": "src/lib/reopenspec-config.ts",
+      "line": 34,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:43:export.type:ResolvedReopenSpecConfig",
+      "kind": "export.type",
+      "name": "ResolvedReopenSpecConfig",
+      "file": "src/lib/reopenspec-config.ts",
+      "line": 43,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-local-profile.ts:14:export.type:LocalUserRole",
+      "kind": "export.type",
+      "name": "LocalUserRole",
+      "file": "src/lib/reopenspec-local-profile.ts",
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-local-profile.ts:21:export.type:HeroEmojiSuggestion",
+      "kind": "export.type",
+      "name": "HeroEmojiSuggestion",
+      "file": "src/lib/reopenspec-local-profile.ts",
+      "line": 21,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-local-profile.ts:47:export.type:LocalProfileOnDisk",
+      "kind": "export.type",
+      "name": "LocalProfileOnDisk",
+      "file": "src/lib/reopenspec-local-profile.ts",
+      "line": 47,
+      "column": 1
+    },
+    {
+      "id": "src/lib/spec-types.ts:4:export.type:ApiContractsFile",
+      "kind": "export.type",
+      "name": "ApiContractsFile",
+      "file": "src/lib/spec-types.ts",
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": "src/lib/spec-types.ts:9:export.type:ApiContract",
+      "kind": "export.type",
+      "name": "ApiContract",
+      "file": "src/lib/spec-types.ts",
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": "src/lib/spec-types.ts:26:export.type:LoadedFeatureSpec",
+      "kind": "export.type",
+      "name": "LoadedFeatureSpec",
+      "file": "src/lib/spec-types.ts",
+      "line": 26,
+      "column": 1
+    },
+    {
+      "id": "src/commands/spec/new.ts:15:export.class:SpecNew",
+      "kind": "export.class",
+      "name": "SpecNew",
+      "file": "src/commands/spec/new.ts",
+      "line": 15,
+      "column": 1
+    },
+    {
+      "id": "src/commands/hooks/install.ts:34:export.class:HooksInstall",
+      "kind": "export.class",
+      "name": "HooksInstall",
+      "file": "src/commands/hooks/install.ts",
+      "line": 34,
+      "column": 1
+    },
+    {
+      "id": "src/commands/hooks/uninstall.ts:17:export.class:HooksUninstall",
+      "kind": "export.class",
+      "name": "HooksUninstall",
+      "file": "src/commands/hooks/uninstall.ts",
+      "line": 17,
+      "column": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "src/commands/config.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/config.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Args",
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/config.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/config.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/config.ts:3:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/config.ts",
+      "line": 3,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "configFilePath",
+        "ensureLocalConfigInGitignore",
+        "isLocalUserRole",
+        "loadResolvedConfig",
+        "type LocalUserRole",
+        "writeDefaultConfigFile",
+        "writeLocalProfile"
+      ]
+    },
+    {
+      "id": "src/commands/diff.ts:1:import:./drift.js",
+      "kind": "imports",
+      "fromFile": "src/commands/diff.ts",
+      "line": 1,
+      "moduleSpecifier": "./drift.js",
+      "names": [
+        "Drift"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "dirname",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:4:import:../lib/baseline.js",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/baseline.js",
+      "names": [
+        "buildBaseline",
+        "readBaselineFromFile"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:5:import:../lib/drift.js",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 5,
+      "moduleSpecifier": "../lib/drift.js",
+      "names": [
+        "runDriftDetection"
+      ]
+    },
+    {
+      "id": "src/commands/drift.ts:6:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/drift.ts",
+      "line": 6,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:3:import:node:readline/promises",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 3,
+      "moduleSpecifier": "node:readline/promises",
+      "names": [
+        "createInterface"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:4:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 4,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:6:import:../lib/baseline.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 6,
+      "moduleSpecifier": "../lib/baseline.js",
+      "names": [
+        "buildBaseline"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:7:import:../lib/injector.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 7,
+      "moduleSpecifier": "../lib/injector.js",
+      "names": [
+        "IDE_CATALOG",
+        "injectForIdes"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:8:import:../lib/init-tui.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 8,
+      "moduleSpecifier": "../lib/init-tui.js",
+      "names": [
+        "printWelcomeBanner",
+        "promptRoleInteractive",
+        "runInteractiveIdeSetup"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:9:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 9,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "ensureLocalConfigInGitignore",
+        "isLocalUserRole",
+        "loadLocalProfile",
+        "loadResolvedConfig",
+        "type LocalIdeSetup",
+        "type LocalUserRole",
+        "type ResolvedReopenSpecConfig",
+        "writeDefaultConfigFile",
+        "writeLocalProfile"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:20:import:../lib/reopenspec-local-profile.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 20,
+      "moduleSpecifier": "../lib/reopenspec-local-profile.js",
+      "names": [
+        "resolveHeroEmoji"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:3:import:../lib/injector.js",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 3,
+      "moduleSpecifier": "../lib/injector.js",
+      "names": [
+        "injectForIdes"
+      ]
+    },
+    {
+      "id": "src/commands/scan.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/scan.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/scan.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/scan.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/scan.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/scan.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "dirname",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/scan.ts:4:import:../lib/baseline.js",
+      "kind": "imports",
+      "fromFile": "src/commands/scan.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/baseline.js",
+      "names": [
+        "buildBaseline"
+      ]
+    },
+    {
+      "id": "src/commands/scan.ts:5:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/scan.ts",
+      "line": 5,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
+      ]
+    },
+    {
+      "id": "src/commands/status.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/status.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/status.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/status.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "readFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/status.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/status.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/status.ts:4:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/status.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "dirname",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:4:import:../lib/baseline.js",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/baseline.js",
+      "names": [
+        "buildBaseline"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:5:import:../lib/drift.js",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 5,
+      "moduleSpecifier": "../lib/drift.js",
+      "names": [
+        "runDriftDetection"
+      ]
+    },
+    {
+      "id": "src/commands/sync.ts:6:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/sync.ts",
+      "line": 6,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
+      ]
+    },
+    {
+      "id": "editors/vscode/src/extension.ts:1:import:node:child_process",
+      "kind": "imports",
+      "fromFile": "editors/vscode/src/extension.ts",
+      "line": 1,
+      "moduleSpecifier": "node:child_process",
+      "names": [
+        "cp"
+      ]
+    },
+    {
+      "id": "editors/vscode/src/extension.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "editors/vscode/src/extension.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "fs"
+      ]
+    },
+    {
+      "id": "editors/vscode/src/extension.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "editors/vscode/src/extension.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "path"
+      ]
+    },
+    {
+      "id": "editors/vscode/src/extension.ts:4:import:vscode",
+      "kind": "imports",
+      "fromFile": "editors/vscode/src/extension.ts",
+      "line": 4,
+      "moduleSpecifier": "vscode",
+      "names": [
+        "vscode"
+      ]
+    },
+    {
+      "id": "src/lib/baseline-dart.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline-dart.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "readFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/baseline-dart.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline-dart.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "relative"
+      ]
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline-modules.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync"
+      ]
+    },
+    {
+      "id": "src/lib/baseline-modules.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline-modules.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "dirname",
+        "join",
+        "relative",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "readFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "basename",
+        "relative",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:3:import:@ast-grep/napi",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 3,
+      "moduleSpecifier": "@ast-grep/napi",
+      "names": [
+        "Lang",
+        "parseAsync",
+        "pattern"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:6:import:./baseline-modules.js",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 6,
+      "moduleSpecifier": "./baseline-modules.js",
+      "names": [
+        "deriveModulesGraphAndInterfaces"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:14:import:./detect-profile.js",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 14,
+      "moduleSpecifier": "./detect-profile.js",
+      "names": [
+        "detectLanguageProfile"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:15:import:./baseline-dart.js",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 15,
+      "moduleSpecifier": "./baseline-dart.js",
+      "names": [
+        "scanDartFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:16:import:./git.js",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 16,
+      "moduleSpecifier": "./git.js",
+      "names": [
+        "getGitHeadCommit"
+      ]
+    },
+    {
+      "id": "src/lib/baseline.ts:5:import:fast-glob",
+      "kind": "imports",
+      "fromFile": "src/lib/baseline.ts",
+      "line": 5,
+      "moduleSpecifier": "fast-glob",
+      "names": [
+        "fg"
+      ]
+    },
+    {
+      "id": "src/lib/detect-profile.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/detect-profile.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync"
+      ]
+    },
+    {
+      "id": "src/lib/detect-profile.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/detect-profile.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join"
+      ]
+    },
+    {
+      "id": "src/lib/drift.ts:1:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/drift.ts",
+      "line": 1,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/drift.ts:4:import:./load-specs.js",
+      "kind": "imports",
+      "fromFile": "src/lib/drift.ts",
+      "line": 4,
+      "moduleSpecifier": "./load-specs.js",
+      "names": [
+        "loadFeatureSpecs"
+      ]
+    },
+    {
+      "id": "src/lib/git.ts:1:import:node:child_process",
+      "kind": "imports",
+      "fromFile": "src/lib/git.ts",
+      "line": 1,
+      "moduleSpecifier": "node:child_process",
+      "names": [
+        "execFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/init-tui.ts:2:import:node:readline/promises",
+      "kind": "imports",
+      "fromFile": "src/lib/init-tui.ts",
+      "line": 2,
+      "moduleSpecifier": "node:readline/promises",
+      "names": [
+        "createInterface"
+      ]
+    },
+    {
+      "id": "src/lib/init-tui.ts:3:import:./injector.js",
+      "kind": "imports",
+      "fromFile": "src/lib/init-tui.ts",
+      "line": 3,
+      "moduleSpecifier": "./injector.js",
+      "names": [
+        "detectCurrentTerminalIde",
+        "detectIdes",
+        "IDE_CATALOG",
+        "type DetectedIde"
+      ]
+    },
+    {
+      "id": "src/lib/init-tui.ts:1:import:node:readline",
+      "kind": "imports",
+      "fromFile": "src/lib/init-tui.ts",
+      "line": 1,
+      "moduleSpecifier": "node:readline",
+      "names": [
+        "readline"
+      ]
+    },
+    {
+      "id": "src/lib/injector.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/injector.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/injector.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/injector.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/load-specs.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/load-specs.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "readFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/load-specs.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/load-specs.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "basename",
+        "dirname",
+        "join",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/load-specs.ts:3:import:fast-glob",
+      "kind": "imports",
+      "fromFile": "src/lib/load-specs.ts",
+      "line": 3,
+      "moduleSpecifier": "fast-glob",
+      "names": [
+        "fg"
+      ]
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/reopenspec-config.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "readFileSync",
+        "unlinkSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/reopenspec-config.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:3:import:./reopenspec-local-profile.js",
+      "kind": "imports",
+      "fromFile": "src/lib/reopenspec-config.ts",
+      "line": 3,
+      "moduleSpecifier": "./reopenspec-local-profile.js",
+      "names": [
+        "type LocalUserRole",
+        "DEFAULT_ROLE_EMOJI",
+        "isLocalUserRole",
+        "resolveHeroEmoji"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Args",
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "mkdirSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:4:import:../../lib/git.js",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 4,
+      "moduleSpecifier": "../../lib/git.js",
+      "names": [
+        "getGitHeadCommit"
+      ]
+    },
+    {
+      "id": "src/commands/spec/new.ts:5:import:../../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/spec/new.ts",
+      "line": 5,
+      "moduleSpecifier": "../../lib/reopenspec-config.js",
+      "names": [
+        "loadResolvedConfig"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/install.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/install.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/install.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/install.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "chmodSync",
+        "existsSync",
+        "readFileSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/install.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/install.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "resolve"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/uninstall.ts:1:import:@oclif/core",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/uninstall.ts",
+      "line": 1,
+      "moduleSpecifier": "@oclif/core",
+      "names": [
+        "Command",
+        "Flags"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/uninstall.ts:2:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/uninstall.ts",
+      "line": 2,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "readFileSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/commands/hooks/uninstall.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/commands/hooks/uninstall.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join",
+        "resolve"
+      ]
+    }
+  ],
+  "parseErrors": []
+}

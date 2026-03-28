@@ -9,7 +9,7 @@
           "required": false
         }
       },
-      "description": "Inspect or create reopenspec.json (baseline paths, specs dir, drift options).",
+      "description": "Inspect or create reopenspec.json. Hero name, role, and emoji live in gitignored reopenspec.local.json.",
       "examples": [
         "<%= config.bin %> config",
         "<%= config.bin %> config path",
@@ -20,7 +20,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -30,6 +30,31 @@
           "name": "force",
           "allowNo": false,
           "type": "boolean"
+        },
+        "heroName": {
+          "description": "Hero name → reopenspec.local.json (init only)",
+          "name": "heroName",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "role": {
+          "description": "developer | manager (init only, with --hero-name)",
+          "name": "role",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "developer",
+            "manager"
+          ],
+          "type": "option"
+        },
+        "emoji": {
+          "description": "Emoji override (init only, with --hero-name)",
+          "name": "emoji",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
         }
       },
       "hasDynamicHelp": false,
@@ -60,7 +85,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -122,7 +147,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -173,7 +198,7 @@
     "init": {
       "aliases": [],
       "args": {},
-      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows.",
+      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).",
       "examples": [
         "<%= config.bin %> init",
         "<%= config.bin %> init -c . --force"
@@ -183,7 +208,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -199,6 +224,31 @@
           "name": "skipInject",
           "allowNo": false,
           "type": "boolean"
+        },
+        "heroName": {
+          "description": "Hero name (gitignored); skips interactive name/role prompts when set",
+          "name": "heroName",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "role": {
+          "description": "Local role: developer or manager; skips interactive role prompt when set",
+          "name": "role",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "developer",
+            "manager"
+          ],
+          "type": "option"
+        },
+        "emoji": {
+          "description": "Hero emoji override (defaults: developer 🥷, manager 🔀)",
+          "name": "emoji",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
         }
       },
       "hasDynamicHelp": false,
@@ -228,7 +278,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -262,7 +312,7 @@
           "char": "c",
           "description": "Workspace root to scan",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -303,7 +353,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -337,7 +387,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -392,7 +442,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -432,7 +482,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -472,7 +522,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/ajith/Projects/reopenspec",
+          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
