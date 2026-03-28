@@ -1,0 +1,83 @@
+---
+description: Testing strategy and standards
+---
+
+# Testing Standards
+
+All features must include automated tests.
+
+---
+
+## Testing Layers
+
+The system should include:
+
+Unit Tests  
+Integration Tests  
+End-to-End Tests
+
+---
+
+## Unit Testing
+
+Unit tests must cover:
+
+Domain logic  
+Application handlers  
+Validation rules
+
+Use:
+
+xUnit  
+FluentAssertions  
+Moq
+
+---
+
+## Integration Testing
+
+Integration tests verify:
+
+Database access  
+API endpoints  
+Service interactions
+
+Use test databases when required.
+
+---
+
+## End-to-End Testing
+
+E2E tests validate user workflows.
+
+Use:
+
+Playwright
+
+Example flows:
+
+User login  
+Form submission  
+Feature workflows
+
+---
+
+## Test Naming
+
+Test names must describe behavior.
+
+Example:
+
+DeactivateUser_ShouldDisableLogin
+
+---
+
+## Test Philosophy
+
+Tests should verify:
+
+Expected behavior  
+Edge cases  
+Failure scenarios
+
+Avoid fragile tests.

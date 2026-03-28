@@ -1,0 +1,48 @@
+---
+description: Figma-to-Vue implementation rules for design-to-code
+globs:
+  - "**/*.vue"
+  - "**/*.ts"
+---
+
+When generating Vue components from Figma designs:
+
+Follow these rules.
+
+1. Use Vue3 Composition API.
+
+2. Use TailwindCSS for styling.
+
+3. Map Figma components to Vue components.
+
+Example:
+
+Figma Component → Vue File
+
+ProfileHeader → ProfileHeader.vue
+
+4. Use semantic layout.
+
+Example:
+
+<div class="max-w-4xl mx-auto p-6">
+
+5. Extract reusable components.
+
+6. Convert Figma auto-layout into flex/grid.
+
+7. Convert spacing to Tailwind classes.
+
+Example:
+
+Figma spacing: 16px → gap-4
+
+8. Convert typography to Tailwind.
+
+Example:
+
+font-size 20px → text-lg
+
+9. Do not inline styles.
+
+10. Keep components small and reusable.

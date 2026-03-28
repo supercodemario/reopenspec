@@ -59,7 +59,7 @@ Do not infer architecture from the codebase. Read \`/specs/.meta/arch-baseline.j
 
 const WORKFLOW_START = `# ReOpenSpec: Start Feature
 
-See \`requirements.md\` in the ReOpenSpec repo for the full workflow. Load architectural context from the baseline JSON only.
+Load architectural context from the baseline JSON only (see \`reopenspec.json\` paths). Traceable workflow: \`reo init\` → \`/reo-blueprint\` → \`/reo-plan\` → \`change/<id>/\` → \`/reo-proceed-plan\`. See \`commands/README.md\` in the ReOpenSpec package/repo.
 `
 
 const WORKFLOW_SYNC = `# ReOpenSpec: Sync Spec

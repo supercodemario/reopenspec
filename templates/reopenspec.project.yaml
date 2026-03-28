@@ -1,0 +1,26 @@
+# ReOpenSpec — project workflow (traceability)
+# Refined by /reo-blueprint. Work-tracking and MCP wiring are project-specific — add skills/adapters as needed.
+
+version: "1"
+
+# greenfield | brownfield
+project_type: brownfield
+
+# How work items are fetched: set by your team (skills + config read this)
+# Examples of values: none | configured (see integrations below)
+platforms:
+  work_tracking: none
+
+# Optional: document integration endpoints for agents (no secrets in git — use env / IDE)
+# integrations:
+#   work_items:
+#     provider: "<your-adapter-id>"
+#     config_ref: ".cursor/config.json" # or env key names only
+
+change:
+  root: change
+
+traceability:
+  main_specs_dir: specs
+  reopenspec_config: reopenspec.json
+  baseline_json: specs/.meta/arch-baseline.json

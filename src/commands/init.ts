@@ -17,6 +17,10 @@ import {
   writeDefaultConfigFile,
   writeLocalProfile,
 } from '../lib/reopenspec-config.js'
+import {
+  copyProjectYamlTemplate,
+  copyWorkflowCommandsToProject,
+} from '../lib/workflow-copy.js'
 import { resolveHeroEmoji } from '../lib/reopenspec-local-profile.js'
 
 function isInteractive(): boolean {
@@ -132,6 +136,12 @@ function printInteractiveInitSummary(
 export default class Init extends Command {
   static override id = 'init'
   static override description =
+    'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, and add reopenspec.project.yaml if missing (use --skip-workflow to opt out).'
+  static override examples = [
+    '<%= config.bin %> init',
+    '<%= config.bin %> init -c . --force',
+    '<%= config.bin %> init --skip-workflow',
+  ]
     'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).'
   static override examples = ['<%= config.bin %> init', '<%= config.bin %> init -c . --force']
 
@@ -147,6 +157,11 @@ export default class Init extends Command {
     }),
     skipInject: Flags.boolean({
       description: 'Do not write Cursor / .ai-context workflow files',
+      default: false,
+    }),
+    skipWorkflow: Flags.boolean({
+      description:
+        'Do not copy slash-command templates to .cursor/commands/ or add reopenspec.project.yaml',
       default: false,
     }),
     heroName: Flags.string({
@@ -283,5 +298,27 @@ export default class Init extends Command {
     ) {
       process.stdout.write(`${ansi.dim}All set — ready for your next command.${ansi.reset}\n`)
     }
+    if (!flags.skipWorkflow) {
+      try {
+        const copied = copyWorkflowCommandsToProject(cwd)
+        for (const p of copied) {
+          this.log(`Workflow command: ${p}`)
+        }
+        const yaml = copyProjectYamlTemplate(cwd)
+        if (yaml) {
+          this.log(`Wrote ${yaml} (template)`)
+        } else {
+          this.log('reopenspec.project.yaml already exists; left unchanged')
+        }
+      } catch (e) {
+        this.warn(
+          e instanceof Error ? e.message : String(e),
+        )
+      }
+    }
+
+    this.log(
+      `Summary: ${baseline.modules.length} module(s), ${baseline.nodes.length} export node(s), languages: ${baseline.meta.languages.join(', ') || '(none)'}`,
+    )
   }
 }

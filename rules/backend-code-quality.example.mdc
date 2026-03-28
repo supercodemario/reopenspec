@@ -1,0 +1,101 @@
+---
+description: Backend clean code and implementation practices
+globs: **/*.cs
+---
+
+# Backend Code Quality Rules
+
+All backend code must follow **clean code principles**.
+
+---
+
+## Class Design
+
+Classes should:
+
+- Have a single responsibility
+- Be small and focused
+- Avoid large constructors
+
+Avoid:
+
+- God classes
+- Static business logic
+
+---
+
+## Method Design
+
+Methods should:
+
+- Be small
+- Have descriptive names
+- Avoid nested conditionals
+
+Prefer:
+
+Guard clauses instead of deep nesting.
+
+Example:
+
+if (user == null)
+    throw new NotFoundException();
+
+---
+
+## Naming Conventions
+
+Use clear and descriptive names.
+
+Examples:
+
+Good:
+
+CreateUserCommand  
+DeactivateUserHandler  
+
+Bad:
+
+DoStuff  
+ManagerService  
+
+---
+
+## DTO Usage
+
+DTOs should:
+
+- Be immutable where possible
+- Represent API contracts
+
+Avoid exposing domain entities directly.
+
+---
+
+## Validation
+
+Use **FluentValidation** for command validation.
+
+Validation must happen before handler execution.
+
+---
+
+## Error Handling
+
+Use consistent exception patterns.
+
+Avoid returning null for error states.
+
+Prefer domain-specific exceptions.
+
+---
+
+## Logging
+
+Use structured logging.
+
+Log:
+
+- errors
+- critical state changes
+- external system failures

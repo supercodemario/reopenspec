@@ -198,10 +198,12 @@
     "init": {
       "aliases": [],
       "args": {},
+      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, and add reopenspec.project.yaml if missing (use --skip-workflow to opt out).",
       "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).",
       "examples": [
         "<%= config.bin %> init",
-        "<%= config.bin %> init -c . --force"
+        "<%= config.bin %> init -c . --force",
+        "<%= config.bin %> init --skip-workflow"
       ],
       "flags": {
         "cwd": {
@@ -222,6 +224,12 @@
         "skipInject": {
           "description": "Do not write Cursor / .ai-context workflow files",
           "name": "skipInject",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "skipWorkflow": {
+          "description": "Do not copy slash-command templates to .cursor/commands/ or add reopenspec.project.yaml",
+          "name": "skipWorkflow",
           "allowNo": false,
           "type": "boolean"
         },

@@ -1,0 +1,345 @@
+---
+description: Backend security rules and safe coding standards
+globs:
+  - "Services/**/*.cs"
+  - "Utilities/**/*.cs"
+---
+
+# Backend Security Standards
+
+These rules enforce secure backend coding practices.
+
+Applies to:
+
+- .NET APIs
+- CQRS Handlers
+- Controllers
+- Services
+- EF Core Repositories
+- External API integrations
+
+AI must always follow these rules when generating backend code.
+
+---
+
+# Authentication
+
+Authentication must be handled using the application's configured middleware.
+
+Rules:
+
+- Never manually parse JWT tokens.
+- Always rely on ASP.NET authentication middleware.
+- Use HttpContext.User for authenticated user data.
+
+Example:
+
+var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+---
+
+# Authorization
+
+Always validate permissions before performing protected actions.
+
+Rules:
+
+- Use role or permission checks when required.
+- Sensitive operations must verify ownership or permissions.
+
+Example:
+
+if (userId != resource.OwnerId)
+{
+    throw new ForbiddenException("Access denied");
+}
+
+Never trust client-provided IDs.
+
+Always validate ownership using server-side data.
+
+---
+
+# Input Validation
+
+All external input must be validated.
+
+Includes:
+
+- API requests
+- Query parameters
+- Path parameters
+- External API responses
+- Message queues
+
+Preferred approach:
+
+FluentValidation for command/query validation.
+
+Example:
+
+RuleFor(x => x.Email)
+    .NotEmpty()
+    .EmailAddress();
+
+Never trust raw request data.
+
+---
+
+# SQL Injection Protection
+
+Never concatenate SQL strings.
+
+❌ Bad
+
+var sql = "SELECT * FROM Users WHERE Id = " + id;
+
+✅ Good
+
+Use parameterized queries or EF Core.
+
+Example:
+
+context.Users.Where(u => u.Id == id)
+
+---
+
+# EF Core Security
+
+Always use EF Core LINQ queries when possible.
+
+Avoid:
+
+- Raw SQL
+- Dynamic SQL
+
+If raw SQL is required:
+
+Use parameters.
+
+Example:
+
+context.Users
+    .FromSqlInterpolated($"SELECT * FROM Users WHERE Id = {id}")
+
+---
+
+# Sensitive Data Exposure
+
+Never expose sensitive fields in API responses.
+
+Sensitive fields include:
+
+- Password hashes
+- Access tokens
+- API keys
+- Secrets
+- Internal IDs
+
+Always use DTOs for API responses.
+
+Example:
+
+UserResponseDto
+
+Never return domain entities directly.
+
+---
+
+# Logging Security
+
+Never log sensitive information.
+
+Forbidden to log:
+
+- Passwords
+- JWT tokens
+- API keys
+- Authorization headers
+- Connection strings
+
+Example of safe logging:
+
+logger.LogInformation("User {UserId} updated profile", userId);
+
+---
+
+# Secret Management
+
+Secrets must never be hardcoded.
+
+Examples of secrets:
+
+- API keys
+- JWT signing keys
+- Database credentials
+- OAuth secrets
+
+Secrets must come from:
+
+- Environment variables
+- Azure Key Vault
+- Secure configuration providers
+
+Never commit secrets to source control.
+
+---
+
+# File Upload Security
+
+When implementing file uploads:
+
+Validate:
+
+- file type
+- file size
+- allowed extensions
+
+Never trust file names.
+
+Always generate server-side file names.
+
+Example:
+
+var fileName = Guid.NewGuid().ToString();
+
+---
+
+# External API Security
+
+When calling external APIs:
+
+Always implement:
+
+- timeout
+- retry policy
+- error handling
+
+Prefer using:
+
+HttpClientFactory
+
+Example:
+
+services.AddHttpClient();
+
+Never expose API secrets in logs.
+
+---
+
+# Rate Limiting
+
+Public APIs should support rate limiting.
+
+Use:
+
+ASP.NET Rate Limiting middleware.
+
+Example:
+
+builder.Services.AddRateLimiter();
+
+---
+
+# Error Handling
+
+Never expose internal exceptions to clients.
+
+❌ Bad
+
+return ex.ToString();
+
+✅ Good
+
+return Problem("Unexpected error occurred");
+
+Use global exception middleware.
+
+---
+
+# ID Enumeration Protection
+
+Avoid exposing sequential IDs publicly.
+
+Prefer:
+
+- GUIDs
+- Hash IDs
+
+Example:
+
+UserId = Guid.NewGuid();
+
+---
+
+# CORS Security
+
+CORS must be restricted.
+
+Do NOT allow:
+
+AllowAnyOrigin()
+
+Always configure trusted domains.
+
+Example:
+
+.WithOrigins("https://app.company.com")
+
+---
+
+# Secure Headers
+
+API responses should include security headers.
+
+Recommended headers:
+
+X-Content-Type-Options
+X-Frame-Options
+Strict-Transport-Security
+Content-Security-Policy
+
+These should be configured in middleware.
+
+---
+
+# Data Protection
+
+Sensitive data should be encrypted when stored.
+
+Examples:
+
+- tokens
+- credentials
+- integration secrets
+
+Use:
+
+ASP.NET Data Protection APIs.
+
+---
+
+# Dependency Security
+
+AI should prefer trusted libraries.
+
+Avoid:
+
+- unknown third-party packages
+- outdated packages
+
+Always prefer official libraries.
+
+---
+
+# Cursor Behavior
+
+When generating backend code, AI must:
+
+- enforce authentication checks
+- validate input
+- avoid SQL injection risks
+- avoid exposing sensitive data
+- ensure secure configuration usage
+- prefer DTOs over domain entities
+- include validation and authorization checks

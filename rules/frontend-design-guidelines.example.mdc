@@ -1,0 +1,350 @@
+---
+description: UI/UX and design implementation guidelines used by Cursor during planning and implementation
+globs:
+  - "**/*.vue"
+  - "**/*.tsx"
+  - "**/*.ts"
+  - "**/*.cshtml"
+  - "**/*.razor"
+alwaysApply: false
+---
+
+# Design Guidelines
+
+These guidelines ensure that UI implementation across the repository follows consistent UX, accessibility, and design system standards.
+
+These rules are applied during:
+
+- `/plan` when Figma links are provided
+- `/implement` when building UI components
+- `/review` when validating UI consistency
+
+---
+
+# 1. Design Source of Truth
+
+The **primary source of UI design is Figma**.
+
+If the work-item or feature specification includes **Figma URLs**, the agent must:
+
+1. Analyze the Figma design
+2. Identify components used
+3. Break UI into reusable components
+4. Map design tokens to implementation
+5. Include UI implementation steps in the implementation plan
+
+If **multiple Figma URLs exist**, each must be treated as a separate UI context.
+
+Example:
+
+Work item / spec contains:
+Figma:
+https://figma.com/design/dashboard
+https://figma.com/design/user-profile
+
+The plan must include implementation sections for both screens.
+
+If **no Figma link exists**, skip design planning.
+
+---
+
+# 2. Design System Principles
+
+All UI implementations must follow these principles:
+
+### Consistency
+
+Use shared components wherever possible.
+
+Avoid creating duplicate UI components that already exist.
+
+### Reusability
+
+Break UI into reusable components instead of page-specific markup.
+
+Preferred hierarchy:
+Page
+├─ Layout
+├─ Section
+└─ Reusable Components
+
+### Simplicity
+
+Prefer simpler component structures over deeply nested components.
+
+### Predictability
+
+Maintain consistent spacing, typography, and component behavior.
+
+---
+
+# 3. Component Design Rules
+
+When implementing UI:
+
+### Prefer reusable components
+
+Instead of:
+Hardcoded UI inside page
+
+Use:
+
+Reusable component
+
+Example:
+
+Bad:
+
+UserPage.vue
+inline avatar + name layout
+
+Good:
+
+components/UserAvatar.vue
+components/UserCard.vue
+
+---
+
+### Naming conventions
+
+Component names must be:
+
+PascalCase
+
+Example:
+
+UserCard.vue
+DashboardWidget.vue
+NotificationPanel.vue
+
+---
+
+### Folder organization
+
+Components should be grouped logically.
+
+Example:
+
+src/
+├─ components/
+│ ├─ common/
+│ ├─ forms/
+│ ├─ layout/
+│ └─ widgets/
+
+---
+
+# 4. Layout and Spacing Standards
+
+Maintain consistent spacing.
+
+Recommended spacing scale:
+
+4px
+8px
+12px
+16px
+24px
+32px
+48px
+
+Avoid arbitrary spacing like:
+
+margin: 13px
+padding: 27px
+
+Spacing must follow the spacing scale.
+
+---
+
+# 5. Typography Standards
+
+Typography must remain consistent across the application.
+
+Hierarchy example:
+
+| Type | Usage |
+|-----|------|
+| H1 | Page titles |
+| H2 | Section titles |
+| H3 | Subsections |
+| Body | Content |
+| Caption | Small labels |
+
+Avoid inline font styling.
+
+Use defined classes or design tokens.
+
+---
+
+# 6. Accessibility Requirements
+
+All UI components must follow accessibility best practices.
+
+### Required standards
+
+- Images must include `alt` attributes
+- Buttons must have accessible labels
+- Form fields must include labels
+- Interactive elements must support keyboard navigation
+- Color contrast must meet accessibility guidelines
+
+Example:
+
+Bad:
+
+<button>Submit</button>
+
+Good:
+
+<button aria-label="Submit form">Submit</button>
+
+---
+
+# 7. Responsive Design
+
+All UI must support responsive layouts.
+
+Preferred breakpoints:
+
+Mobile
+Tablet
+Desktop
+Wide screens
+
+Guidelines:
+
+- Avoid fixed widths
+- Prefer flexible layouts
+- Components should adapt to smaller screens
+
+---
+
+# 8. Design → Code Translation Process
+
+When a Figma design is referenced in the work item or spec, the agent must:
+
+### Step 1 — Analyze the screen
+
+Identify:
+
+- UI sections
+- reusable components
+- layout structure
+
+### Step 2 — Component breakdown
+
+Convert design into:
+
+Page
+Components
+Shared components
+
+### Step 3 — Define component responsibilities
+
+Example:
+
+DashboardPage
+├─ DashboardHeader
+├─ StatsCard
+├─ ActivityFeed
+
+### Step 4 — Implementation plan
+
+The `/plan` output must include:
+
+UI Implementation Plan
+Component List
+Page Layout Plan
+Reusable Component Strategy
+
+---
+
+# 9. Avoid Common UI Anti-Patterns
+
+The following must be avoided:
+
+### Hardcoded styles
+
+Bad:
+
+style="margin-top:17px"
+
+Use standard spacing tokens instead.
+
+---
+
+### Deep component nesting
+
+Avoid component trees like:
+
+Page
+└─ Wrapper
+└─ Container
+└─ Box
+└─ Layout
+
+---
+
+### Page-specific components
+
+Avoid components that can only be used in one page.
+
+---
+
+# 10. Design Review Checklist
+
+During `/review`, the agent must verify:
+
+- UI matches the Figma design
+- reusable components were created
+- spacing scale is respected
+- accessibility attributes exist
+- responsive layout is implemented
+- no unnecessary inline styling
+
+---
+
+# 11. Design Consistency Enforcement
+
+If UI code violates these rules, the agent must:
+
+1. Identify inconsistencies
+2. Suggest improvements
+3. Recommend reusable component extraction
+
+Example:
+
+Repeated UI blocks should be converted into reusable components.
+
+---
+
+# 12. Design Documentation
+
+When UI components are created, the implementation summary must document:
+
+New Components
+Updated Components
+Pages Modified
+Design Decisions
+
+This ensures UI changes are traceable.
+
+---
+
+# 13. Integration with AI SDLC Workflow
+
+These guidelines are automatically used during:
+
+/plan
+to generate UI implementation plans.
+
+and during:
+
+/implement
+to generate UI code.
+
+and during:
+
+/review
+to validate UI quality.

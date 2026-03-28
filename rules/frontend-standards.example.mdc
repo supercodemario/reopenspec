@@ -1,0 +1,97 @@
+---
+description: Vue3 frontend architecture and coding standards
+globs:
+  - "**/*.vue"
+  - "**/*.ts"
+---
+
+# Frontend Standards
+
+Frontend uses:
+
+Vue 3  
+TypeScript  
+Vite  
+TailwindCSS
+
+---
+
+## Project Structure
+
+src/
+components/
+views/
+composables/
+services/
+types/
+router/
+
+Rules:
+
+- Components must be reusable
+- Views represent pages
+- Composables contain logic
+
+---
+
+## Vue Component Standards
+
+All components must use:
+
+Composition API
+
+Example:
+
+<script setup lang="ts">
+
+Props and emits must be typed.
+
+---
+
+## Component Responsibilities
+
+Components should:
+
+- Focus on UI
+- Avoid heavy logic
+
+Logic belongs in **composables**.
+
+---
+
+## API Integration
+
+API communication must be placed in:
+
+services/
+
+Components must not call APIs directly.
+
+---
+
+## Error Handling
+
+API errors must be handled centrally.
+
+User-friendly error messages should be displayed.
+
+Avoid exposing raw backend errors.
+
+---
+
+## State Management
+
+Prefer composables.
+
+If global state is required use **Pinia**.
+
+---
+
+## Styling
+
+Use TailwindCSS.
+
+Avoid:
+
+- Inline styles
+- Large scoped CSS blocks

@@ -1,0 +1,76 @@
+---
+description: CI/CD pipeline standards
+---
+
+# CI/CD Standards
+
+Projects must support **dual CI/CD environments**:
+
+GitHub Actions  
+Azure DevOps
+
+---
+
+## Pipeline Requirements
+
+Pipelines must:
+
+- Restore dependencies
+- Build projects
+- Run tests
+- Produce artifacts
+
+---
+
+## Build Validation
+
+Every pull request must trigger:
+
+Build  
+Unit tests  
+Static analysis
+
+PRs must not be merged if builds fail.
+
+---
+
+## Branch Strategy
+
+Use feature branches.
+
+Example:
+
+feature/PROJ-123-user-deactivation
+
+Pull requests must reference the traceable work item when your process requires it.
+
+---
+
+## Deployment
+
+Deployments must be automated.
+
+Stages:
+
+Build  
+Test  
+Deploy
+
+---
+
+## Artifact Management
+
+Build artifacts must be versioned.
+
+Avoid rebuilding identical artifacts for each environment.
+
+---
+
+## Security
+
+Secrets must not be stored in source code.
+
+Use:
+
+GitHub Secrets  
+Azure Key Vault

@@ -1,0 +1,105 @@
+---
+description: Backend architecture standards for .NET services
+globs: **/*.cs
+---
+
+# Backend Architecture Standards
+
+This project follows **Clean Architecture** with **CQRS** and **Vertical Slice Architecture**.
+
+## Layered Architecture
+
+Services must follow this dependency direction:
+
+API → Application → Domain  
+Infrastructure → Application + Domain
+
+Forbidden:
+
+- Domain referencing Infrastructure
+- Domain referencing API
+- Application referencing API
+
+Domain must remain **framework independent**.
+
+---
+
+## Vertical Slice Structure
+
+Application layer must be organized by **features**, not technical layers.
+
+Example:
+
+Features/
+User/
+CreateUser/
+Command.cs
+Handler.cs
+Validator.cs
+DTO.cs
+
+Each feature represents a **complete business capability**.
+
+---
+
+## CQRS Conventions
+
+Commands modify state.  
+Queries retrieve data.
+
+Commands:
+
+- Must use MediatR `IRequest`
+- Must have handler
+- Must have validator
+
+Queries:
+
+- Must not change system state
+- Must return DTOs
+
+---
+
+## Domain Layer Rules
+
+Domain contains:
+
+- Entities
+- Value Objects
+- Domain Services
+- Domain Events
+
+Domain must not contain:
+
+- EFCore
+- MediatR
+- ASP.NET references
+
+---
+
+## Infrastructure Layer
+
+Infrastructure contains:
+
+- EFCore DbContext
+- Repository implementations
+- External services
+- Messaging integrations
+
+Infrastructure should depend on **Domain + Application only**.
+
+---
+
+## API Layer
+
+Controllers must:
+
+- Be thin
+- Call MediatR
+- Not contain business logic
+
+Controllers should only:
+
+- Map requests
+- Send commands/queries
+- Return results

@@ -1,0 +1,351 @@
+---
+description: Guardrails to prevent hallucinations and enforce repository conventions during AI code generation
+globs:
+  - "**/*"
+---
+
+# AI Generation Guardrails
+
+These rules ensure that AI-generated code and documentation:
+
+- follows the repository architecture
+- avoids hallucinating frameworks or libraries
+- respects existing project conventions
+- uses existing patterns instead of inventing new ones
+
+These guardrails apply to:
+
+- code generation
+- architecture suggestions
+- implementation plans
+- documentation
+- testing code
+
+---
+
+# Follow Repository Context
+
+AI must always follow the architecture defined in:
+
+.cursor/rules/overall-repo-context.mdc
+
+Never introduce alternative architectures unless explicitly requested.
+
+Examples of forbidden changes:
+
+- switching to a different architecture style
+- introducing new architectural layers
+- replacing existing frameworks
+
+Example:
+
+❌ Do NOT replace CQRS with traditional service architecture.
+
+❌ Do NOT introduce MVC patterns if the repository uses Vertical Slice Architecture.
+
+---
+
+# Do Not Invent Frameworks or Libraries
+
+AI must only use technologies already defined in the repository.
+
+Allowed examples:
+
+Backend
+- .NET
+- EF Core
+- MediatR
+
+Frontend
+- Vue 3
+- TailwindCSS
+
+Testing
+- xUnit
+- Playwright
+
+Forbidden examples:
+
+❌ introducing NestJS  
+❌ introducing Spring Boot  
+❌ introducing Redux if not already used  
+❌ introducing Prisma if EF Core is used  
+
+If unsure, AI must ask for clarification.
+
+---
+
+# Prefer Existing Project Patterns
+
+Before generating new code, AI must:
+
+1. Search the repository for existing implementations.
+2. Reuse existing patterns.
+3. Follow naming conventions already used.
+
+Example:
+
+If existing handlers use:
+
+CreateUserCommandHandler
+
+AI must follow the same pattern.
+
+Never introduce inconsistent naming.
+
+---
+
+# Do Not Create Unnecessary Abstractions
+
+AI must avoid overengineering.
+
+Forbidden patterns:
+
+- unnecessary service layers
+- unnecessary interfaces
+- generic repositories when EF Core is used
+- deep inheritance hierarchies
+
+Prefer simple, explicit implementations.
+
+Example:
+
+Prefer:
+
+Command → Handler → Repository
+
+Avoid:
+
+Command → Service → Manager → Repository
+
+---
+
+# Prefer Incremental Changes
+
+AI must prefer **modifying existing code** rather than creating large new structures.
+
+Rules:
+
+- extend existing modules
+- reuse existing DTOs
+- reuse existing utilities
+
+Avoid duplicating code.
+
+---
+
+# Follow the Spec-Driven Workflow
+
+AI must strictly follow the SDLC workflow commands.
+
+The development lifecycle is:
+
+/reo-blueprint → /reo-plan → /reo-proceed-plan → /reo-review → /reo-test → /reo-pr
+
+Rules:
+
+AI must not start implementation before a plan exists.
+
+AI must not create production code during the planning stage.
+
+AI must not skip steps in the workflow.
+
+---
+
+# Respect Feature Boundaries
+
+All feature work must stay within the feature scope.
+
+Feature structure:
+
+specs/<feature-id>/
+
+AI must not modify unrelated modules unless required.
+
+If cross-module changes are required:
+
+AI must explicitly explain why.
+
+---
+
+# Avoid Hallucinated APIs
+
+AI must not invent APIs or endpoints that do not exist.
+
+If an external API is referenced:
+
+AI must verify:
+
+- endpoint URL
+- request format
+- authentication method
+
+If information is missing:
+
+AI must ask for clarification.
+
+---
+
+# Avoid Hallucinated Database Schema
+
+AI must not assume database tables or columns exist.
+
+Before generating queries:
+
+AI must check:
+
+- existing entities
+- EF Core models
+- migrations
+
+If uncertain:
+
+AI must request schema clarification.
+
+---
+
+# Avoid Fake Business Logic
+
+AI must not invent business rules.
+
+Examples of forbidden assumptions:
+
+❌ assuming discount calculations  
+❌ assuming pricing formulas  
+❌ assuming approval workflows  
+
+Only implement logic defined in:
+
+- approved work item / spec (from your tracking tool when configured)
+- feature spec
+- plan document
+
+---
+
+# Always Explain Major Decisions
+
+When generating complex code, AI must briefly explain:
+
+- architectural decisions
+- performance considerations
+- security implications
+
+Keep explanations concise.
+
+---
+
+# Safe Refactoring Rules
+
+AI may refactor code only when:
+
+- improving readability
+- fixing bugs
+- improving performance
+
+AI must not perform large refactors unless explicitly requested.
+
+---
+
+# Avoid Breaking Changes
+
+AI must avoid breaking changes to:
+
+- public APIs
+- database schema
+- contracts between services
+
+If a breaking change is required:
+
+AI must clearly highlight it.
+
+---
+
+# Follow Security Rules
+
+AI must always follow security rules defined in:
+
+.cursor/rules/backend-security.mdc
+
+Including:
+
+- input validation
+- authentication checks
+- authorization checks
+- secure logging
+- secret management
+
+---
+
+# Follow Database Rules
+
+AI must follow SQL standards defined in:
+
+.cursor/rules/database-sql-standards.mdc
+
+Including:
+
+- no SELECT *
+- parameterized queries
+- proper indexing
+
+---
+
+# Testing Requirements
+
+AI must generate tests when implementing logic.
+
+Minimum requirements:
+
+- unit tests for handlers
+- integration tests for APIs
+
+Tests must follow:
+
+.cursor/rules/testing-standards.mdc
+
+---
+
+# Documentation Rules
+
+AI must keep documentation concise.
+
+Feature documentation must be stored under:
+
+specs/<feature-id>/
+
+Example files:
+
+overview.md  
+plan.md  
+tasks.md  
+implementation.md
+
+---
+
+# When AI Is Unsure
+
+If requirements are unclear:
+
+AI must ask for clarification rather than guessing.
+
+Example response:
+
+"Additional information is required to implement this feature."
+
+AI must never fabricate missing details.
+
+---
+
+# Cursor Behavior
+
+When generating code AI must:
+
+- respect repository architecture
+- follow naming conventions
+- avoid hallucinating technologies
+- reuse existing code patterns
+- generate secure code
+- generate tests where required
+- follow the spec-driven workflow
+
+AI must prioritize **correctness, clarity, and consistency** over creativity.
