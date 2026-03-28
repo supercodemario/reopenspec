@@ -1,0 +1,175 @@
+---
+description: Guidelines for generating implementation plans
+---
+
+# Implementation Planning Guidelines
+
+When generating implementation plans for new features, follow a structured and systematic planning approach.
+
+Plans should be **clear, step-by-step, and implementation focused**.
+
+Plans must align with the project's architecture rules.
+
+---
+
+# Planning Objectives
+
+Implementation plans must:
+
+- Translate feature requirements into technical tasks
+- Respect Clean Architecture boundaries
+- Follow CQRS patterns
+- Minimize risk before implementation begins
+
+A plan should allow a developer to implement the feature **without guessing missing steps**.
+
+---
+
+# Planning Inputs
+
+When generating plans, use the following sources:
+
+1. Feature specification (`specs/<feature-id>/overview.md`)
+2. Existing codebase structure
+3. Architecture rules defined in `.cursor/rules`
+4. Feature templates and conventions
+
+---
+
+# Required Plan Structure
+
+Every implementation plan must contain the following sections:
+
+## Feature Summary
+
+Short explanation of the feature and its purpose.
+
+---
+
+## Backend Changes
+
+Identify required backend changes:
+
+- Domain model updates
+- New commands
+- New queries
+- New handlers
+- Validation rules
+- API endpoints
+- Database schema changes
+
+Example tasks:
+
+1. Update User entity with `IsActive` flag
+2. Create `DeactivateUserCommand`
+3. Create `DeactivateUserHandler`
+4. Add FluentValidation validator
+5. Add API endpoint
+
+---
+
+## Database Changes
+
+If required:
+
+- New tables
+- New columns
+- Migrations
+
+Migration names must reflect the feature.
+
+Example:
+
+AddUserIsActiveFlag
+
+---
+
+## Frontend Changes
+
+Identify frontend work:
+
+- New views/pages
+- New Vue components
+- New composables
+- API service updates
+- Routing changes
+
+Example tasks:
+
+1. Add Deactivate button to user admin page
+2. Create `useDeactivateUser` composable
+3. Update `userService`
+
+---
+
+## Testing Requirements
+
+Identify tests required.
+
+Backend:
+
+- Unit tests for handlers
+- Integration tests for API endpoints
+
+Frontend:
+
+- Component tests
+- End-to-end tests
+
+---
+
+# Task Ordering
+
+Tasks must be ordered logically.
+
+Recommended order:
+
+1. Domain changes
+2. Database migration
+3. Application commands/queries
+4. API endpoints
+5. Frontend updates
+6. Testing
+
+---
+
+# Plan Quality Rules
+
+A good plan must:
+
+- Be broken into numbered tasks
+- Avoid vague steps
+- Avoid large multi-purpose tasks
+- Clearly identify affected layers
+
+Bad example:
+
+"Implement backend changes"
+
+Good example:
+
+"Create DeactivateUserCommand and handler"
+
+---
+
+# Risk Identification
+
+Plans should identify possible risks:
+
+- breaking schema changes
+- dependency updates
+- cross-service impacts
+
+When risks exist, highlight them.
+
+---
+
+# Implementation Readiness
+
+Before implementation begins:
+
+- Ensure all acceptance criteria are addressed
+- Ensure database changes are defined
+- Ensure frontend impact is identified
+
+If information is missing, ask clarifying questions before implementation.

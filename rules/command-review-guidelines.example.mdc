@@ -1,0 +1,220 @@
+---
+description: Guidelines for reviewing generated code and validating architecture compliance
+---
+
+# Code Review Guidelines
+
+The `/review` command performs an architectural and quality review of generated code.
+
+The goal is to ensure the implementation follows:
+
+- Clean Architecture
+- CQRS conventions
+- Feature template structure
+- Code quality rules
+- Testing standards
+
+The review should focus on **architecture correctness, maintainability, and risk detection**.
+
+---
+
+# Review Scope
+
+A review must analyze:
+
+- Backend code changes
+- Frontend code changes
+- Database changes
+- Tests
+- Dependency direction
+
+---
+
+# Backend Architecture Checks
+
+Verify the following rules:
+
+## Layer Boundaries
+
+Dependency direction must follow:
+
+API → Application → Domain
+
+Infrastructure → Application + Domain
+
+Domain must not depend on:
+
+- ASP.NET
+- EFCore
+- MediatR
+- Infrastructure services
+
+---
+
+## CQRS Compliance
+
+Each feature must contain:
+
+Command  
+Handler  
+Validator  
+DTO / Response  
+
+Handlers must:
+
+- contain business orchestration
+- avoid direct database logic if possible
+
+Commands must:
+
+- represent a business action
+- contain only request data
+
+---
+
+## Controller Design
+
+Controllers must:
+
+- remain thin
+- call MediatR
+- not contain business logic
+
+Controllers must not:
+
+- access repositories directly
+- contain validation logic
+
+---
+
+# Domain Integrity
+
+Domain layer must contain:
+
+Entities  
+Value objects  
+Domain services  
+Domain events  
+
+Domain must remain **framework independent**.
+
+---
+
+# Database Checks
+
+Verify that:
+
+- EF Core migrations exist when schema changes occur
+- Migration names reflect feature purpose
+- No raw SQL is introduced unnecessarily
+
+---
+
+# Frontend Architecture Checks
+
+Verify frontend structure follows standards:
+
+src/
+components/
+views/
+composables/
+services/
+
+Rules:
+
+- Components contain UI logic only
+- Business logic placed in composables
+- API calls handled in services
+
+---
+
+# Error Handling
+
+Ensure:
+
+- API errors handled gracefully
+- User-friendly messages exist
+- No raw stack traces exposed
+
+---
+
+# Testing Checks
+
+Verify that:
+
+Backend includes:
+
+- unit tests for handlers
+- validation tests
+
+Frontend includes:
+
+- component tests or E2E tests
+
+Critical features must not be implemented without tests.
+
+---
+
+# Code Quality Checks
+
+Look for:
+
+- overly large classes
+- duplicated logic
+- deeply nested conditions
+- poor naming
+
+Recommend refactoring where necessary.
+
+---
+
+# Review Output Format
+
+The review must produce structured output:
+
+REVIEW SUMMARY
+
+Architecture Compliance
+Code Quality Issues
+Testing Coverage
+Potential Risks
+
+If problems exist:
+
+List **recommended fixes** clearly.
+
+---
+
+# Review Result
+
+A review should end with one of:
+
+APPROVED  
+APPROVED WITH CHANGES  
+REQUIRES FIXES
+
+---
+
+## AI Confidence Declaration
+
+When AI produces:
+
+- Implementation summary
+- Architecture decisions
+- Testing reports
+
+It must include a confidence statement.
+
+Format:
+
+Confidence Level: High | Medium | Low
+
+Example:
+
+Confidence Level: High
+Reason: Implementation directly follows tasks.md and overview.md.
+
+Example:
+
+Confidence Level: Medium
+Reason: API response format inferred due to missing specification.

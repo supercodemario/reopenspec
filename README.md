@@ -31,17 +31,19 @@ node bin/run.js --help
    reo init
    ```
 
-   This creates `specs/` and `specs/.meta/`, writes `reopenspec.json` if missing, runs a scan, and injects Cursor rules (or `.ai-context/AGENTS.md` as a fallback).
+   This creates `specs/` and `specs/.meta/`, writes `reopenspec.json` if missing, runs a scan, injects Cursor rules (or `.ai-context/AGENTS.md` as a fallback), copies **slash-command templates** to `.cursor/commands/`, and adds **`reopenspec.project.yaml`** when missing. Use **`reo init --skip-workflow`** if you only want baseline + config without those files.
 
-2. Add or scaffold a feature spec:
+2. **Traceable feature flow (IDE):** run **`/reo-blueprint`** once, then **`/reo-plan`** (story/task via MCP) → after approval materializes **`change/<id>/`** → **`/reo-proceed-plan`**. See [`commands/README.md`](commands/README.md). (Skip copying commands/YAML with `reo init --skip-workflow` if you do not want them.)
+
+3. Add or scaffold main-line specs (optional if you only use `change/` folders):
 
    ```bash
    reo spec new my-feature
    ```
 
-3. Point contracts at real exports in `specs/<feature>/api-contracts.json` (`mapsTo`: file path, symbol, kind).
+4. Point contracts at real exports in `specs/<feature>/api-contracts.json` (`mapsTo`: file path, symbol, kind).
 
-4. Refresh baseline + drift:
+5. Refresh baseline + drift:
 
    ```bash
    reo sync
@@ -53,7 +55,8 @@ node bin/run.js --help
 
 | Command | Purpose |
 |--------|---------|
-| `reo init` | First-time: dirs, config, scan, inject IDE snippets |
+| `reo init` | First-time: dirs, config, scan, inject IDE snippets, copy slash commands to `.cursor/commands/`, add `reopenspec.project.yaml` if missing |
+| `reo init --skip-workflow` | Same as above but without copying slash commands or adding `reopenspec.project.yaml` |
 | `reo sync` | Full scan + drift report |
 | `reo scan` | Baseline only |
 | `reo drift` / `reo diff` | Drift vs `specs/*/api-contracts.json` |
@@ -83,6 +86,7 @@ A minimal extension lives under `editors/vscode/` (config editor + run sync). Bu
 - [`requirements.md`](requirements.md) — full product specification  
 - [`IMPLEMENTATION.md`](IMPLEMENTATION.md) — what is implemented vs planned  
 - [`baseline.md`](baseline.md) — technical design notes  
+- [`commands/README.md`](commands/README.md) — optional Cursor slash-command templates (`/reo-*`) aligned with `specs/`  
 
 ## License
 

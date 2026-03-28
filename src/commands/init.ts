@@ -7,12 +7,20 @@ import {
   loadResolvedConfig,
   writeDefaultConfigFile,
 } from '../lib/reopenspec-config.js'
+import {
+  copyProjectYamlTemplate,
+  copyWorkflowCommandsToProject,
+} from '../lib/workflow-copy.js'
 
 export default class Init extends Command {
   static override id = 'init'
   static override description =
-    'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows.'
-  static override examples = ['<%= config.bin %> init', '<%= config.bin %> init -c . --force']
+    'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, and add reopenspec.project.yaml if missing (use --skip-workflow to opt out).'
+  static override examples = [
+    '<%= config.bin %> init',
+    '<%= config.bin %> init -c . --force',
+    '<%= config.bin %> init --skip-workflow',
+  ]
 
   static override flags = {
     cwd: Flags.string({
@@ -26,6 +34,11 @@ export default class Init extends Command {
     }),
     skipInject: Flags.boolean({
       description: 'Do not write Cursor / .ai-context workflow files',
+      default: false,
+    }),
+    skipWorkflow: Flags.boolean({
+      description:
+        'Do not copy slash-command templates to .cursor/commands/ or add reopenspec.project.yaml',
       default: false,
     }),
   }
@@ -64,6 +77,25 @@ export default class Init extends Command {
         } else {
           this.log(`IDE marker: ${inj.ide} (no files written for this target yet)`)
         }
+      }
+    }
+
+    if (!flags.skipWorkflow) {
+      try {
+        const copied = copyWorkflowCommandsToProject(cwd)
+        for (const p of copied) {
+          this.log(`Workflow command: ${p}`)
+        }
+        const yaml = copyProjectYamlTemplate(cwd)
+        if (yaml) {
+          this.log(`Wrote ${yaml} (template)`)
+        } else {
+          this.log('reopenspec.project.yaml already exists; left unchanged')
+        }
+      } catch (e) {
+        this.warn(
+          e instanceof Error ? e.message : String(e),
+        )
       }
     }
 

@@ -11,6 +11,8 @@
   "files": [
     "bin",
     "dist",
+    "commands",
+    "templates",
     "oclif.manifest.json",
     "LICENSE",
     "README.md"

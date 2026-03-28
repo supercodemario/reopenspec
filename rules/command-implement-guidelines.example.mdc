@@ -1,0 +1,224 @@
+---
+description: Standard template for implementing new backend and frontend features
+---
+
+# Feature Implementation Template
+
+Every new feature must follow a **consistent structure** across backend and frontend.
+
+Features should be implemented using **Vertical Slice Architecture**.
+
+Each feature represents a **single business capability**.
+
+---
+
+# Backend Feature Structure
+
+Backend features must be placed inside the Application layer under a **Features folder**.
+
+Example:
+
+Application/
+Features/
+User/
+DeactivateUser/
+
+Required files:
+
+DeactivateUserCommand.cs  
+DeactivateUserHandler.cs  
+DeactivateUserValidator.cs  
+DeactivateUserResponse.cs  
+
+Optional files:
+
+DeactivateUserMapping.cs  
+DeactivateUserTests.cs
+
+---
+
+# Backend Feature Responsibilities
+
+## Command
+
+Represents the request to perform a business action.
+
+Rules:
+
+- Must implement `IRequest<TResponse>`
+- Must contain only request data
+- Must be immutable where possible
+
+Example:
+
+DeactivateUserCommand
+
+---
+
+## Handler
+
+Contains the business logic for the command.
+
+Rules:
+
+- Must implement `IRequestHandler`
+- Must be small and focused
+- Must call domain logic where possible
+- Must not contain validation logic
+
+---
+
+## Validator
+
+Responsible for validating the command.
+
+Rules:
+
+- Must use FluentValidation
+- Must validate all external inputs
+- Must run before handler execution
+
+---
+
+## Response / DTO
+
+Used to return data from handlers.
+
+Rules:
+
+- Must not expose domain entities
+- Should be immutable
+
+---
+
+# API Layer Integration
+
+For each command, an API endpoint must exist.
+
+Example:
+
+POST /users/{id}/deactivate
+
+Controller rules:
+
+- Controller must call MediatR
+- Controller must not contain business logic
+- Controller must return DTO responses
+
+---
+
+# Database Changes
+
+If the feature requires schema updates:
+
+- Create EF Core migration
+- Update DbContext
+- Avoid raw SQL when possible
+
+Migration names should reflect the feature.
+
+Example:
+
+AddUserIsActiveFlag
+
+---
+
+# Frontend Feature Structure
+
+Frontend features should follow this structure:
+
+src/
+views/
+users/
+UserDeactivateView.vue
+
+components/
+users/
+UserDeactivateButton.vue
+
+services/
+userService.ts
+
+composables/
+useDeactivateUser.ts
+
+---
+
+# Frontend Implementation Rules
+
+## Views
+
+Views represent pages.
+
+Rules:
+
+- Must compose components
+- Must contain minimal logic
+
+---
+
+## Components
+
+Components should focus on presentation.
+
+Rules:
+
+- Must use Vue3 Composition API
+- Must use TypeScript
+- Must receive typed props
+
+---
+
+## Composables
+
+Composables contain reusable logic.
+
+Rules:
+
+- API calls should be wrapped inside composables
+- UI components should call composables
+
+Example:
+
+useDeactivateUser()
+
+---
+
+# API Integration
+
+API communication must be handled inside **services**.
+
+Example:
+
+userService.ts
+
+Components must not call APIs directly.
+
+---
+
+# Testing Requirements
+
+Each feature should include tests.
+
+Backend:
+
+Unit tests for handlers.
+
+Frontend:
+
+Component tests or E2E coverage.
+
+---
+
+# Feature Documentation
+
+Each implemented feature should update:
+
+specs/<feature-id>/implementation.md
+
+Include:
+
+- summary of changes
+- affected services
+- database migrations
+- testing notes
