@@ -1,0 +1,50 @@
+---
+description: Figma-to-Flutter implementation rules for design-to-code
+globs: "**/*.dart"
+alwaysApply: false
+---
+
+When generating Flutter widgets from Figma designs:
+
+Follow these rules.
+
+1. Create modular Flutter widgets representing distinct UI sections.
+
+2. Map Figma components to specific Flutter files.
+
+Example:
+
+Figma Component → Flutter File
+
+ProfileHeader → `profile_header.dart`
+
+3. Use semantic layout elements.
+
+- Use `Column` and `Row` for flexbox-like alignments.
+- Use `Stack` for layered overlapping designs.
+- Use `Padding` or `SizedBox` for margins/spacing.
+
+Example:
+
+```dart
+Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: Column(
+    children: [ ... ],
+  ),
+)
+```
+
+4. Convert Figma auto-layout properties clearly:
+
+- Auto layout Horizontal → `Row`
+- Auto layout Vertical → `Column`
+- Gap / Spacing → `SizedBox(height: 16)` or `SizedBox(width: 8)`
+
+5. Convert typography to Flutter text styles using the Theme.
+
+Example:
+
+Figma font-size 20px, bold → `Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)`
+
+6. Keep widgets small and composable to prevent deep nested widget trees (the "Flutter pyramid of doom"). Extract distinct rows and columns into their own private classes or methods.

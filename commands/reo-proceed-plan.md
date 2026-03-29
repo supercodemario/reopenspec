@@ -33,7 +33,7 @@ STEP 2 — Load context
 
 Read:
 
-`plan.md` · `design.md` (if any) · `tasks.md` · `delta.md` · `meta.json`
+`plan.md` · `design.md` (if any) · `tasks.md` · `delta.md` · `change.yaml`
 
 Read project rules: `.cursor/rules/*`  
 Read baseline hints: `reopenspec/specs/.meta/arch-baseline.json`, relevant `reopenspec/specs/**/api-contracts.json`
@@ -64,7 +64,7 @@ Show summary; wait for **`approved`** before `git add`/`commit`.
 
 STEP 6 — After `approved`
 
-Commit change folder + code with a message referencing `change-domain-id` and work item id from `meta.json`.
+Commit change folder + code with a message referencing `change-domain-id` and work item id from `change.yaml`.
 
 ---
 

@@ -3,6 +3,7 @@ description: Figma-to-Vue implementation rules for design-to-code
 globs:
   - "**/*.vue"
   - "**/*.ts"
+alwaysApply: false
 ---
 
 When generating Vue components from Figma designs:

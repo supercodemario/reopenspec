@@ -3,6 +3,7 @@ description: Vue3 frontend architecture and coding standards
 globs:
   - "**/*.vue"
   - "**/*.ts"
+alwaysApply: false
 ---
 
 # Frontend Standards

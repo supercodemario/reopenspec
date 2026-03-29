@@ -1,0 +1,130 @@
+---
+description: Use when writing or reviewing tests — Python testing strategy and standards
+alwaysApply: false
+---
+
+# Testing Standards
+
+All features must include automated tests.
+
+---
+
+## Testing Layers
+
+Unit Tests
+Integration Tests
+End-to-End Tests (optional)
+
+---
+
+## Unit Testing
+
+Unit tests must cover:
+
+- Service logic
+- Validation rules
+- Model methods
+- Utility functions
+
+Use:
+
+pytest (preferred)
+unittest (standard library)
+
+---
+
+## Integration / API Testing
+
+Integration tests verify:
+
+- API endpoints (request → response)
+- Database operations
+- Authentication flows
+- Authorization checks
+
+Django:
+
+```python
+from django.test import TestCase
+class UserAPITest(TestCase):
+    def test_create_user(self):
+        response = self.client.post('/api/users/', data={...})
+        self.assertEqual(response.status_code, 201)
+```
+
+FastAPI:
+
+```python
+from httpx import AsyncClient
+async def test_create_user(client: AsyncClient):
+    response = await client.post("/users/", json={...})
+    assert response.status_code == 201
+```
+
+---
+
+## Test Fixtures
+
+Use fixtures for test data setup.
+
+pytest:
+
+```python
+@pytest.fixture
+def sample_user(db):
+    return User.objects.create(email="test@example.com", name="Test")
+```
+
+Django:
+
+```python
+def setUp(self):
+    self.user = User.objects.create_user(...)
+```
+
+---
+
+## Test Naming
+
+Test names must describe behavior.
+
+```python
+def test_deactivate_user_disables_login():
+    ...
+
+def test_create_user_with_duplicate_email_returns_400():
+    ...
+```
+
+---
+
+## Test Configuration
+
+Use separate test settings / configuration.
+
+- Use in-memory or test databases
+- Mock external services
+- Use `pytest-env` or test-specific `.env` files
+
+---
+
+## Test Philosophy
+
+Tests should verify:
+
+- Expected behavior
+- Edge cases
+- Failure scenarios
+
+Avoid fragile tests tied to implementation details.
+
+Prefer `pytest` parametrize for testing multiple inputs:
+
+```python
+@pytest.mark.parametrize("email,valid", [
+    ("user@example.com", True),
+    ("invalid", False),
+])
+def test_email_validation(email, valid):
+    ...
+```

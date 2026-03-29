@@ -1,6 +1,7 @@
 ---
 description: Backend architecture standards for .NET services
-globs: **/*.cs
+globs: "**/*.cs"
+alwaysApply: false
 ---
 
 # Backend Architecture Standards

@@ -173,12 +173,15 @@
     "init": {
       "aliases": [],
       "args": {},
-      "description": "Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup to opt out).",
+      "description": "Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, copy categorized rules (generic always + specific per stack), optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup / --skip-rules to opt out).",
       "examples": [
         "<%= config.bin %> init",
         "<%= config.bin %> init -c . --force",
         "<%= config.bin %> init --skip-workflow",
-        "<%= config.bin %> init --skip-mcp-setup"
+        "<%= config.bin %> init --skip-mcp-setup",
+        "<%= config.bin %> init --backend dotnet --frontend vue",
+        "<%= config.bin %> init --backend node --no-auto-detect",
+        "<%= config.bin %> init --skip-rules"
       ],
       "flags": {
         "cwd": {
@@ -212,6 +215,61 @@
           "description": "Do not prompt to merge MCP server entries into ~/.cursor/mcp.json (Cursor user config)",
           "name": "skipMcpSetup",
           "allowNo": false,
+          "type": "boolean"
+        },
+        "skipRules": {
+          "description": "Do not copy any rule files to the IDE rules directory",
+          "name": "skipRules",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "backend": {
+          "description": "Backend stack for specific rules (e.g. dotnet, node, php, python). Overrides auto-detection.",
+          "name": "backend",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "dotnet",
+            "node",
+            "php",
+            "python"
+          ],
+          "type": "option"
+        },
+        "frontend": {
+          "description": "Frontend stack for specific rules (e.g. vue, react, flutter). Overrides auto-detection.",
+          "name": "frontend",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "vue",
+            "react",
+            "flutter"
+          ],
+          "type": "option"
+        },
+        "database": {
+          "description": "Include database/SQL rules",
+          "name": "database",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "devops": {
+          "description": "Include CI/CD and deployment rules",
+          "name": "devops",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "figma": {
+          "description": "Include Figma design-to-code rules (requires --frontend)",
+          "name": "figma",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "autoDetect": {
+          "description": "Auto-detect stacks from manifests and copy matching rules (default: true)",
+          "name": "autoDetect",
+          "allowNo": true,
           "type": "boolean"
         }
       },

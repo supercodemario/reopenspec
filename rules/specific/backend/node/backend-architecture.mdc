@@ -1,0 +1,157 @@
+---
+description: Backend architecture standards for Node.js / TypeScript services
+globs: "**/*.{ts,js}"
+alwaysApply: false
+---
+
+# Backend Architecture Standards
+
+This project follows structured Node.js backend architecture principles.
+
+## Framework Conventions
+
+Use the project's established framework (Express, Fastify, NestJS, Koa, etc.).
+
+Follow the framework's conventions. If using NestJS, fully embrace its modules, controllers, and providers.
+If using Express/Fastify, maintain a strong separation of concerns.
+
+---
+
+## Project Structure
+
+Organize code by domain or feature (Feature-Driven / Vertical Slice) or Clean Architecture.
+
+### Express/Fastify Example
+
+```
+src/
+├── features/
+│   ├── users/
+│   │   ├── users.controller.ts
+│   │   ├── users.service.ts
+│   │   ├── users.repository.ts
+│   │   ├── users.schema.ts
+│   │   └── users.routes.ts
+│   └── orders/
+├── core/
+│   ├── middleware/
+│   ├── config/
+│   └── database/
+└── app.ts
+```
+
+### NestJS Example
+
+```
+src/
+├── users/
+│   ├── dto/
+│   ├── entities/
+│   ├── users.controller.ts
+│   ├── users.service.ts
+│   └── users.module.ts
+└── app.module.ts
+```
+
+---
+
+## Dependency Direction
+
+Controllers / Routers → Services → Repositories → Models / ORM
+
+Forbidden:
+
+- Models calling controllers
+- Controllers containing business logic
+- Repositories depending on the HTTP layer (req/res)
+
+---
+
+## Service Layer
+
+Business logic must live in service classes or functions.
+
+Rules:
+
+- Services should be framework-agnostic where practical
+- Services must not depend on HTTP `req` or `res` objects
+- Return data or throw domain-specific errors
+- Keep services focused on a single domain
+
+---
+
+## Type Safety
+
+Use TypeScript for all new code.
+
+Rules:
+
+- Avoid `any` — use `unknown` if types are truly dynamic, then narrow them.
+- Define interfaces or types for all function inputs and outputs.
+- Use strict compiler options (`strict: true`).
+
+```typescript
+export interface CreateUserDto {
+  email: string;
+  name: string;
+}
+
+export async function createUser(data: CreateUserDto): Promise<User> {
+  // ...
+}
+```
+
+---
+
+## API Conventions
+
+REST API endpoints must follow conventions:
+
+- Use resource naming (plural nouns)
+- Use proper HTTP methods
+- Return appropriate status codes
+- Standardize JSON response wrappers (e.g., `{ data: ... }` or `{ error: ... }`)
+
+---
+
+## Error Handling
+
+Centralize error handling using middleware.
+
+Rules:
+
+- Use custom error classes (e.g., `NotFoundError`, `ValidationError`).
+- Let errors bubble up to the global error handler middleware.
+- Never expose internal stack traces to the client in production.
+- Log the full error to a proper logging system on the backend.
+
+```typescript
+export class AppError extends Error {
+  constructor(public statusCode: number, message: string) {
+    super(message);
+    this.name = 'AppError';
+  }
+}
+```
+
+---
+
+## Database Access
+
+Use the project's ORM or query builder (Prisma, Drizzle, TypeORM, Kysely).
+
+Rules:
+
+- Avoid raw SQL strings when using an ORM, except for complex edge cases.
+- Use migrations for all schema changes.
+- Ensure database connections are managed properly (e.g., connection pooling).
+- Handle transactions appropriately for multi-step write operations.
+
+---
+
+## Asynchronous Programming
+
+- Always use `async`/`await` instead of raw `.then()`.
+- Avoid mixing callbacks and promises.
+- Be careful with `Promise.all` — use `Promise.allSettled` if partial failures are acceptable.
+- Do not block the event loop with synchronous heavy CPU tasks (use worker threads if needed).

@@ -1,0 +1,115 @@
+---
+description: React frontend architecture and coding standards
+globs: "**/*.{tsx,jsx,ts,js}"
+alwaysApply: false
+---
+
+# Frontend Standards
+
+Frontend uses:
+
+React
+TypeScript
+Vite / Next.js
+TailwindCSS
+
+---
+
+## Project Structure
+
+src/
+├── components/   # Reusable UI components
+├── features/     # Feature-based groupings (optional)
+├── hooks/        # Custom React hooks
+├── services/     # API calls and external services
+├── types/        # TypeScript interfaces and types
+├── utils/        # Helper functions
+└── App.tsx / pages/
+
+Rules:
+
+- Keep components small and focused.
+- Group by feature when the project grows large.
+- Separate logic (hooks) from presentation (components).
+
+---
+
+## React Component Standards
+
+All components must be functional components.
+Do not use class components.
+
+Example:
+
+```tsx
+import React from 'react';
+
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+}
+
+export const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
+  return (
+    <button onClick={onClick} className="px-4 py-2 bg-blue-500 rounded">
+      {label}
+    </button>
+  );
+};
+```
+
+Props should always be explicitly typed.
+
+---
+
+## Component Responsibilities
+
+Components should:
+
+- Focus on UI rendering
+- Avoid heavy business logic
+
+Extract complex state and side effects into **custom hooks**.
+
+---
+
+## API Integration
+
+API communication must be placed in `services/` or managed via data-fetching libraries like TanStack Query (React Query) or RTK Query.
+
+Components must not use raw `fetch` or `axios` directly inside `useEffect` unless it's a very simple one-off script.
+
+Example (TanStack Query):
+
+```tsx
+const { data, isLoading } = useQuery({ queryKey: ['users'], queryFn: fetchUsers });
+```
+
+---
+
+## Error Handling
+
+API errors must be handled gracefully.
+
+- Display user-friendly error messages (e.g., using toast notifications).
+- Use Error Boundaries to prevent the entire app from crashing on React render errors.
+
+---
+
+## State Management
+
+Prefer local state (`useState`, `useReducer`) for component-specific data.
+Prefer Context API for simple global state (e.g., theme, auth user).
+
+If complex global state is required, use Zustand, Redux Toolkit, or Jotai.
+
+---
+
+## Styling
+
+Use TailwindCSS.
+
+Avoid:
+
+- Inline styles (e.g., `style={{ color: 'red' }}`) unless dealing with dynamic values that cannot be compiled into classes.
+- Large custom CSS/SCSS files. Use Tailwind utility classes directly in the markup.

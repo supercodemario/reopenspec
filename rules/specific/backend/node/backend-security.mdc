@@ -1,0 +1,163 @@
+---
+description: Backend security rules for Node.js applications
+globs: "**/*.{ts,js}"
+alwaysApply: false
+---
+
+# Backend Security Standards
+
+These rules enforce secure Node.js coding practices.
+
+---
+
+# SQL and NoSQL Injection Protection
+
+Never concatenate raw strings into database queries.
+
+For SQL (using query builders or ORMs like Prisma/Drizzle/TypeORM):
+
+❌ Bad
+
+```typescript
+const users = await db.query(`SELECT * FROM users WHERE id = ${req.body.id}`);
+```
+
+✅ Good
+
+```typescript
+const users = await db.query('SELECT * FROM users WHERE id = $1', [req.body.id]);
+// or via ORM
+const user = await prisma.user.findUnique({ where: { id: req.body.id } });
+```
+
+For MongoDB / NoSQL, always sanitize inputs as objects can be passed to construct malicious queries (e.g., `{ "$gt": "" }`).
+
+---
+
+# Input Validation
+
+All external input must be validated at the boundary (Controllers/Routers).
+
+Use validation libraries:
+
+- Zod (preferred)
+- Joi
+- class-validator (for NestJS)
+
+```typescript
+const UserSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(255)
+});
+
+// Middleware or route logic parses and validates
+const data = UserSchema.parse(req.body);
+```
+
+Never trust raw `req.body` or `req.query`.
+
+---
+
+# Authentication
+
+Use established authentication strategies.
+
+Rules:
+
+- Never manually hash passwords using weak algorithms — use `bcrypt`, `argon2`, or Node's `scrypt`.
+- Use strong session management or JWTs.
+- For JWTs, never store sensitive data in the payload. Verify the signature strictly.
+
+```typescript
+import bcrypt from 'bcrypt';
+const hash = await bcrypt.hash(password, 12);
+```
+
+---
+
+# Authorization
+
+Always verify permissions before performing actions.
+
+- Check if the authenticated user owns the resource or has the necessary roles.
+- Do not use client-provided IDs without verifying server-side access rights.
+
+```typescript
+if (user.id !== resource.ownerId && user.role !== 'admin') {
+  throw new ForbiddenError('Access denied');
+}
+```
+
+---
+
+# XSS Prevention
+
+APIs should not return HTML, but if rendering templates or returning text, ensure downstream XSS safety.
+
+- Set proper `Content-Type` headers (e.g., `application/json`).
+- If storing rich text, sanitize it (e.g., using `DOMPurify` if applicable) before saving or on output.
+
+---
+
+# CSRF Protection
+
+If using cookie-based session authentication for web clients, implement CSRF protection.
+
+Tokens are generally not required for stateless API interactions using `Authorization: Bearer <token>` schemas.
+
+---
+
+# Sensitive Data
+
+Never expose sensitive data in API responses.
+
+Exclude:
+
+- Password hashes
+- Secret keys
+- Infrastructure IPs/Ports
+- Detailed error messages / stack traces
+
+Use DTOs, Zod transformers, or class-transformer to strip fields.
+
+---
+
+# Secret Management
+
+Secrets must never be hardcoded.
+
+Use environment variables (`process.env`).
+
+Verify required environment variables at application startup, failing fast if missing (e.g., using Zod to parse `process.env`).
+
+Never commit `.env` or configuration files containing real secrets to source control.
+
+---
+
+# Logging Security
+
+Never log:
+
+- Passwords
+- Plaintext authentication tokens
+- Full Credit Card details
+- Personally Identifiable Information (PII) if subject to strict privacy rules
+
+Ensure loggers (e.g., Pino, Winston) have redact configurations for sensitive fields.
+
+---
+
+# Dependency Security
+
+Node.js has a massive ecosystem with frequent vulnerabilities.
+
+- Run `npm audit` or use dependabot/renovate.
+- Do not add random, low-usage packages for trivial utilities that can be written in a few lines of code.
+
+---
+
+# Headers and Configuration
+
+Use `helmet` (or equivalent middleware) in Express/Fastify apps to set secure HTTP headers (e.g., HSTS, no-sniff, x-frame-options).
+
+Restrict CORS settings to known origins in production. Do not use `*` unless building a completely public open API.

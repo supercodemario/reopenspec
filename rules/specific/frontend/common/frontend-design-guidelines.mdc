@@ -1,11 +1,5 @@
 ---
-description: UI/UX and design implementation guidelines used by Cursor during planning and implementation
-globs:
-  - "**/*.vue"
-  - "**/*.tsx"
-  - "**/*.ts"
-  - "**/*.cshtml"
-  - "**/*.razor"
+description: Use when planning or implementing UI components — covers design system, accessibility, responsive layout
 alwaysApply: false
 ---
 

@@ -1,0 +1,173 @@
+---
+description: Use when implementing new features — defines backend and frontend feature structure
+alwaysApply: false
+---
+
+# Feature Implementation Template
+
+Every new feature must follow a **consistent structure** across backend and frontend.
+
+Features should be organized by **domain / business capability**, not by technical layer.
+
+---
+
+# Backend Feature Structure
+
+Backend features must be placed inside the architecture layer appropriate for the project (e.g., handlers, services, controllers).
+
+Required artifacts per feature:
+
+- Request / command / input model
+- Handler / service / controller logic
+- Validation rules
+- Response / output model (DTO)
+
+Optional:
+
+- Mapping configuration
+- Tests
+
+---
+
+# Backend Feature Responsibilities
+
+## Request / Input Model
+
+Represents the request to perform a business action.
+
+Rules:
+
+- Must contain only request data
+- Must be immutable where possible
+
+---
+
+## Handler / Service
+
+Contains the business logic for the request.
+
+Rules:
+
+- Must be small and focused
+- Must call domain logic where possible
+- Must not contain validation logic (validation runs before handler)
+
+---
+
+## Validator
+
+Responsible for validating the input.
+
+Rules:
+
+- Must validate all external inputs
+- Must run before handler / service execution
+
+---
+
+## Response / DTO
+
+Used to return data from handlers.
+
+Rules:
+
+- Must not expose domain entities directly
+- Should be immutable
+
+---
+
+# API Layer Integration
+
+For each feature, an API endpoint must exist.
+
+Controller / route handler rules:
+
+- Must be thin (delegate to business logic)
+- Must not contain business logic
+- Must return DTO responses
+
+---
+
+# Database Changes
+
+If the feature requires schema updates:
+
+- Create a migration
+- Update ORM models / entities
+- Avoid raw SQL when possible
+
+Migration names should reflect the feature.
+
+---
+
+# Frontend Feature Structure (if applicable)
+
+Frontend features should follow the project's component structure:
+
+- Views / pages for full screens
+- Components for reusable UI pieces
+- Services / API modules for backend communication
+- State management hooks / composables / stores for shared logic
+
+---
+
+# Frontend Implementation Rules
+
+## Views
+
+Views represent pages.
+
+Rules:
+
+- Must compose components
+- Must contain minimal logic
+
+---
+
+## Components
+
+Components should focus on presentation.
+
+Rules:
+
+- Must receive typed props
+- Must be reusable where practical
+
+---
+
+## API Integration
+
+API communication must be handled inside **services** or **API modules**.
+
+Components must not call APIs directly.
+
+---
+
+# Testing Requirements
+
+Each feature should include tests.
+
+Backend:
+- Unit tests for business logic handlers
+
+Frontend:
+- Component tests or E2E coverage
+
+---
+
+# Feature Documentation
+
+Each implemented feature should update:
+
+`reopenspec/changes/active/<change-domain-id>/implementation.md`
+
+or legacy:
+
+`reopenspec/specs/<feature-id>/implementation.md`
+
+Include:
+
+- summary of changes
+- affected services / modules
+- database migrations
+- testing notes

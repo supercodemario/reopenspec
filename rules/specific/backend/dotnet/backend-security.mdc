@@ -3,6 +3,7 @@ description: Backend security rules and safe coding standards
 globs:
   - "Services/**/*.cs"
   - "Utilities/**/*.cs"
+alwaysApply: false
 ---
 
 # Backend Security Standards

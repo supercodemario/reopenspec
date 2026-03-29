@@ -1,0 +1,119 @@
+---
+description: Flutter frontend architecture and coding standards
+globs: "**/*.dart"
+alwaysApply: false
+---
+
+# Frontend Standards
+
+Frontend uses:
+
+Flutter
+Dart
+
+---
+
+## Project Structure
+
+lib/
+├── core/
+│   ├── constants/
+│   ├── theme/
+│   ├── utils/
+│   └── error/
+├── features/
+│   ├── auth/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   └── home/
+├── main.dart
+└── app.dart
+
+Rules:
+
+- Employ Feature-Driven project structure or Clean Architecture where reasonable.
+- Separate UI (presentation), business logic (domain), and API calls (data).
+
+---
+
+## Flutter Component Standards
+
+All components must be structured as `StatelessWidget` or `StatefulWidget` depending on the state requirements.
+
+Example:
+
+```dart
+import 'package:flutter/material.dart';
+
+class CustomButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const CustomButton({
+    Key? key,
+    required this.label,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(label),
+    );
+  }
+}
+```
+
+Use `const` constructors wherever possible to improve Flutter rebuild performance.
+
+---
+
+## State Management
+
+Prefer standard cross-platform state management patterns:
+
+- Provider
+- Riverpod (Preferred)
+- BLoC / Cubit
+
+Do not use mutable global variables.
+Use `StatefulWidget` only for local ephemeral UI state (e.g., animations, form field focus).
+
+---
+
+## API Integration
+
+API communication must be placed in data source repositories or API clients (`lib/features/feature_name/data/`).
+
+Avoid doing HTTP calls directly inside UI widgets.
+
+Dependencies like `http` or `dio` are recommended for networking logic.
+
+Example (Riverpod + Dio):
+
+```dart
+final userProvider = FutureProvider<User>((ref) async {
+  final repository = ref.read(userRepositoryProvider);
+  return repository.fetchUser();
+});
+```
+
+---
+
+## Error Handling
+
+Handle exceptions properly in the data layer and return failures or `Either` patterns (e.g., using the `fpdart` or `dartz` packages) back to the presentation layer.
+
+Use Snackbars, Dialogs, or inline UI components to display business logic failures to the user.
+
+---
+
+## Styling
+
+Centralize styling in `lib/core/theme/`.
+
+- Use `ThemeData` to define primary colors, fonts, and common button styles.
+- Avoid hardcoding spacing, colors, and font sizes directly into widgets.
+- Leverage `Theme.of(context)` for styling text and components.

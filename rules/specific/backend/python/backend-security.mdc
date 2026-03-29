@@ -1,0 +1,192 @@
+---
+description: Backend security rules for Python applications
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# Backend Security Standards
+
+These rules enforce secure Python coding practices.
+
+---
+
+# SQL Injection Protection
+
+Never concatenate SQL strings.
+
+❌ Bad
+
+```python
+cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
+```
+
+✅ Good
+
+```python
+cursor.execute("SELECT * FROM users WHERE id = %s", [user_id])
+# or use ORM
+User.objects.get(id=user_id)
+```
+
+---
+
+# Input Validation
+
+All external input must be validated.
+
+Use:
+
+- Pydantic models (FastAPI)
+- Django Forms / Serializers
+- Marshmallow schemas
+
+```python
+class CreateUserRequest(BaseModel):
+    email: EmailStr
+    name: str = Field(min_length=1, max_length=255)
+```
+
+Never trust raw input data.
+
+---
+
+# Authentication
+
+Use the framework's authentication system.
+
+Rules:
+
+- Never manually hash passwords — use `bcrypt`, `argon2`, or framework defaults
+- Use middleware / dependencies for route protection
+- Never store plaintext passwords
+
+Django:
+
+```python
+from django.contrib.auth.hashers import make_password, check_password
+```
+
+FastAPI:
+
+```python
+from passlib.context import CryptContext
+pwd_context = CryptContext(schemes=["bcrypt"])
+```
+
+---
+
+# Authorization
+
+Always verify permissions before performing actions.
+
+Django:
+
+```python
+@permission_required('app.change_user')
+def update_user(request, pk):
+    ...
+```
+
+FastAPI:
+
+```python
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    ...
+```
+
+Never trust client-provided IDs without ownership validation.
+
+---
+
+# XSS Prevention
+
+Django templates auto-escape by default.
+
+Never use `|safe` or `mark_safe()` with user input.
+
+For APIs, use proper serialization — never return raw HTML from user input.
+
+---
+
+# CSRF Protection
+
+Django has CSRF middleware enabled by default.
+
+For API-only projects using token auth, CSRF can be exempt — but document the decision.
+
+Never disable CSRF globally without a security reason.
+
+---
+
+# Sensitive Data
+
+Never expose in responses:
+
+- Password hashes
+- Secret keys
+- Database credentials
+- Internal error details
+- Debug information
+
+Use serializers / response schemas to control output.
+
+---
+
+# Secret Management
+
+Secrets must never be hardcoded.
+
+Use environment variables:
+
+```python
+import os
+SECRET_KEY = os.environ["SECRET_KEY"]
+```
+
+Or use `pydantic-settings`:
+
+```python
+class Settings(BaseSettings):
+    secret_key: str
+    database_url: str
+```
+
+Never commit `.env` to source control.
+
+---
+
+# Logging Security
+
+Never log:
+
+- Passwords
+- Tokens
+- API keys
+- Personal data (unless required and compliant)
+
+Use structured logging:
+
+```python
+logger.info("User updated profile", extra={"user_id": user.id})
+```
+
+---
+
+# Dependency Security
+
+Use `pip-audit` or `safety` to check for vulnerable packages.
+
+Pin dependencies in `requirements.txt` or `pyproject.toml`.
+
+Avoid unknown or unmaintained packages.
+
+---
+
+# File Upload Security
+
+When handling file uploads:
+
+- Validate file type and size
+- Never trust the original filename
+- Generate server-side filenames
+- Scan for malicious content if applicable

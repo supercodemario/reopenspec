@@ -1,6 +1,7 @@
 ---
 description: Backend clean code and implementation practices
-globs: **/*.cs
+globs: "**/*.cs"
+alwaysApply: false
 ---
 
 # Backend Code Quality Rules

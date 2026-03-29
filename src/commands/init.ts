@@ -13,16 +13,22 @@ import {
   copyReopenSpecModelDocIfMissing,
   copyWorkflowCommandsToProject,
 } from '../lib/workflow-copy.js'
+import { detectStackProfile } from '../lib/detect-profile.js'
+import { copyRulesToProject, ideRulesDir, readIdePreference } from '../lib/rules-copy.js'
+import type { BackendStack, FrontendStack } from '../lib/detect-profile.js'
 
 export default class Init extends Command {
   static override id = 'init'
   static override description =
-    'Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup to opt out).'
+    'Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, copy categorized rules (generic always + specific per stack), optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup / --skip-rules to opt out).'
   static override examples = [
     '<%= config.bin %> init',
     '<%= config.bin %> init -c . --force',
     '<%= config.bin %> init --skip-workflow',
     '<%= config.bin %> init --skip-mcp-setup',
+    '<%= config.bin %> init --backend dotnet --frontend vue',
+    '<%= config.bin %> init --backend node --no-auto-detect',
+    '<%= config.bin %> init --skip-rules',
   ]
 
   static override flags = {
@@ -48,6 +54,35 @@ export default class Init extends Command {
       description:
         'Do not prompt to merge MCP server entries into ~/.cursor/mcp.json (Cursor user config)',
       default: false,
+    }),
+    skipRules: Flags.boolean({
+      description: 'Do not copy any rule files to the IDE rules directory',
+      default: false,
+    }),
+    backend: Flags.string({
+      description: 'Backend stack for specific rules (e.g. dotnet, node, php, python). Overrides auto-detection.',
+      options: ['dotnet', 'node', 'php', 'python'],
+    }),
+    frontend: Flags.string({
+      description: 'Frontend stack for specific rules (e.g. vue, react, flutter). Overrides auto-detection.',
+      options: ['vue', 'react', 'flutter'],
+    }),
+    database: Flags.boolean({
+      description: 'Include database/SQL rules',
+      default: false,
+    }),
+    devops: Flags.boolean({
+      description: 'Include CI/CD and deployment rules',
+      default: false,
+    }),
+    figma: Flags.boolean({
+      description: 'Include Figma design-to-code rules (requires --frontend)',
+      default: false,
+    }),
+    autoDetect: Flags.boolean({
+      description: 'Auto-detect stacks from manifests and copy matching rules (default: true)',
+      default: true,
+      allowNo: true,
     }),
   }
 
@@ -129,6 +164,57 @@ export default class Init extends Command {
         this.warn(
           e instanceof Error ? e.message : String(e),
         )
+      }
+    }
+
+    // --- Categorized rules copy ---
+    if (!flags.skipRules) {
+      try {
+        const detected = flags.autoDetect
+          ? detectStackProfile(cwd)
+          : {
+              language: { primary: 'unknown' as const, manifests: [] },
+              backend: null,
+              frontend: null,
+              hasDatabase: false,
+              hasDevops: false,
+              hasFigma: false,
+            }
+
+        const ide = readIdePreference(cwd)
+        const rulesDir = ideRulesDir(ide)
+
+        const result = copyRulesToProject({
+          workspaceRoot: cwd,
+          backend: (flags.backend as BackendStack) ?? null,
+          frontend: (flags.frontend as FrontendStack) ?? null,
+          database: flags.database,
+          devops: flags.devops,
+          figma: flags.figma,
+          detected,
+          ideRulesDir: rulesDir,
+        })
+
+        if (result.copied.length > 0) {
+          this.log(`Rules copied (${ide}, ${rulesDir}):`)
+          for (const r of result.copied) {
+            this.log(`  ${r}`)
+          }
+          if (result.effectiveBackend) {
+            this.log(`  Backend stack: ${result.effectiveBackend}`)
+          }
+          if (result.effectiveFrontend) {
+            this.log(`  Frontend stack: ${result.effectiveFrontend}`)
+          }
+        }
+        if (result.skipped.length > 0) {
+          this.log('Rules skipped:')
+          for (const s of result.skipped) {
+            this.log(`  ${s.category}: ${s.reason}`)
+          }
+        }
+      } catch (e) {
+        this.warn(`Rules copy: ${e instanceof Error ? e.message : String(e)}`)
       }
     }
 

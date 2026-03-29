@@ -1,7 +1,6 @@
 ---
 description: Guardrails to prevent hallucinations and enforce repository conventions during AI code generation
-globs:
-  - "**/*"
+alwaysApply: true
 ---
 
 # AI Generation Guardrails
@@ -25,9 +24,7 @@ These guardrails apply to:
 
 # Follow Repository Context
 
-AI must always follow the architecture defined in:
-
-.cursor/rules/overall-repo-context.mdc
+AI must always follow the architecture defined in the project's IDE rules.
 
 Never introduce alternative architectures unless explicitly requested.
 
@@ -37,39 +34,19 @@ Examples of forbidden changes:
 - introducing new architectural layers
 - replacing existing frameworks
 
-Example:
-
-❌ Do NOT replace CQRS with traditional service architecture.
-
-❌ Do NOT introduce MVC patterns if the repository uses Vertical Slice Architecture.
-
 ---
 
 # Do Not Invent Frameworks or Libraries
 
 AI must only use technologies already defined in the repository.
 
-Allowed examples:
+AI must check the project's `package.json`, `.csproj`, `pubspec.yaml`, `go.mod`, `Cargo.toml`, `pyproject.toml`, or equivalent manifest files before introducing any dependency.
 
-Backend
-- .NET
-- EF Core
-- MediatR
+Forbidden:
 
-Frontend
-- Vue 3
-- TailwindCSS
-
-Testing
-- xUnit
-- Playwright
-
-Forbidden examples:
-
-❌ introducing NestJS  
-❌ introducing Spring Boot  
-❌ introducing Redux if not already used  
-❌ introducing Prisma if EF Core is used  
+❌ introducing frameworks not already in the project
+❌ replacing an existing library with an alternative (e.g. swapping ORMs, test runners, UI frameworks)
+❌ adding state management libraries if one already exists
 
 If unsure, AI must ask for clarification.
 
@@ -83,14 +60,6 @@ Before generating new code, AI must:
 2. Reuse existing patterns.
 3. Follow naming conventions already used.
 
-Example:
-
-If existing handlers use:
-
-CreateUserCommandHandler
-
-AI must follow the same pattern.
-
 Never introduce inconsistent naming.
 
 ---
@@ -102,21 +71,11 @@ AI must avoid overengineering.
 Forbidden patterns:
 
 - unnecessary service layers
-- unnecessary interfaces
-- generic repositories when EF Core is used
+- unnecessary interfaces without consumers
+- generic repositories when a specific ORM is used
 - deep inheritance hierarchies
 
 Prefer simple, explicit implementations.
-
-Example:
-
-Prefer:
-
-Command → Handler → Repository
-
-Avoid:
-
-Command → Service → Manager → Repository
 
 ---
 
@@ -127,7 +86,7 @@ AI must prefer **modifying existing code** rather than creating large new struct
 Rules:
 
 - extend existing modules
-- reuse existing DTOs
+- reuse existing DTOs / types / models
 - reuse existing utilities
 
 Avoid duplicating code.
@@ -136,7 +95,7 @@ Avoid duplicating code.
 
 # Follow the Spec-Driven Workflow
 
-AI must strictly follow the SDLC workflow commands.
+AI must strictly follow the ReOpenSpec SDLC workflow commands.
 
 The development lifecycle is:
 
@@ -156,9 +115,13 @@ AI must not skip steps in the workflow.
 
 All feature work must stay within the feature scope.
 
-Feature structure:
+Feature changes are tracked in:
 
-reopenspec/specs/<feature-id>/
+`reopenspec/changes/active/<change-domain-id>/`
+
+or legacy:
+
+`reopenspec/specs/<feature-id>/`
 
 AI must not modify unrelated modules unless required.
 
@@ -194,9 +157,9 @@ Before generating queries:
 
 AI must check:
 
-- existing entities
-- EF Core models
-- migrations
+- existing entities / models
+- ORM models and migrations
+- existing schema definitions
 
 If uncertain:
 
@@ -210,9 +173,9 @@ AI must not invent business rules.
 
 Examples of forbidden assumptions:
 
-❌ assuming discount calculations  
-❌ assuming pricing formulas  
-❌ assuming approval workflows  
+❌ assuming discount calculations
+❌ assuming pricing formulas
+❌ assuming approval workflows
 
 Only implement logic defined in:
 
@@ -262,9 +225,7 @@ AI must clearly highlight it.
 
 # Follow Security Rules
 
-AI must always follow security rules defined in:
-
-.cursor/rules/backend-security.mdc
+AI must always follow security rules defined in the project's IDE rules (if present).
 
 Including:
 
@@ -276,32 +237,11 @@ Including:
 
 ---
 
-# Follow Database Rules
-
-AI must follow SQL standards defined in:
-
-.cursor/rules/database-sql-standards.mdc
-
-Including:
-
-- no SELECT *
-- parameterized queries
-- proper indexing
-
----
-
 # Testing Requirements
 
 AI must generate tests when implementing logic.
 
-Minimum requirements:
-
-- unit tests for handlers
-- integration tests for APIs
-
-Tests must follow:
-
-.cursor/rules/testing-standards.mdc
+Tests must follow the project's existing testing framework and conventions.
 
 ---
 
@@ -311,14 +251,11 @@ AI must keep documentation concise.
 
 Feature documentation must be stored under:
 
-reopenspec/specs/<feature-id>/
+`reopenspec/changes/active/<change-domain-id>/`
 
-Example files:
+or legacy:
 
-overview.md  
-plan.md  
-tasks.md  
-implementation.md
+`reopenspec/specs/<feature-id>/`
 
 ---
 
@@ -328,15 +265,11 @@ If requirements are unclear:
 
 AI must ask for clarification rather than guessing.
 
-Example response:
-
-"Additional information is required to implement this feature."
-
 AI must never fabricate missing details.
 
 ---
 
-# Cursor Behavior
+# AI Behavior Summary
 
 When generating code AI must:
 

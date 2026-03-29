@@ -1,5 +1,6 @@
 ---
-description: Guidelines for generating implementation plans
+description: Use when generating implementation plans for features or changes
+alwaysApply: false
 ---
 
 # Implementation Planning Guidelines
@@ -17,8 +18,8 @@ Plans must align with the project's architecture rules.
 Implementation plans must:
 
 - Translate feature requirements into technical tasks
-- Respect Clean Architecture boundaries
-- Follow CQRS patterns
+- Respect the project's architecture boundaries
+- Follow existing patterns and conventions
 - Minimize risk before implementation begins
 
 A plan should allow a developer to implement the feature **without guessing missing steps**.
@@ -29,9 +30,9 @@ A plan should allow a developer to implement the feature **without guessing miss
 
 When generating plans, use the following sources:
 
-1. Feature specification (`reopenspec/specs/<feature-id>/overview.md`)
+1. Change folder (`reopenspec/changes/active/<id>/plan.md`, `delta.md`, etc.) or feature specification (`reopenspec/specs/<feature-id>/overview.md`)
 2. Existing codebase structure
-3. Architecture rules defined in `.cursor/rules`
+3. Architecture rules defined in IDE rules
 4. Feature templates and conventions
 
 ---
@@ -50,21 +51,11 @@ Short explanation of the feature and its purpose.
 
 Identify required backend changes:
 
-- Domain model updates
-- New commands
-- New queries
-- New handlers
+- Domain / model updates
+- New commands / handlers / controllers / routes
 - Validation rules
 - API endpoints
 - Database schema changes
-
-Example tasks:
-
-1. Update User entity with `IsActive` flag
-2. Create `DeactivateUserCommand`
-3. Create `DeactivateUserHandler`
-4. Add FluentValidation validator
-5. Add API endpoint
 
 ---
 
@@ -78,27 +69,17 @@ If required:
 
 Migration names must reflect the feature.
 
-Example:
-
-AddUserIsActiveFlag
-
 ---
 
 ## Frontend Changes
 
-Identify frontend work:
+If applicable, identify frontend work:
 
-- New views/pages
-- New Vue components
-- New composables
+- New views / pages
+- New components
+- New state management / hooks / composables
 - API service updates
 - Routing changes
-
-Example tasks:
-
-1. Add Deactivate button to user admin page
-2. Create `useDeactivateUser` composable
-3. Update `userService`
 
 ---
 
@@ -107,12 +88,10 @@ Example tasks:
 Identify tests required.
 
 Backend:
-
-- Unit tests for handlers
+- Unit tests for business logic
 - Integration tests for API endpoints
 
 Frontend:
-
 - Component tests
 - End-to-end tests
 
@@ -124,9 +103,9 @@ Tasks must be ordered logically.
 
 Recommended order:
 
-1. Domain changes
+1. Domain / model changes
 2. Database migration
-3. Application commands/queries
+3. Backend logic (services, handlers, etc.)
 4. API endpoints
 5. Frontend updates
 6. Testing
@@ -148,7 +127,7 @@ Bad example:
 
 Good example:
 
-"Create DeactivateUserCommand and handler"
+"Create DeactivateUser handler and validation"
 
 ---
 
@@ -158,7 +137,7 @@ Plans should identify possible risks:
 
 - breaking schema changes
 - dependency updates
-- cross-service impacts
+- cross-service / cross-module impacts
 
 When risks exist, highlight them.
 

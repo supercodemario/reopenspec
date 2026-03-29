@@ -1,5 +1,6 @@
 ---
-description: Testing strategy and standards
+description: Use when writing or reviewing tests — defines testing strategy, frameworks, and standards
+alwaysApply: false
 ---
 
 # Testing Standards

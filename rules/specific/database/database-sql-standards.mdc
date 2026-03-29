@@ -5,6 +5,7 @@ globs:
   - "**/*.psql"
   - "**/*.pgsql"
   - "**/*.migration.sql"
+alwaysApply: false
 ---
 
 # SQL Standards

@@ -1,5 +1,6 @@
 ---
-description: CI/CD pipeline standards
+description: Use when configuring CI/CD pipelines or deployment — defines pipeline and branching standards
+alwaysApply: false
 ---
 
 # CI/CD Standards

@@ -1,0 +1,147 @@
+---
+description: Backend architecture standards for PHP services
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# Backend Architecture Standards
+
+This project follows structured PHP architecture principles.
+
+## Framework Conventions
+
+Use the project's established framework (Laravel, Symfony, or similar).
+
+Follow the framework's conventions for:
+
+- Routing
+- Middleware
+- Dependency injection
+- Service container
+
+Do not mix framework conventions — stick to one framework per project.
+
+---
+
+## Project Structure
+
+Organize code by domain or feature:
+
+app/
+├── Http/
+│   ├── Controllers/
+│   ├── Middleware/
+│   └── Requests/
+├── Models/
+├── Services/
+├── Repositories/
+├── Events/
+└── Exceptions/
+
+Controllers must remain thin — delegate business logic to services.
+
+---
+
+## Dependency Direction
+
+Controllers → Services → Repositories → Models
+
+Forbidden:
+
+- Models calling controllers
+- Controllers containing business logic
+- Repositories depending on controllers
+
+---
+
+## Service Layer
+
+Business logic must live in service classes.
+
+Rules:
+
+- One service per domain concern
+- Services should be injectable via the container
+- Services must not depend on HTTP request/response objects
+- Use DTOs to pass data between layers
+
+---
+
+## Repository Pattern
+
+When using repositories:
+
+- Repositories handle data access only
+- Use Eloquent models inside repositories
+- Controllers must not query models directly
+- Return collections or models, not query builders
+
+---
+
+## Request Validation
+
+All input must be validated.
+
+Use Form Request classes (Laravel) or validation services.
+
+Example (Laravel):
+
+```php
+class CreateUserRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'email' => 'required|email|unique:users',
+            'name' => 'required|string|max:255',
+        ];
+    }
+}
+```
+
+Never trust raw input data.
+
+---
+
+## Error Handling
+
+Use exception handlers for centralized error management.
+
+Rules:
+
+- Return consistent error response format
+- Never expose stack traces in production
+- Log errors with context
+- Use custom exception classes for domain errors
+
+---
+
+## API Conventions
+
+REST API endpoints must follow conventions:
+
+- Use resource naming (plural nouns)
+- Use proper HTTP methods (GET, POST, PUT, DELETE)
+- Return appropriate status codes
+- Use API resources / transformers for responses
+
+Example:
+
+GET    /api/users
+POST   /api/users
+GET    /api/users/{id}
+PUT    /api/users/{id}
+DELETE /api/users/{id}
+
+---
+
+## Database Access
+
+Use the ORM (Eloquent, Doctrine) for database access.
+
+Rules:
+
+- Use migrations for schema changes
+- Avoid raw SQL when possible
+- Use eager loading to prevent N+1 queries
+- Use database transactions for multi-table operations

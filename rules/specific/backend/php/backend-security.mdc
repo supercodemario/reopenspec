@@ -1,0 +1,167 @@
+---
+description: Backend security rules for PHP applications
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# Backend Security Standards
+
+These rules enforce secure PHP coding practices.
+
+---
+
+# SQL Injection Protection
+
+Never concatenate SQL strings.
+
+❌ Bad
+
+```php
+$query = "SELECT * FROM users WHERE id = " . $id;
+```
+
+✅ Good
+
+Use parameterized queries or the ORM.
+
+```php
+User::where('id', $id)->first();
+// or
+DB::select('SELECT * FROM users WHERE id = ?', [$id]);
+```
+
+---
+
+# XSS Prevention
+
+Always escape output in views.
+
+Use framework helpers:
+
+```php
+{{ $variable }}  // Blade auto-escapes
+{!! $variable !!}  // Raw — use only when intentional
+```
+
+Never render raw user input without sanitization.
+
+---
+
+# CSRF Protection
+
+All state-changing requests must include CSRF tokens.
+
+Framework middleware should enforce this automatically.
+
+Never disable CSRF protection globally.
+
+---
+
+# Authentication
+
+Use the framework's authentication system.
+
+Rules:
+
+- Never manually hash or verify passwords
+- Use `Hash::make()` and `Hash::check()` (Laravel)
+- Never store plaintext passwords
+- Use middleware for route protection
+
+---
+
+# Authorization
+
+Always verify permissions before performing actions.
+
+Use policies or gates for authorization checks.
+
+```php
+$this->authorize('update', $post);
+```
+
+Never trust client-provided IDs without ownership validation.
+
+---
+
+# Input Validation
+
+All external input must be validated.
+
+Includes:
+
+- Request body
+- Query parameters
+- Route parameters
+- File uploads
+- External API responses
+
+---
+
+# Sensitive Data
+
+Never expose sensitive data in responses:
+
+- Password hashes
+- API keys
+- Tokens
+- Internal IDs
+- Debug information
+
+Use API resources / transformers for response shaping.
+
+---
+
+# File Upload Security
+
+When handling file uploads:
+
+- Validate file type and size
+- Never trust the original filename
+- Generate server-side filenames
+- Store uploads outside the public directory when possible
+
+---
+
+# Secret Management
+
+Secrets must never be hardcoded.
+
+Use environment variables via `.env` files.
+
+Never commit `.env` to source control.
+
+---
+
+# Logging Security
+
+Never log:
+
+- Passwords
+- Tokens
+- API keys
+- Full credit card numbers
+
+Use structured logging with context:
+
+```php
+Log::info('User updated profile', ['user_id' => $user->id]);
+```
+
+---
+
+# Rate Limiting
+
+Public-facing endpoints should use rate limiting.
+
+Use framework middleware for throttling.
+
+---
+
+# CORS
+
+CORS must be restrictive.
+
+Never allow `*` as origin in production.
+
+Configure trusted domains explicitly.

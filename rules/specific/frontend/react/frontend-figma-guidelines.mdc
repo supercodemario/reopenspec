@@ -1,0 +1,49 @@
+---
+description: Figma-to-React implementation rules for design-to-code
+globs: "**/*.{tsx,jsx}"
+alwaysApply: false
+---
+
+When generating React components from Figma designs:
+
+Follow these rules.
+
+1. Use functional React components with TypeScript interfaces.
+
+2. Use TailwindCSS for styling.
+
+3. Map Figma components to React components.
+
+Example:
+
+Figma Component → React File
+
+ProfileHeader → ProfileHeader.tsx
+
+4. Use semantic layout elements.
+
+Example:
+
+```tsx
+<div className="max-w-4xl mx-auto p-6">
+```
+
+5. Extract reusable components. Do not build monolithic components.
+
+6. Convert Figma auto-layout into flex/grid.
+
+7. Convert spacing to Tailwind classes.
+
+Example:
+
+Figma spacing: 16px → `gap-4` or `p-4`
+
+8. Convert typography to Tailwind classes.
+
+Example:
+
+Figma font-size 20px → `text-lg` or `text-xl`
+
+9. Do not use inline styles.
+
+10. Avoid hardcoded hex colors if the project has a Tailwind config theme. Use the closest Tailwind variable.

@@ -1,0 +1,109 @@
+---
+description: Use when writing or reviewing tests — Node.js testing strategy and standards
+alwaysApply: false
+---
+
+# Testing Standards
+
+All features must include automated tests.
+
+---
+
+## Testing Layers
+
+1. Unit Tests
+2. Integration / API Tests
+3. End-to-End Tests (optional/handled externally)
+
+---
+
+## Unit Testing
+
+Unit tests must cover:
+
+- Service business logic
+- Validation schemas/rules
+- Complex utility functions
+
+Use:
+
+- Jest
+- Vitest (preferred for modern/Vite-aligned projects)
+- Node's native `node:test` runner (if project standards prefer zero-dependency)
+
+Keep unit tests fast and mock I/O boundaries (database, external APIs) or use lightweight stubs.
+
+---
+
+## Integration / API Testing
+
+Integration tests verify:
+
+- API endpoint request/response contracts
+- Database operations
+- Middleware (auth, validation) execution
+
+Use:
+
+- Supertest (with Jest/Vitest)
+- Test databases (e.g., isolated Postgres databases or in-memory SQLite if compatible, though mirroring production DB is preferred).
+- Use Docker / testcontainers for isolated DB testing if applicable.
+
+Example (Supertest + Vitest):
+
+```typescript
+import request from 'supertest';
+import { app } from '../src/app';
+import { describe, it, expect } from 'vitest';
+
+describe('POST /api/users', () => {
+  it('should create a user and return 201', async () => {
+    const res = await request(app)
+      .post('/api/users')
+      .send({ email: 'test@example.com', name: 'Test' });
+
+    expect(res.status).toBe(201);
+    expect(res.body.data.email).toBe('test@example.com');
+  });
+});
+```
+
+---
+
+## Test Naming
+
+Test names must describe the expected behavior clearly.
+
+Format options (pick one matching the project):
+
+- `should [behavior] when [condition]`
+- `[method/function_name] - [expected_outcome]`
+
+```typescript
+it('should throw an error when email is invalid', () => {
+  // ...
+});
+```
+
+---
+
+## Test Configuration and Environment
+
+- Use separate environment variables for testing (e.g., `NODE_ENV=test`, separate DB URL).
+- Setup and teardown databases cleanly between test runs or suites (e.g., using `beforeAll` / `afterAll` / `beforeEach`).
+- Use mocking libraries (like `jest.mock` or `vi.mock`) sparingly — prefer dependency injection for better testability.
+
+---
+
+## Test Philosophy
+
+Tests should verify:
+
+- The happy path (expected behavior)
+- Edge cases and boundaries
+- Failure scenarios and correct error codes
+
+Avoid fragile tests:
+
+- Don't test implementation details, test outputs and state changes.
+- Don't hardcode dynamic values like UUIDs or timestamps; mock time or use regex assertions.

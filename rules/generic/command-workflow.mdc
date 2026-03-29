@@ -1,24 +1,23 @@
 ---
 description: Defines the AI-assisted development workflow and command lifecycle
+alwaysApply: true
 ---
 
 # AI Development Workflow
 
 This project uses a **command-driven, spec-based development workflow**.
 
-Features are implemented through a sequence of commands executed in Cursor.
+Features are implemented through a sequence of commands executed in the IDE.
 
 ---
 
 # Command Sequence
 
-The standard **traceable** workflow (templates in `commands/reo-*.md`; `reo init` copies them into `.cursor/commands/` unless `--skip-workflow`):
+The standard **traceable** workflow:
 
 /reo-blueprint → /reo-plan → /reo-proceed-plan → /reo-review → /reo-test → /reo-pr
 
-- **`/reo-plan`** writes **`reopenspec/changes/active/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`) after approval; skills **`/reo-story-skill`** / **`/reo-task-skill`** / **`/reo-bug-skill`** follow whatever work-item adapter the project configured.
-- **`/reo-implement`** is for legacy **`reopenspec/specs/<feature>/`** layout only.
-- Optional: **`/reo-spec-work-item`** or **`reo spec new <slug>`** for main-line **`reopenspec/specs/`** content.
+`reo init` installs commands + `reopenspec.project.yaml` (use `--skip-workflow` to skip). Legacy: `/reo-implement` for `reopenspec/specs/<feature>/` only.
 
 Each command represents a specific stage in the development lifecycle.
 
@@ -34,7 +33,7 @@ Command:
 
 Purpose:
 
-Establish **`reopenspec.project.yaml`**, architecture docs, and `.cursor/rules` (greenfield vs brownfield).
+Establish **`reopenspec.project.yaml`**, architecture docs, and IDE rules (greenfield vs brownfield). Review and refine rules placed by `reo init`.
 
 ---
 
@@ -46,9 +45,9 @@ Command:
 
 Purpose:
 
-Use the **configured** work-item integration (skills / MCP per project) to load story, task, or bug; check dependencies; compute **delta vs `reopenspec/specs/`**; after approval write **`reopenspec/changes/active/<change-domain-id>/`**.
+Use the **configured** work-item integration (skills / MCP per project) to load story, task, or bug; check dependencies; compute **delta vs `reopenspec/specs/`**; after approval write **`reopenspec/changes/active/<change-domain-id>/`** (`change.yaml`, `plan.md`, `design.md`, `tasks.md`, `delta.md`).
 
-Helpers: **`/reo-story-skill`**, **`/reo-task-skill`**, **`/reo-bug-skill`**.
+Helpers: **`/reo-story-skill`**, **`/reo-task-skill`**, **`/reo-bug-skill`** (orchestrated by `/reo-plan`).
 
 ---
 
@@ -60,7 +59,9 @@ Command:
 
 Purpose:
 
-Execute **`tasks.md`** in the change folder. Legacy: **`/reo-implement`** for **`reopenspec/specs/<feature-id>/`** only.
+Execute **`tasks.md`** for that folder; update **`implementation.md`**; commit after approval.
+
+Legacy alternative: **`/reo-implement`** when using only **`reopenspec/specs/<feature-id>/`** (no `reopenspec/changes/active/` folder).
 
 ---
 
@@ -78,10 +79,8 @@ Checks:
 
 - architecture rules
 - dependency direction
-- CQRS compliance
+- pattern compliance
 - test coverage
-
-Follow **command-review-guidelines.mdc**.
 
 ---
 
@@ -93,13 +92,7 @@ Command:
 
 Purpose:
 
-Generate and run tests.
-
-Includes:
-
-Backend unit tests  
-Integration tests  
-Frontend E2E tests (Playwright)
+Generate and run tests using the project's configured testing framework.
 
 ---
 
@@ -124,6 +117,18 @@ PR description must reference the traceable work item when your process uses one
 
 ---
 
+# Stage 7 — Complete and archive
+
+Command:
+
+/reo-completed @reopenspec/changes/active/<change-domain-id>
+
+Purpose:
+
+Propose spec sync to `reopenspec/specs/`, archive change folder to `reopenspec/changes/completed/YYYY-MM-DD-<slug>/`.
+
+---
+
 # Workflow Safety Rules
 
 Commands must not skip required stages.
@@ -136,12 +141,12 @@ Example:
 
 # Command Strictness & Approval Gates
 
-All command descriptions under `.cursor/commands/` are treated as **strict contracts**, not suggestions.
+All command descriptions are treated as **strict contracts**, not suggestions.
 
 Rules:
 
 - The agent **must follow every STEP** in each command file in order.
-- Steps that mention **developer approval** (for example, blocking steps in `/reo-plan` or `/reo-implement`) are **hard gates**:
+- Steps that mention **developer approval** are **hard gates**:
   - The agent must present a clear summary.
   - The agent must wait for the developer to reply with `approved` before:
     - Running git commands (`git add`, `git commit`, `git push`), or
@@ -168,14 +173,9 @@ If a command cannot be followed as written (for example, missing context or requ
 
 At each stage, the AI must provide feedback:
 
-STATUS  
-RESULT  
+STATUS
+RESULT
 NEXT STEP
-
-Example:
-
-NEXT STEP
-Run /reo-proceed-plan @reopenspec/changes/active/<change-domain-id> to begin implementation.
 
 ---
 
@@ -183,25 +183,6 @@ Run /reo-proceed-plan @reopenspec/changes/active/<change-domain-id> to begin imp
 
 AI must not invent requirements, APIs, database schema, or architecture details.
 
-If required information is missing from:
+If required information is missing from the change or spec folder, AI must stop execution and request clarification from the developer.
 
-- `reopenspec/changes/active/<id>/plan.md` (or legacy `reopenspec/specs/.../overview.md`)
-- `reopenspec/changes/active/<id>/tasks.md`
-- `reopenspec/changes/active/<id>/delta.md`
-- `design.md` when applicable
-
-AI must stop execution and request clarification from the developer.
-
-Examples of missing information:
-
-- Undefined API contracts
-- Missing domain entities
-- Missing UI behavior
-- Ambiguous acceptance criteria
-
-In such cases the AI must respond with:
-
-Status: CLARIFICATION_REQUIRED
-Details: Missing information detected.
-
-Only the developer may override the sequence; the agent must not skip or reorder stages without explicit developer instruction (e.g. 'skip /reo-review for this change').
+Only the developer may override the sequence; the agent must not skip or reorder stages without explicit developer instruction.

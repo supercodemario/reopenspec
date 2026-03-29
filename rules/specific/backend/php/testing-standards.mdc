@@ -1,0 +1,87 @@
+---
+description: Use when writing or reviewing tests — PHP testing strategy and standards
+alwaysApply: false
+---
+
+# Testing Standards
+
+All features must include automated tests.
+
+---
+
+## Testing Layers
+
+Unit Tests
+Feature / Integration Tests
+Browser Tests (optional)
+
+---
+
+## Unit Testing
+
+Unit tests must cover:
+
+- Service logic
+- Validation rules
+- Model methods
+- Utility functions
+
+Use:
+
+PHPUnit
+Pest (if adopted by project)
+
+---
+
+## Feature / Integration Testing
+
+Feature tests verify:
+
+- API endpoints (request → response)
+- Database operations
+- Authentication flows
+- Authorization checks
+
+Use in-memory or test databases.
+
+---
+
+## Browser Testing
+
+If applicable, use Laravel Dusk or equivalent.
+
+Cover critical user workflows:
+
+- Login flow
+- Form submissions
+- Key feature interactions
+
+---
+
+## Test Naming
+
+Test names must describe behavior.
+
+Example (PHPUnit):
+
+```php
+public function test_deactivate_user_disables_login(): void
+```
+
+Example (Pest):
+
+```php
+it('disables login when user is deactivated')
+```
+
+---
+
+## Test Philosophy
+
+Tests should verify:
+
+- Expected behavior
+- Edge cases
+- Failure scenarios
+
+Avoid fragile tests tied to implementation details.
