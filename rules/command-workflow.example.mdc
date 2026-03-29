@@ -16,7 +16,7 @@ The standard **traceable** workflow:
 
 /reo-blueprint → /reo-plan → /reo-proceed-plan → /reo-review → /reo-test → /reo-pr
 
-`reo init` installs commands + `reopenspec.project.yaml` (use `--skip-workflow` to skip). Legacy: `/reo-implement` for `specs/<feature>/` only.
+`reo init` installs commands + `reopenspec.project.yaml` (use `--skip-workflow` to skip). Legacy: `/reo-implement` for `reopenspec/specs/<feature>/` only.
 
 Each command represents a specific stage in the development lifecycle.
 
@@ -44,9 +44,9 @@ Command:
 
 Purpose:
 
-Use work-item integration from **project config and skills** to load story or task; check task dependencies; compute **delta vs `specs/`**; after approval write **`change/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`, `meta.json`).
+Use work-item integration from **project config and skills** to load story, task, or bug; check dependencies; compute **delta vs `reopenspec/specs/`**; after approval write **`reopenspec/changes/active/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`, `meta.json`).
 
-Helpers: **`/reo-story-skill`**, **`/reo-task-skill`**.
+Helpers: **`/reo-story-skill`**, **`/reo-task-skill`**, **`/reo-bug-skill`**.
 
 ---
 
@@ -54,13 +54,13 @@ Helpers: **`/reo-story-skill`**, **`/reo-task-skill`**.
 
 Command:
 
-/reo-proceed-plan @change/<change-domain-id>
+/reo-proceed-plan @reopenspec/changes/active/<change-domain-id>
 
 Purpose:
 
 Execute **`tasks.md`** for that folder; update **`implementation.md`**; commit after approval.
 
-Legacy alternative: **`/reo-implement`** when using only **`specs/<feature-id>/`** (no `change/` folder).
+Legacy alternative: **`/reo-implement`** when using only **`reopenspec/specs/<feature-id>/`** (no `reopenspec/changes/active/` folder).
 
 ---
 
@@ -130,7 +130,7 @@ Commands must not skip required stages.
 
 Example:
 
-/reo-proceed-plan must not run before `/reo-plan` has materialized the `change/` folder.
+/reo-proceed-plan must not run before `/reo-plan` has materialized the `reopenspec/changes/active/` folder.
 
 ---
 
@@ -175,7 +175,7 @@ NEXT STEP
 Example:
 
 NEXT STEP
-Run /reo-proceed-plan @change/<change-domain-id> to begin implementation.
+Run /reo-proceed-plan @reopenspec/changes/active/<change-domain-id> to begin implementation.
 
 ---
 
@@ -185,9 +185,9 @@ AI must not invent requirements, APIs, database schema, or architecture details.
 
 If required information is missing from:
 
-- `change/<id>/plan.md` (or legacy `specs/.../overview.md`)
-- `change/<id>/tasks.md`
-- `change/<id>/delta.md`
+- `reopenspec/changes/active/<id>/plan.md` (or legacy `reopenspec/specs/.../overview.md`)
+- `reopenspec/changes/active/<id>/tasks.md`
+- `reopenspec/changes/active/<id>/delta.md`
 - `design.md` when applicable
 
 AI must stop execution and request clarification from the developer.

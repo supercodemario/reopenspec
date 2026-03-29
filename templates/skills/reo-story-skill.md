@@ -23,6 +23,7 @@ Using the **configured** work-item integration:
 - Load the item by id from **`$ARGUMENTS`**
 - Return: title, description, acceptance criteria, state, links (parent/child) when available
 - If the item is a **task** rather than a story-level item, note that **`/reo-task-skill`** may be more appropriate
+- If the item is a **bug/defect**, note that **`/reo-bug-skill`** may be more appropriate
 
 ---
 

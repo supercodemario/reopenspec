@@ -22,8 +22,8 @@ Do NOT:
 
 ## ReOpenSpec layout
 
-**Traceable flow:** primary docs under **`change/<change-domain-id>/`** (`tasks.md`, `implementation.md`, `delta.md`).  
-**Legacy:** **`specs/<feature-id>/`**.
+**Traceable flow:** primary docs under **`reopenspec/changes/active/<change-domain-id>/`** (`tasks.md`, `implementation.md`, `delta.md`).  
+**Legacy:** **`reopenspec/specs/<feature-id>/`**.
 
 ---
 
@@ -31,7 +31,7 @@ STEP 0 — Definition of Done Validation
 
 Ensure:
 
-- All tasks in **`change/.../tasks.md`** or **`specs/.../tasks.md`** (depending on branch) are completed
+- All tasks in **`reopenspec/changes/active/.../tasks.md`** or **`reopenspec/specs/.../tasks.md`** (depending on branch) are completed
 - No **blocking** TODOs remain in code (tracked `TODO`s with a ticket reference may be acceptable per team policy)
 - Artifacts updated (`implementation.md`, `api-contracts.json` if contracts changed, etc.)
 - Test coverage meets project standards (or gaps are documented)
@@ -48,7 +48,7 @@ STEP 1 — Stage Changes
 - Stage only changes that belong to this feature branch:
   - Backend and frontend code for the feature
   - Updated tests
-  - Updated files under `change/<CHANGE_ID>/` and/or `specs/<FEATURE_ID>/`
+  - Updated files under `reopenspec/changes/active/<CHANGE_ID>/` and/or `reopenspec/specs/<FEATURE_ID>/`
 
 Avoid `git add .` if it would include unrelated files (local config, build artifacts).
 
@@ -85,9 +85,9 @@ Create a PR that includes:
 
 Reference documentation (as applicable):
 
-**If using `change/`:** `change/$CHANGE_ID/plan.md`, `tasks.md`, `delta.md`, `design.md`, `implementation.md`, `meta.json`
+**If using traceable changes:** `reopenspec/changes/active/$CHANGE_ID/plan.md`, `tasks.md`, `delta.md`, `design.md`, `implementation.md`, `meta.json`
 
-**If using `specs/`:** `specs/$FEATURE_ID/overview.md`, `plan.md`, `tasks.md`, `design.md`, `implementation.md`, `api-contracts.json`
+**If using `reopenspec/specs/`:** `reopenspec/specs/$FEATURE_ID/overview.md`, `plan.md`, `tasks.md`, `design.md`, `implementation.md`, `api-contracts.json`
 
 ---
 

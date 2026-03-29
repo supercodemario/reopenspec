@@ -13,7 +13,7 @@ export default class Scan extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root to scan',
     }),
     output: Flags.string({

@@ -1,11 +1,11 @@
 ---
-description: Implement approved tasks under specs/<feature-id>/ — legacy layout; prefer /reo-proceed-plan for change/
+description: Implement approved tasks under reopenspec/specs/<feature-id>/ — legacy layout; prefer /reo-proceed-plan for reopenspec/changes/active/
 ---
 
 ROLE: Senior Software Engineer / Senior Developer
 
-**Prefer the traceable flow:** `/reo-plan` → materialize **`change/<change-domain-id>/`** → **`/reo-proceed-plan @change/...`**.  
-Use **this command** when work lives under **`specs/<feature-id>/`** (e.g. after `reo spec new`) **without** a `change/` folder.
+**Prefer the traceable flow:** `/reo-plan` → materialize **`reopenspec/changes/active/<change-domain-id>/`** → **`/reo-proceed-plan @reopenspec/changes/active/...`**.  
+Use **this command** when work lives under **`reopenspec/specs/<feature-id>/`** (e.g. after `reo spec new`) **without** a **`reopenspec/changes/active/`** folder.
 
 Focus on:
 - Writing clean, maintainable code
@@ -26,14 +26,14 @@ Do NOT:
 
 ## ReOpenSpec layout
 
-Work from **`specs/<feature-id>/`**: `overview.md`, `plan.md`, `tasks.md`, optional `design.md`, `api-contracts.json`, `architecture.md`.  
+Work from **`reopenspec/specs/<feature-id>/`**: `overview.md`, `plan.md`, `tasks.md`, optional `design.md`, `api-contracts.json`, `architecture.md`.  
 After implementation, keep **`api-contracts.json`** accurate (exports/symbols per `reo` conventions).
 
 ---
 
 STEP 1 — Resolve Feature ID
 
-Read the latest `overview.md` under `specs/` for the active feature.
+Read the latest `overview.md` under `reopenspec/specs/` for the active feature.
 
 Extract:
 
@@ -45,12 +45,12 @@ STEP 2 — Load Feature Context
 
 Read:
 
-`specs/<feature-id>/overview.md`  
-`specs/<feature-id>/plan.md`  
-`specs/<feature-id>/tasks.md`  
-`specs/<feature-id>/design.md` (if exists)  
-`specs/<feature-id>/api-contracts.json`  
-`specs/<feature-id>/architecture.md` (if exists)
+`reopenspec/specs/<feature-id>/overview.md`  
+`reopenspec/specs/<feature-id>/plan.md`  
+`reopenspec/specs/<feature-id>/tasks.md`  
+`reopenspec/specs/<feature-id>/design.md` (if exists)  
+`reopenspec/specs/<feature-id>/api-contracts.json`  
+`reopenspec/specs/<feature-id>/architecture.md` (if exists)
 
 ---
 
@@ -96,7 +96,7 @@ STEP 7 — Implementation Notes (MANDATORY)
 
 Create or update:
 
-`specs/<feature-id>/implementation.md`
+`reopenspec/specs/<feature-id>/implementation.md`
 
 Include:
 

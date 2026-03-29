@@ -5,7 +5,7 @@ import { buildBaseline } from '../lib/baseline.js'
 import { runDriftDetection } from '../lib/drift.js'
 import { loadResolvedConfig } from '../lib/reopenspec-config.js'
 
-/** Full workspace sync: baseline scan + drift vs `specs/{feature}/api-contracts.json`. */
+/** Full workspace sync: baseline scan + drift vs `reopenspec/specs/{feature}/api-contracts.json`. */
 export default class Sync extends Command {
   static override id = 'sync'
   static override description =
@@ -15,7 +15,7 @@ export default class Sync extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     baseline: Flags.string({

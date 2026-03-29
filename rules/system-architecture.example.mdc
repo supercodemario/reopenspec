@@ -202,17 +202,17 @@ Avoid cross-service database dependencies.
 Development follows this workflow:
 
 /reo-blueprint → project YAML, architecture context  
-/reo-plan → work item + delta vs specs → materialize **change/<id>/**  
+/reo-plan → work item + delta vs specs → materialize **reopenspec/changes/active/<id>/**  
 /reo-proceed-plan → implement **tasks.md**  
 /reo-review → validation  
 /reo-test → automated tests  
 /reo-pr → pull request  
 
-Traceability uses **`change/<change-domain-id>/`** (plan, tasks, delta) and/or **`specs/<feature-id>/`** as your team defines.
+Traceability uses **`reopenspec/changes/active/<change-domain-id>/`** (plan, tasks, delta) and/or **`reopenspec/specs/<feature-id>/`** as your team defines.
 
 Example:
 
-change/wi-123-feature-slug/
+reopenspec/changes/active/wi-123-feature-slug/
 plan.md
 tasks.md
 delta.md

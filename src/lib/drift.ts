@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import type { ArchBaseline, BaselineNode } from './baseline.js'
 import type { LoadedFeatureSpec } from './spec-types.js'
+import { DEFAULT_SPECS_DIR } from './reopenspec-config.js'
 import { loadFeatureSpecs } from './load-specs.js'
 
 export type DriftCategory =
@@ -58,10 +59,10 @@ export async function runDriftDetection(args: {
   baseline: ArchBaseline
   /** When true, warn on exports not listed in any contract (can be noisy). */
   strictUncovered?: boolean
-  /** Root folder for feature specs (default `specs`). */
+  /** Root folder for feature specs (default `reopenspec/specs`). */
   specsDir?: string
 }): Promise<DriftReport> {
-  const { workspaceRoot, baseline, strictUncovered = false, specsDir = 'specs' } = args
+  const { workspaceRoot, baseline, strictUncovered = false, specsDir = DEFAULT_SPECS_DIR } = args
   const root = resolve(workspaceRoot)
   const findings: DriftFinding[] = []
   const coveredNodeIds = new Set<string>()

@@ -21,6 +21,7 @@
           "description": "Workspace root",
           "name": "cwd",
           "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -75,7 +76,7 @@
     "diff": {
       "aliases": [],
       "args": {},
-      "description": "Run drift check only (alias for drift): compare baseline to specs/*/api-contracts.json.",
+      "description": "Run drift check only (alias for drift): compare baseline to reopenspec/specs/*/api-contracts.json.",
       "examples": [
         "<%= config.bin %> diff",
         "<%= config.bin %> diff --skipScan"
@@ -85,7 +86,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -136,7 +137,7 @@
     "drift": {
       "aliases": [],
       "args": {},
-      "description": "Compare arch-baseline.json against specs/*/api-contracts.json and emit drift-report.json.",
+      "description": "Compare arch-baseline.json against reopenspec/specs/*/api-contracts.json and emit drift-report.json.",
       "examples": [
         "<%= config.bin %> drift",
         "<%= config.bin %> drift --strictUncovered",
@@ -147,7 +148,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -198,19 +199,19 @@
     "init": {
       "aliases": [],
       "args": {},
-      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, and add reopenspec.project.yaml if missing (use --skip-workflow to opt out).",
-      "description": "Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).",
+      "description": "Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup to opt out).",
       "examples": [
         "<%= config.bin %> init",
         "<%= config.bin %> init -c . --force",
-        "<%= config.bin %> init --skip-workflow"
+        "<%= config.bin %> init --skip-workflow",
+        "<%= config.bin %> init --skip-mcp-setup"
       ],
       "flags": {
         "cwd": {
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -230,6 +231,12 @@
         "skipWorkflow": {
           "description": "Do not copy slash-command templates to .cursor/commands/ or add reopenspec.project.yaml",
           "name": "skipWorkflow",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "skipMcpSetup": {
+          "description": "Do not prompt to merge MCP server entries into ~/.cursor/mcp.json (Cursor user config)",
+          "name": "skipMcpSetup",
           "allowNo": false,
           "type": "boolean"
         },
@@ -286,7 +293,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -320,7 +327,7 @@
           "char": "c",
           "description": "Workspace root to scan",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -361,7 +368,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -395,7 +402,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -450,7 +457,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -490,7 +497,7 @@
           "char": "c",
           "description": "Git workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -521,7 +528,7 @@
           "required": true
         }
       },
-      "description": "Scaffold specs/{feature-slug}/ with overview, architecture, api-contracts, tasks, decisions, and .spec-meta.json.",
+      "description": "Scaffold reopenspec/specs/{feature-slug}/ with overview, architecture, api-contracts, tasks, decisions, and .spec-meta.json.",
       "examples": [
         "<%= config.bin %> spec new my-feature"
       ],
@@ -530,7 +537,7 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
+          "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
@@ -553,5 +560,5 @@
       ]
     }
   },
-  "version": "0.2.0"
+  "version": "0.2.4"
 }

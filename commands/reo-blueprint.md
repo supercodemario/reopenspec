@@ -6,9 +6,9 @@ description: Blueprint the repository — project YAML, architecture, docs, and 
 
 ## Traceable workflow (where this fits)
 
-1. **`reo init`** — CLI lays down IDE rules + copies slash commands + `reopenspec.project.yaml` when missing (omit with **`reo init --skip-workflow`**).
-2. **`/reo:blueprint`** (this command) — **Initial** pass: classify greenfield vs brownfield, write **`reopenspec.project.yaml`**, architecture + guidelines, `.cursor/rules`, gold-standard files.
-3. **`/reo-plan`** — Pull story/task via **configured** skills/MCP (see `reopenspec.project.yaml`), compute **delta vs `specs/`**, then after approval write **`change/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`).
+1. **`reo init`** — CLI lays down IDE rules + copies slash commands + `reopenspec.project.yaml` when missing (omit with **`reo init --skip-workflow`**). It also adds `.reopenspec.user.yaml` to `.gitignore`.
+2. **`/reo:blueprint`** (this command) — **Initial** pass: classify greenfield vs brownfield, write **`reopenspec.project.yaml`**, architecture + guidelines, IDE rules (reading local `.reopenspec.user.yaml` for tool choice), gold-standard files.
+3. **`/reo-plan`** — Pull story / task / bug via **configured** skills/MCP (see `reopenspec.project.yaml`), compute **delta vs `reopenspec/specs/`**, then after approval write **`reopenspec/changes/active/<change-domain-id>/`** (`plan.md`, `design.md`, `tasks.md`, `delta.md`).
 4. **`/reo-proceed-plan`** — Start implementation for a traced change folder.
 
 ROLE: System Analyst / Technical Analyst
@@ -28,7 +28,7 @@ Do NOT:
 
 ## ReOpenSpec context
 
-If the repo uses ReOpenSpec, treat **`specs/.meta/arch-baseline.json`** (or paths in `reopenspec.json`) as the source of structural truth for modules and contracts. Blueprint output (docs and rules) should **align** with that baseline, not contradict it.
+If the repo uses ReOpenSpec, treat **`reopenspec/specs/.meta/arch-baseline.json`** (or paths in `reopenspec.json`) as the source of structural truth for modules and contracts. Blueprint output (docs and rules) should **align** with that baseline, not contradict it.
 
 ---
 
@@ -48,8 +48,10 @@ If GREENFIELD:
 
 Create initial:
 
-`.cursor/rules/*`  
-`docs/*`
+Create initial:
+
+(Target IDE rules path based on `.reopenspec.user.yaml`, e.g., `.cursor/rules/*` or `.windsurfrules/*`)
+`reopenspec/docs/*`
 
 Then proceed.
 
@@ -68,9 +70,9 @@ Use this shape (fill values from discovery):
 - `version`: `"1"`
 - `project_type`: `greenfield` | `brownfield` (from STEP 0)
 - `platforms.work_tracking`: `none` until the team wires an adapter — or a project-specific token (skills read this); prefer documenting integrations under optional `integrations` in this file or linked config
-- `change.root`: `change` (default; each change lives under `change/<change-domain-id>/`)
+- `change.root`: `reopenspec/changes` (default; in-flight work lives under `reopenspec/changes/active/<change-domain-id>/`; completed moves to `reopenspec/changes/completed/<YYYY-MM-DD>-<change-domain-id>/`)
 - `traceability.main_specs_dir`: `specs`
-- `traceability.baseline_json`: path from `reopenspec.json` / defaults (`specs/.meta/arch-baseline.json`)
+- `traceability.baseline_json`: path from `reopenspec.json` / defaults (`reopenspec/specs/.meta/arch-baseline.json`)
 
 This file is the **single place** agents read for “where do changes go” and how work items are resolved (details delegated to skills + config — **no vendor lock-in in prose here**). Keep it valid YAML.
 
@@ -91,7 +93,7 @@ Identify:
 - Testing frameworks and strategy
 - Build and deployment setup
 - Coding conventions and naming patterns
-- **ReOpenSpec**: presence of `specs/`, `reopenspec.json`, baseline/drift artifacts
+- **ReOpenSpec**: presence of `reopenspec/specs/`, `reopenspec.json`, baseline/drift artifacts
 
 Generate a structured analysis summary.
 
@@ -101,10 +103,10 @@ STEP 2 — Generate Base Documentation
 
 Create the following files (when missing or clearly outdated):
 
-`docs/architecture.md`  
-`docs/backend-guidelines.md`  
-`docs/frontend-guidelines.md`  
-`docs/testing-guidelines.md`
+`reopenspec/docs/architecture.md`  
+`reopenspec/docs/backend-guidelines.md`  
+`reopenspec/docs/frontend-guidelines.md`  
+`reopenspec/docs/testing-guidelines.md`
 
 Each file should include:
 
@@ -268,21 +270,29 @@ Detect:
 
 Save to:
 
-`docs/anti-patterns.md`
+`reopenspec/docs/anti-patterns.md`
 
 These must NOT be used as references.
 
 ---
 
-STEP 4 — Generate Cursor Rules
+STEP 4 — Generate IDE Rules
 
-Create or update under `.cursor/rules/` (names may vary; prefer `.mdc` where the project uses it):
+Read `.reopenspec.user.yaml` (at the workspace root) to detect the preferred `ide` (e.g., `cursor`, `windsurf`, `roo`).
+If the file doesn't exist, create it with `{ide: "cursor"}` (and ensure it's in `.gitignore`).
 
-- `system-architecture.mdc`
-- `backend-architecture.mdc`
-- `backend-code-quality.mdc`
-- `frontend-standards.mdc`
-- `testing-standards.mdc`
+Based on the `ide`, create or update the architectural rules in the corresponding directory:
+- **Cursor**: `.cursor/rules/*.mdc`
+- **Windsurf/Cascade**: `.windsurfrules/*.md` (or `.cascade/`)
+- **Roo/Cline**: `.roo/*.md` (or `.cline/`)
+
+Create the following core rules:
+
+- `system-architecture`
+- `backend-architecture`
+- `backend-code-quality`
+- `frontend-standards`
+- `testing-standards`
 
 Rules must:
 
@@ -290,7 +300,7 @@ Rules must:
 - Reference detected patterns and conventions
 - Include Gold Standard file references
 - Avoid introducing new patterns not present in codebase
-- **Reference ReOpenSpec baseline/drift** when the repo uses `reo` / `specs/.meta/`
+- **Reference ReOpenSpec baseline/drift** when the repo uses `reo` / `reopenspec/specs/.meta/`
 
 ---
 
@@ -308,10 +318,10 @@ Replace hardcoded tech assumptions with:
 Ensure compatibility with:
 
 `/reo-plan`  
-`/reo-story-skill` / `/reo-task-skill` (invoked from plan or standalone)  
-`/reo-spec-work-item` (optional: fill `specs/…/overview.md` from external item)  
+`/reo-story-skill` / `/reo-task-skill` / `/reo-bug-skill` (invoked from plan or standalone)  
+`/reo-spec-work-item` (optional: fill `reopenspec/specs/…/overview.md` from external item)  
 `/reo-proceed-plan`  
-`/reo-implement` (legacy `specs/<feature>/` path)  
+`/reo-implement` (legacy `reopenspec/specs/<feature>/` path)  
 `/reo-review` · `/reo-test` · `/reo-pr`
 
 ---
@@ -358,4 +368,4 @@ STEP 9 — Cursor Response
 
 Status: `BLUEPRINT_COMPLETE`  
 Details: Project analyzed, `reopenspec.project.yaml` ensured, rules generated  
-Next: `/reo-plan` (with story/task id or manual brief); optional `reo spec new <slug>` for main-line specs under `specs/`
+Next: `/reo-plan` (with story/task/bug id or manual brief); optional `reo spec new <slug>` for main-line specs under `reopenspec/specs/`

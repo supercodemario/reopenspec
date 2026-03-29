@@ -29,7 +29,7 @@ A plan should allow a developer to implement the feature **without guessing miss
 
 When generating plans, use the following sources:
 
-1. Feature specification (`specs/<feature-id>/overview.md`)
+1. Feature specification (`reopenspec/specs/<feature-id>/overview.md`)
 2. Existing codebase structure
 3. Architecture rules defined in `.cursor/rules`
 4. Feature templates and conventions

@@ -22,7 +22,7 @@ export default class HooksUninstall extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Git workspace root',
     }),
   }

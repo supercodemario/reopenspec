@@ -4,6 +4,6 @@ import Drift from './drift.js'
 export default class Diff extends Drift {
   static override id = 'diff'
   static override description =
-    'Run drift check only (alias for drift): compare baseline to specs/*/api-contracts.json.'
+    'Run drift check only (alias for drift): compare baseline to reopenspec/specs/*/api-contracts.json.'
   static override examples = ['<%= config.bin %> diff', '<%= config.bin %> diff --skipScan']
 }

@@ -1,5 +1,11 @@
 # ReOpenSpec — project workflow (traceability)
 # Refined by /reo-blueprint. Work-tracking and MCP wiring are project-specific — add skills/adapters as needed.
+#
+# All spec-driven artifacts live under ./reopenspec/ at the repo root:
+#   reopenspec/docs/          — vision, ADRs, runbooks, team conventions (not the live behavior contract)
+#   reopenspec/specs/         — domain behavior + api-contracts.json (source of truth; checked vs code via reo)
+#   reopenspec/changes/active/    — in-flight work per ticket/story/bug (e.g. task-azure-1234-make-login, bug-jira-4421-api-timeout)
+#   reopenspec/changes/completed/ — done work; same slug with YYYY-MM-DD- prefix (e.g. 2026-02-06-task-azure-1234-make-login)
 
 version: "1"
 
@@ -18,9 +24,9 @@ platforms:
 #     config_ref: ".cursor/config.json" # or env key names only
 
 change:
-  root: change
+  root: reopenspec/changes
 
 traceability:
-  main_specs_dir: specs
+  main_specs_dir: reopenspec/specs
   reopenspec_config: reopenspec.json
-  baseline_json: specs/.meta/arch-baseline.json
+  baseline_json: reopenspec/specs/.meta/arch-baseline.json

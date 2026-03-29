@@ -158,7 +158,7 @@ All feature work must stay within the feature scope.
 
 Feature structure:
 
-specs/<feature-id>/
+reopenspec/specs/<feature-id>/
 
 AI must not modify unrelated modules unless required.
 
@@ -311,7 +311,7 @@ AI must keep documentation concise.
 
 Feature documentation must be stored under:
 
-specs/<feature-id>/
+reopenspec/specs/<feature-id>/
 
 Example files:
 

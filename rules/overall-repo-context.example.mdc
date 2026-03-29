@@ -208,11 +208,11 @@ Pits.Clean.Utilities.UnitTests
 
 AI-driven development artifacts are stored in:
 
-specs/<feature-id>/
+reopenspec/specs/<feature-id>/
 
 Example:
 
-specs/PROJ-123-user-login/
+reopenspec/specs/PROJ-123-user-login/
 
 Contains:
 
@@ -267,7 +267,7 @@ Shared utilities → Utilities/
 
 Architecture rules → .cursor/rules/
 
-Feature specifications → specs/
+Feature specifications → reopenspec/specs/
 
 ---
 
@@ -301,7 +301,7 @@ When implementing new features:
 2. Implement changes inside that service.
 3. Follow the existing Clean Architecture structure.
 4. Add tests to the corresponding test project.
-5. Update feature documentation in `specs/<feature-id>/`.
+5. Update feature documentation in `reopenspec/specs/<feature-id>/`.
 
 ---
 
@@ -310,10 +310,10 @@ When implementing new features:
 AI must restrict its reasoning to the following context sources:
 
 Primary Context
-- specs/<feature-id>/overview.md
-- specs/<feature-id>/plan.md
-- specs/<feature-id>/tasks.md
-- specs/<feature-id>/design.md (if exists)
+- reopenspec/specs/<feature-id>/overview.md
+- reopenspec/specs/<feature-id>/plan.md
+- reopenspec/specs/<feature-id>/tasks.md
+- reopenspec/specs/<feature-id>/design.md (if exists)
 
 Project Context
 - overall-repo-context.mdc

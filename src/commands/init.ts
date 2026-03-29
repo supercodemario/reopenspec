@@ -3,6 +3,8 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { createInterface } from 'node:readline/promises'
 import { join, relative, resolve } from 'node:path'
 import type { ArchBaseline } from '../lib/baseline.js'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { buildBaseline } from '../lib/baseline.js'
 import { IDE_CATALOG, injectForIdes } from '../lib/injector.js'
 import { printWelcomeBanner, promptRoleInteractive, runInteractiveIdeSetup } from '../lib/init-tui.js'
@@ -17,8 +19,10 @@ import {
   writeDefaultConfigFile,
   writeLocalProfile,
 } from '../lib/reopenspec-config.js'
+import { runMcpInteractiveSetup } from '../lib/mcp-interactive-setup.js'
 import {
   copyProjectYamlTemplate,
+  copyReopenSpecModelDocIfMissing,
   copyWorkflowCommandsToProject,
 } from '../lib/workflow-copy.js'
 import { resolveHeroEmoji } from '../lib/reopenspec-local-profile.js'
@@ -136,11 +140,12 @@ function printInteractiveInitSummary(
 export default class Init extends Command {
   static override id = 'init'
   static override description =
-    'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, and add reopenspec.project.yaml if missing (use --skip-workflow to opt out).'
+    'Create reopenspec/docs/, reopenspec/specs/.meta, reopenspec/changes/active/ and reopenspec/changes/completed/, scan TypeScript, write arch-baseline.json, reopenspec.json, inject IDE workflows, copy Cursor slash-command templates to .cursor/commands/, optionally configure MCP in ~/.cursor/mcp.json, and add reopenspec.project.yaml if missing (use --skip-workflow / --skip-mcp-setup to opt out).'
   static override examples = [
     '<%= config.bin %> init',
     '<%= config.bin %> init -c . --force',
     '<%= config.bin %> init --skip-workflow',
+    '<%= config.bin %> init --skip-mcp-setup',
   ]
     'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).'
   static override examples = ['<%= config.bin %> init', '<%= config.bin %> init -c . --force']
@@ -148,7 +153,7 @@ export default class Init extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     force: Flags.boolean({
@@ -162,6 +167,11 @@ export default class Init extends Command {
     skipWorkflow: Flags.boolean({
       description:
         'Do not copy slash-command templates to .cursor/commands/ or add reopenspec.project.yaml',
+      default: false,
+    }),
+    skipMcpSetup: Flags.boolean({
+      description:
+        'Do not prompt to merge MCP server entries into ~/.cursor/mcp.json (Cursor user config)',
       default: false,
     }),
     heroName: Flags.string({
@@ -184,6 +194,24 @@ export default class Init extends Command {
     mkdirSync(join(cwd, 'specs', '.meta'), { recursive: true })
     mkdirSync(join(cwd, 'specs'), { recursive: true })
     ensureLocalConfigInGitignore(cwd)
+    const rs = join(cwd, 'reopenspec')
+    mkdirSync(join(rs, 'docs'), { recursive: true })
+    mkdirSync(join(rs, 'changes', 'active'), { recursive: true })
+    mkdirSync(join(rs, 'changes', 'completed'), { recursive: true })
+    mkdirSync(join(rs, 'specs', '.meta'), { recursive: true })
+    mkdirSync(join(rs, 'specs'), { recursive: true })
+
+    const gitignorePath = join(cwd, '.gitignore')
+    if (existsSync(gitignorePath)) {
+      const gitignoreContent = readFileSync(gitignorePath, 'utf8')
+      if (!gitignoreContent.includes('.reopenspec.user.yaml')) {
+        appendFileSync(gitignorePath, '\n# ReOpenSpec local user profile\n.reopenspec.user.yaml\n')
+        this.log('Added .reopenspec.user.yaml to .gitignore')
+      }
+    } else {
+      writeFileSync(gitignorePath, '# ReOpenSpec local user profile\n.reopenspec.user.yaml\n')
+      this.log('Created .gitignore and added .reopenspec.user.yaml')
+    }
 
     const before = loadResolvedConfig(cwd)
     if (!before.fileExists || flags.force) {
@@ -298,6 +326,15 @@ export default class Init extends Command {
     ) {
       process.stdout.write(`${ansi.dim}All set — ready for your next command.${ansi.reset}\n`)
     }
+    try {
+      const modelDoc = copyReopenSpecModelDocIfMissing(cwd)
+      if (modelDoc) {
+        this.log(`Wrote ${modelDoc} (template)`)
+      }
+    } catch (e) {
+      this.warn(e instanceof Error ? e.message : String(e))
+    }
+
     if (!flags.skipWorkflow) {
       try {
         const copied = copyWorkflowCommandsToProject(cwd)
@@ -316,6 +353,14 @@ export default class Init extends Command {
         )
       }
     }
+
+    await runMcpInteractiveSetup({
+      workspaceRoot: cwd,
+      skip: flags.skipMcpSetup,
+      ide: 'cursor',
+      log: (m) => this.log(m),
+      warn: (m) => this.warn(m),
+    })
 
     this.log(
       `Summary: ${baseline.modules.length} module(s), ${baseline.nodes.length} export node(s), languages: ${baseline.meta.languages.join(', ') || '(none)'}`,

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { basename, dirname, join, resolve } from 'node:path'
 import fg from 'fast-glob'
+import { DEFAULT_SPECS_DIR } from './reopenspec-config.js'
 import type { ApiContract, ApiContractsFile, LoadedFeatureSpec } from './spec-types.js'
 
 const ALLOWED_KINDS = new Set([
@@ -51,10 +52,10 @@ function parseApiContracts(json: unknown, path: string): ApiContractsFile {
 /** Load every `{specsDir}/{feature}/api-contracts.json` under the workspace. */
 export async function loadFeatureSpecs(
   workspaceRoot: string,
-  specsDir = 'specs',
+  specsDir = DEFAULT_SPECS_DIR,
 ): Promise<LoadedFeatureSpec[]> {
   const root = resolve(workspaceRoot)
-  const dir = specsDir.replace(/\\/g, '/').replace(/\/$/, '') || 'specs'
+  const dir = specsDir.replace(/\\/g, '/').replace(/\/$/, '') || DEFAULT_SPECS_DIR
   const paths = await fg([`${dir}/*/api-contracts.json`], {
     cwd: root,
     onlyFiles: true,

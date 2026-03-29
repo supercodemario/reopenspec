@@ -8,7 +8,7 @@ import { loadResolvedConfig } from '../lib/reopenspec-config.js'
 export default class Drift extends Command {
   static override id = 'drift'
   static override description =
-    'Compare arch-baseline.json against specs/*/api-contracts.json and emit drift-report.json.'
+    'Compare arch-baseline.json against reopenspec/specs/*/api-contracts.json and emit drift-report.json.'
   static override examples = [
     '<%= config.bin %> drift',
     '<%= config.bin %> drift --strictUncovered',
@@ -18,7 +18,7 @@ export default class Drift extends Command {
   static override flags = {
     cwd: Flags.string({
       char: 'c',
-      default: process.cwd(),
+      default: '.',
       description: 'Workspace root',
     }),
     baseline: Flags.string({

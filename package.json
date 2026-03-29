@@ -1,17 +1,18 @@
 {
   "name": "reopenspec",
-  "version": "0.2.0",
+  "version": "0.2.4",
   "description": "ReOpenSpec CLI — spec-driven architecture baseline, drift checks, and IDE workflow injection.",
   "license": "MIT",
   "author": "Ajithkumar S",
   "type": "commonjs",
   "bin": {
-    "reo": "./bin/run.js"
+    "reo": "bin/run.js"
   },
   "files": [
     "bin",
     "dist",
     "commands",
+    "docs",
     "templates",
     "oclif.manifest.json",
     "LICENSE",

@@ -37,4 +37,6 @@ STEP 4 — Output shape
 
 Return: `task`, `parent`, `dependencies[]`, `can_proceed`, `blockers[]`
 
-Do not write files. If `can_proceed` is false, **`/reo-plan`** must not materialize `change/` unless the developer overrides.
+Do not write files. If `can_proceed` is false, **`/reo-plan`** must not materialize `reopenspec/changes/active/` unless the developer overrides.
+
+For **bugs/defects** (separate work-item type in many trackers), prefer **`templates/skills/reo-bug-skill.md`**.

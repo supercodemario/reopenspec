@@ -214,7 +214,7 @@ Component tests or E2E coverage.
 
 Each implemented feature should update:
 
-specs/<feature-id>/implementation.md
+reopenspec/specs/<feature-id>/implementation.md
 
 Include:
 

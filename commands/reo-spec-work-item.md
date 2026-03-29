@@ -1,5 +1,5 @@
 ---
-description: Fetch an external work item (via configured integration/skills) and write specs/overview.md (STRICT CONTRACT)
+description: Fetch an external work item (via configured integration/skills) and write reopenspec/specs/overview.md (STRICT CONTRACT)
 argument-hint: work item id or key
 ---
 
@@ -24,7 +24,7 @@ Do NOT:
 
 ## ReOpenSpec layout
 
-Feature work lives under **`specs/<feature-id>/`**. The CLI scaffolds `overview.md`, `architecture.md`, `tasks.md`, `api-contracts.json`, `decisions.md`. This command fills **`overview.md`** (and may add notes to `architecture.md` when helpful) after approval.
+Feature work lives under **`reopenspec/specs/<feature-id>/`**. The CLI scaffolds `overview.md`, `architecture.md`, `tasks.md`, `api-contracts.json`, `decisions.md`. This command fills **`overview.md`** (and may add notes to `architecture.md` when helpful) after approval.
 
 ---
 
@@ -105,9 +105,9 @@ Compute:
 
 Create branch if applicable: `feature/<feature-id>`
 
-Ensure **`specs/<feature-id>/`** exists; merge into existing scaffolds instead of wiping.
+Ensure **`reopenspec/specs/<feature-id>/`** exists; merge into existing scaffolds instead of wiping.
 
-Write or update **`specs/<feature-id>/overview.md`** with the full spec, AC, notes, and design references.
+Write or update **`reopenspec/specs/<feature-id>/overview.md`** with the full spec, AC, notes, and design references.
 
 ---
 
@@ -120,5 +120,5 @@ Commit only the spec files touched in this step (no unrelated changes).
 STEP 7 — Cursor response
 
 - Status: `SPEC_APPROVED`
-- Details: Specification saved under `specs/…/overview.md` for work item `$ARGUMENTS`
+- Details: Specification saved under `reopenspec/specs/…/overview.md` for work item `$ARGUMENTS`
 - Next: `/reo-plan`
