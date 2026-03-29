@@ -108,6 +108,29 @@
         "diff.js"
       ]
     },
+    "doctor": {
+      "aliases": [],
+      "args": {},
+      "description": "Check workspace health, config validity, and spec contracts",
+      "examples": [
+        "<%= config.bin %> doctor"
+      ],
+      "flags": {},
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "doctor",
+      "pluginAlias": "reopenspec",
+      "pluginName": "reopenspec",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": false,
+      "relativePath": [
+        "dist",
+        "commands",
+        "doctor.js"
+      ]
+    },
     "drift": {
       "aliases": [],
       "args": {},
@@ -324,7 +347,7 @@
     "scan": {
       "aliases": [],
       "args": {},
-      "description": "Scan the workspace with ast-grep and write arch-baseline.json (Stage 1: TypeScript).",
+      "description": "Scan the workspace with ast-grep and write arch-baseline.json (Stage 1: TypeScript, Dart, C#, Python, PHP).",
       "examples": [
         "<%= config.bin %> scan",
         "<%= config.bin %> scan --cwd ./app -o baseline.json"
@@ -346,6 +369,13 @@
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
+        },
+        "verbose": {
+          "char": "v",
+          "description": "Print detailed output",
+          "name": "verbose",
+          "allowNo": false,
+          "type": "boolean"
         }
       },
       "hasDynamicHelp": false,
@@ -434,6 +464,13 @@
           "description": "Warn on exports not referenced by any api-contracts.json (OR reopenspec.strictUncovered)",
           "name": "strictUncovered",
           "allowNo": true,
+          "type": "boolean"
+        },
+        "verbose": {
+          "char": "v",
+          "description": "Print detailed output",
+          "name": "verbose",
+          "allowNo": false,
           "type": "boolean"
         }
       },

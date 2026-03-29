@@ -31,11 +31,16 @@ export default class Sync extends Command {
         'Warn on exports not referenced by any api-contracts.json (OR reopenspec.strictUncovered)',
       allowNo: true,
     }),
+    verbose: Flags.boolean({
+      char: 'v',
+      description: 'Print detailed output',
+    }),
   }
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Sync)
     const cwd = resolve(flags.cwd)
+    if (flags.verbose) this.log(`[verbose] Executing sync in ${cwd}`)
     const { merged: cfg } = loadResolvedConfig(cwd)
     const baselinePath = resolve(cwd, flags.baseline ?? cfg.baselinePath)
     const driftPath = resolve(cwd, flags.drift ?? cfg.driftReportPath)
@@ -44,7 +49,13 @@ export default class Sync extends Command {
     const strictUncovered =
       flags.strictUncovered !== undefined ? flags.strictUncovered : cfg.strictUncovered
 
+    if (flags.verbose) this.log(`[verbose] Building baseline across multiple parsers...`)
     const baseline = await buildBaseline(cwd)
+    
+    if (flags.verbose) {
+        this.log(`[verbose] Baseline built. Discovered ${baseline.nodes.length} nodes from ${baseline.meta.languages.join(', ')}`)
+    }
+    
     writeFileSync(baselinePath, `${JSON.stringify(baseline, null, 2)}\n`, 'utf8')
     this.log(`Wrote ${baselinePath}`)
 
@@ -52,6 +63,7 @@ export default class Sync extends Command {
       this.warn(`${baseline.parseErrors.length} baseline parse error(s); see "parseErrors" in baseline file.`)
     }
 
+    if (flags.verbose) this.log(`[verbose] Calculating structural drift against specs in ${cfg.specsDir}...`)
     const report = await runDriftDetection({
       workspaceRoot: cwd,
       baseline,

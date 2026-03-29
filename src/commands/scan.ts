@@ -7,7 +7,7 @@ import { loadResolvedConfig } from '../lib/reopenspec-config.js'
 export default class Scan extends Command {
   static override id = 'scan'
   static override description =
-    'Scan the workspace with ast-grep and write arch-baseline.json (Stage 1: TypeScript).'
+    'Scan the workspace with ast-grep and write arch-baseline.json (Stage 1: TypeScript, Dart, C#, Python, PHP).'
   static override examples = ['<%= config.bin %> scan', '<%= config.bin %> scan --cwd ./app -o baseline.json']
 
   static override flags = {
@@ -20,15 +20,29 @@ export default class Scan extends Command {
       char: 'o',
       description: 'Output path (overrides reopenspec.json baselinePath)',
     }),
+    verbose: Flags.boolean({
+      char: 'v',
+      description: 'Print detailed output',
+    }),
   }
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Scan)
     const cwd = resolve(flags.cwd)
+    if (flags.verbose) this.log(`[verbose] Loading configuration for workspace: ${cwd}`)
     const { merged: cfg } = loadResolvedConfig(cwd)
     const out = resolve(cwd, flags.output ?? cfg.baselinePath)
     mkdirSync(dirname(out), { recursive: true })
+    
+    if (flags.verbose) this.log(`[verbose] Executing multi-language AST/Heuristic scan...`)
     const baseline = await buildBaseline(cwd)
+    
+    if (flags.verbose) {
+        this.log(`[verbose] Scan completed.`)
+        this.log(`[verbose] Languages scanned: ${baseline.meta.languages.join(', ') || 'None'}`)
+        this.log(`[verbose] Discovered ${baseline.nodes.length} nodes and ${baseline.edges.length} edges.`)
+    }
+
     writeFileSync(out, `${JSON.stringify(baseline, null, 2)}\n`, 'utf8')
     this.log(`Wrote ${out}`)
     if (baseline.parseErrors.length > 0) {
