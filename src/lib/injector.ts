@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { appendFileSync, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
 
 /** AI coding tools / IDEs selectable in `reo init` (skills & workflow targets). */
 export type DetectedIde =
@@ -79,6 +79,26 @@ ${WORKFLOW_START}
 ${WORKFLOW_SYNC}
 `
 
+/** Google Antigravity workspace skills live under \`.agent/skills/<name>/\`. */
+const ANTIGRAVITY_SKILL_MD = OPENCODE_SKILL_MD
+
+const REOPENSPEC_ALL_IN_ONE = `${REOPENSPEC_RULES}\n\n${WORKFLOW_START}\n\n${WORKFLOW_SYNC}\n`
+
+const QWEN_SKILL_MD = OPENCODE_SKILL_MD
+
+const AUGGIE_COMMAND_MD = `---
+description: ReOpenSpec — baseline-only architecture; use arch-baseline.json, do not infer from source.
+---
+
+${REOPENSPEC_ALL_IN_ONE}`
+
+const FACTORY_DROID_MD = `---
+name: reopenspec
+description: ReOpenSpec workflow — read baseline JSON only for architecture.
+---
+
+${REOPENSPEC_ALL_IN_ONE}`
+
 function injectRulesMarkdown(workspaceRoot: string, rulesDirFromRoot: string): string[] {
   const root = resolve(workspaceRoot)
   const rulesDir = join(root, rulesDirFromRoot)
@@ -93,6 +113,132 @@ function injectRulesMarkdown(workspaceRoot: string, rulesDirFromRoot: string): s
   w('reo-start-feature.md', WORKFLOW_START)
   w('reo-sync-spec.md', WORKFLOW_SYNC)
   return out
+}
+
+function writeFileEnsuringDir(workspaceRoot: string, relFromRoot: string, body: string): string {
+  const root = resolve(workspaceRoot)
+  const abs = join(root, relFromRoot)
+  ensureDir(dirname(abs))
+  writeFileSync(abs, body, 'utf8')
+  return relFromRoot.replace(/\\/g, '/')
+}
+
+function injectSkillDir(workspaceRoot: string, skillRel: string, body: string): string[] {
+  const root = resolve(workspaceRoot)
+  const skillDir = join(root, skillRel)
+  ensureDir(skillDir)
+  const fileRel = join(skillRel, 'SKILL.md').replace(/\\/g, '/')
+  writeFileSync(join(skillDir, 'SKILL.md'), body, 'utf8')
+  return [fileRel]
+}
+
+/** Cline: \`.clinerules\` may be a file or a directory. */
+function injectCline(workspaceRoot: string): string[] {
+  const root = resolve(workspaceRoot)
+  const p = join(root, '.clinerules')
+  if (existsSync(p)) {
+    try {
+      if (statSync(p).isFile()) {
+        return [writeFileEnsuringDir(workspaceRoot, 'reopenspec-cline.md', REOPENSPEC_ALL_IN_ONE)]
+      }
+    } catch {
+      /* use directory branch */
+    }
+  }
+  return injectRulesMarkdown(workspaceRoot, '.clinerules')
+}
+
+function injectAmazonQ(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.amazonq', 'reopenspec.md'),
+      REOPENSPEC_ALL_IN_ONE,
+    ),
+  ]
+}
+
+function injectAugmentCommand(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.augment', 'commands', 'reopenspec.md'),
+      AUGGIE_COMMAND_MD,
+    ),
+  ]
+}
+
+function injectGeminiContext(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.gemini', 'reopenspec-instructions.md'),
+      REOPENSPEC_ALL_IN_ONE,
+    ),
+  ]
+}
+
+function injectFactoryDroid(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.factory', 'droids', 'reopenspec.md'),
+      FACTORY_DROID_MD,
+    ),
+  ]
+}
+
+/** Crush reads project markdown such as \`AGENTS.md\` / \`CRUSH.md\`; use a dedicated file to avoid clobbering. */
+function injectCrush(workspaceRoot: string): string[] {
+  return [writeFileEnsuringDir(workspaceRoot, 'reopenspec-crush.md', REOPENSPEC_ALL_IN_ONE)]
+}
+
+/** iFlow: prefer \`IFLOW.md\`; create or append ReOpenSpec section. */
+function injectIflow(workspaceRoot: string): string[] {
+  const root = resolve(workspaceRoot)
+  const target = join(root, 'IFLOW.md')
+  const header = '# ReOpenSpec\n\n'
+  if (!existsSync(target)) {
+    writeFileSync(target, `${header}${REOPENSPEC_ALL_IN_ONE}`, 'utf8')
+    return ['IFLOW.md']
+  }
+  appendFileSync(
+    target,
+    `\n\n---\n\n## ReOpenSpec (injected by reo init / reo inject)\n\n${REOPENSPEC_ALL_IN_ONE}`,
+    'utf8',
+  )
+  return ['IFLOW.md (appended ReOpenSpec section)']
+}
+
+function injectJetBrainsContext(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.idea', 'reopenspec-ai-context.md'),
+      REOPENSPEC_ALL_IN_ONE,
+    ),
+  ]
+}
+
+function injectGitHubCopilot(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.github', 'copilot-instructions.md'),
+      `${REOPENSPEC_ALL_IN_ONE}\n`,
+    ),
+  ]
+}
+
+/** Codex project config is usually TOML; add a sidecar markdown file for human/agent context. */
+function injectCodexContext(workspaceRoot: string): string[] {
+  return [
+    writeFileEnsuringDir(
+      workspaceRoot,
+      join('.codex', 'reopenspec-context.md'),
+      REOPENSPEC_ALL_IN_ONE,
+    ),
+  ]
 }
 
 export function detectIdes(workspaceRoot: string): DetectedIde[] {
@@ -184,9 +330,32 @@ export function detectIdesWithFallback(workspaceRoot: string): DetectedIde[] {
 
 export type InjectionResult = { ide: DetectedIde; paths: string[] }
 
+const CATALOG_IDS = new Set<string>(IDE_CATALOG.map((c) => c.id))
+
+function resolveInjectionIdes(
+  workspaceRoot: string,
+  ideTargets?: readonly string[] | undefined,
+): DetectedIde[] {
+  if (ideTargets !== undefined && ideTargets.length > 0) {
+    const out: DetectedIde[] = []
+    for (const id of ideTargets) {
+      if (CATALOG_IDS.has(id) && !out.includes(id as DetectedIde)) {
+        out.push(id as DetectedIde)
+      }
+    }
+    if (out.length > 0) return out
+  }
+  return detectIdesWithFallback(workspaceRoot)
+}
+
+export type InjectForIdesOptions = {
+  /** When set (non-empty), inject only for these IDs (from \`reopenspec.local.json\`). Otherwise use workspace folder detection. */
+  ideTargets?: readonly string[] | undefined
+}
+
 /** Write IDE workflow files (rules markdown). Does not register MCP servers. */
-export function injectForIdes(workspaceRoot: string): InjectionResult[] {
-  const ides = detectIdesWithFallback(workspaceRoot)
+export function injectForIdes(workspaceRoot: string, options?: InjectForIdesOptions): InjectionResult[] {
+  const ides = resolveInjectionIdes(workspaceRoot, options?.ideTargets)
   const results: InjectionResult[] = []
 
   for (const ide of ides) {
@@ -194,14 +363,45 @@ export function injectForIdes(workspaceRoot: string): InjectionResult[] {
       results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.cursor', 'rules')) })
     } else if (ide === 'claude-code') {
       results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.claude', 'rules')) })
+    } else if (ide === 'windsurf') {
+      results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.windsurf', 'rules')) })
+    } else if (ide === 'roo' || ide === 'costrict') {
+      results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.roo', 'rules')) })
+    } else if (ide === 'cline') {
+      results.push({ ide, paths: injectCline(workspaceRoot) })
     } else if (ide === 'kilo-code') {
       results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.kilocode', 'rules')) })
     } else if (ide === 'qoder') {
       results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.qoder', 'rules')) })
     } else if (ide === 'codebuddy') {
       results.push({ ide, paths: injectRulesMarkdown(workspaceRoot, join('.codebuddy', 'rules')) })
+    } else if (ide === 'amazon-q') {
+      results.push({ ide, paths: injectAmazonQ(workspaceRoot) })
+    } else if (ide === 'auggie-cli') {
+      results.push({ ide, paths: injectAugmentCommand(workspaceRoot) })
+    } else if (ide === 'qwen-code') {
+      results.push({
+        ide,
+        paths: injectSkillDir(workspaceRoot, join('.qwen', 'skills', 'reopenspec'), QWEN_SKILL_MD),
+      })
+    } else if (ide === 'gemini-cli') {
+      results.push({ ide, paths: injectGeminiContext(workspaceRoot) })
     } else if (ide === 'opencode') {
       results.push({ ide, paths: injectOpenCodeSkill(workspaceRoot) })
+    } else if (ide === 'antigravity') {
+      results.push({ ide, paths: injectAntigravitySkill(workspaceRoot) })
+    } else if (ide === 'factory-droid') {
+      results.push({ ide, paths: injectFactoryDroid(workspaceRoot) })
+    } else if (ide === 'crush') {
+      results.push({ ide, paths: injectCrush(workspaceRoot) })
+    } else if (ide === 'iflow') {
+      results.push({ ide, paths: injectIflow(workspaceRoot) })
+    } else if (ide === 'jetbrains-ai') {
+      results.push({ ide, paths: injectJetBrainsContext(workspaceRoot) })
+    } else if (ide === 'github-copilot') {
+      results.push({ ide, paths: injectGitHubCopilot(workspaceRoot) })
+    } else if (ide === 'codex') {
+      results.push({ ide, paths: injectCodexContext(workspaceRoot) })
     } else if (ide === 'universal') {
       results.push({ ide, paths: injectUniversal(workspaceRoot) })
     } else {
@@ -225,6 +425,16 @@ function injectOpenCodeSkill(workspaceRoot: string): string[] {
   return [fileRel]
 }
 
+function injectAntigravitySkill(workspaceRoot: string): string[] {
+  const root = resolve(workspaceRoot)
+  const skillRel = join('.agent', 'skills', 'reopenspec')
+  const skillDir = join(root, skillRel)
+  ensureDir(skillDir)
+  const fileRel = join(skillRel, 'SKILL.md').replace(/\\/g, '/')
+  writeFileSync(join(skillDir, 'SKILL.md'), ANTIGRAVITY_SKILL_MD, 'utf8')
+  return [fileRel]
+}
+
 function injectUniversal(workspaceRoot: string): string[] {
   const root = resolve(workspaceRoot)
   const dir = join(root, '.ai-context')
@@ -234,6 +444,6 @@ function injectUniversal(workspaceRoot: string): string[] {
     writeFileSync(join(root, rel), body, 'utf8')
     paths.push(rel.replace(/\\/g, '/'))
   }
-  w(join('.ai-context', 'AGENTS.md'), REOPENSPEC_RULES)
+  w(join('.ai-context', 'AGENTS.md'), REOPENSPEC_ALL_IN_ONE)
   return paths
 }

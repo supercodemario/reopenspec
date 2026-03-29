@@ -20,7 +20,6 @@
           "char": "c",
           "description": "Workspace root",
           "name": "cwd",
-          "default": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
           "default": ".",
           "hasDynamicHelp": false,
           "multiple": false,
@@ -284,9 +283,10 @@
     "inject": {
       "aliases": [],
       "args": {},
-      "description": "Write IDE workflow files (Cursor rules, .ai-context) for detected editors.",
+      "description": "Write IDE workflow files for targets in reopenspec.local.json (ideSetup.targets), or else for editors detected from workspace folders.",
       "examples": [
-        "<%= config.bin %> inject"
+        "<%= config.bin %> inject",
+        "<%= config.bin %> inject --all"
       ],
       "flags": {
         "cwd": {
@@ -297,6 +297,12 @@
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
+        },
+        "all": {
+          "description": "Write ReOpenSpec files for every supported agent/IDE in the catalog (ignores local profile detection)",
+          "name": "all",
+          "allowNo": false,
+          "type": "boolean"
         }
       },
       "hasDynamicHelp": false,

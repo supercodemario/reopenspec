@@ -58,15 +58,12 @@ export type ResolvedReopenSpecConfig = {
 }
 
 const defaults: ResolvedReopenSpecConfig = {
-  baselinePath: `${REOPENSPEC_PROJECT_ROOT}/specs/.meta/arch-baseline.json`,
-  driftReportPath: `${REOPENSPEC_PROJECT_ROOT}/specs/.meta/drift-report.json`,
-  specsDir: DEFAULT_SPECS_DIR,
   heroName: '',
   role: 'developer',
   heroEmoji: DEFAULT_ROLE_EMOJI.developer,
-  baselinePath: 'specs/.meta/arch-baseline.json',
-  driftReportPath: 'specs/.meta/drift-report.json',
-  specsDir: 'specs',
+  baselinePath: `${REOPENSPEC_PROJECT_ROOT}/specs/.meta/arch-baseline.json`,
+  driftReportPath: `${REOPENSPEC_PROJECT_ROOT}/specs/.meta/drift-report.json`,
+  specsDir: DEFAULT_SPECS_DIR,
   strictUncovered: false,
 }
 

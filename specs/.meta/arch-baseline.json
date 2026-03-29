@@ -2,13 +2,13 @@
   "schemaVersion": "0.2.0",
   "meta": {
     "version": "1",
-    "generated_at": "2026-03-28T15:56:54.671Z",
-    "commit_hash": "d4dc90ebe96e407cf410120b284ac1cff73cb043",
+    "generated_at": "2026-03-29T08:43:10.116Z",
+    "commit_hash": "a83615b0ee5ead2fab78f44f2052fec75aa5fed6",
     "languages": [
       "typescript"
     ]
   },
-  "generatedAt": "2026-03-28T15:56:54.671Z",
+  "generatedAt": "2026-03-29T08:43:10.116Z",
   "workspaceRoot": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
   "languageProfile": {
     "primary": "typescript",
@@ -136,12 +136,35 @@
       "depends_on": []
     },
     {
+      "id": "src/lib/ide-mcp-config",
+      "path": "src/lib/ide-mcp-config.ts",
+      "language": "typescript",
+      "exports": [
+        "CursorMcpServerEntry",
+        "CursorMcpFile",
+        "IdeMcpTargetId",
+        "IdeMcpTarget"
+      ],
+      "depends_on": []
+    },
+    {
       "id": "src/lib/injector",
       "path": "src/lib/injector.ts",
       "language": "typescript",
       "exports": [
         "DetectedIde",
-        "InjectionResult"
+        "InjectionResult",
+        "InjectForIdesOptions"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup",
+      "path": "src/lib/mcp-interactive-setup.ts",
+      "language": "typescript",
+      "exports": [
+        "McpSetupLog",
+        "McpInteractiveOptions"
       ],
       "depends_on": []
     },
@@ -281,7 +304,9 @@
       "src/lib/baseline-modules",
       "src/lib/detect-profile",
       "src/lib/drift",
+      "src/lib/ide-mcp-config",
       "src/lib/injector",
+      "src/lib/mcp-interactive-setup",
       "src/lib/reopenspec-config",
       "src/lib/reopenspec-local-profile",
       "src/lib/spec-types"
@@ -314,19 +339,19 @@
       "column": 1
     },
     {
-      "id": "src/commands/init.ts:132:export.class:Init",
+      "id": "src/commands/init.ts:138:export.class:Init",
       "kind": "export.class",
       "name": "Init",
       "file": "src/commands/init.ts",
-      "line": 132,
+      "line": 138,
       "column": 1
     },
     {
-      "id": "src/commands/inject.ts:5:export.class:Inject",
+      "id": "src/commands/inject.ts:6:export.class:Inject",
       "kind": "export.class",
       "name": "Inject",
       "file": "src/commands/inject.ts",
-      "line": 5,
+      "line": 6,
       "column": 1
     },
     {
@@ -426,35 +451,67 @@
       "column": 1
     },
     {
-      "id": "src/lib/drift.ts:6:export.type:DriftCategory",
+      "id": "src/lib/drift.ts:7:export.type:DriftCategory",
       "kind": "export.type",
       "name": "DriftCategory",
       "file": "src/lib/drift.ts",
-      "line": 6,
+      "line": 7,
       "column": 1
     },
     {
-      "id": "src/lib/drift.ts:12:export.type:DriftSeverity",
+      "id": "src/lib/drift.ts:13:export.type:DriftSeverity",
       "kind": "export.type",
       "name": "DriftSeverity",
       "file": "src/lib/drift.ts",
-      "line": 12,
+      "line": 13,
       "column": 1
     },
     {
-      "id": "src/lib/drift.ts:14:export.type:DriftFinding",
+      "id": "src/lib/drift.ts:15:export.type:DriftFinding",
       "kind": "export.type",
       "name": "DriftFinding",
       "file": "src/lib/drift.ts",
-      "line": 14,
+      "line": 15,
       "column": 1
     },
     {
-      "id": "src/lib/drift.ts:24:export.type:DriftReport",
+      "id": "src/lib/drift.ts:25:export.type:DriftReport",
       "kind": "export.type",
       "name": "DriftReport",
       "file": "src/lib/drift.ts",
-      "line": 24,
+      "line": 25,
+      "column": 1
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:9:export.type:CursorMcpServerEntry",
+      "kind": "export.type",
+      "name": "CursorMcpServerEntry",
+      "file": "src/lib/ide-mcp-config.ts",
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:17:export.type:CursorMcpFile",
+      "kind": "export.type",
+      "name": "CursorMcpFile",
+      "file": "src/lib/ide-mcp-config.ts",
+      "line": 17,
+      "column": 1
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:100:export.type:IdeMcpTargetId",
+      "kind": "export.type",
+      "name": "IdeMcpTargetId",
+      "file": "src/lib/ide-mcp-config.ts",
+      "line": 100,
+      "column": 1
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:102:export.type:IdeMcpTarget",
+      "kind": "export.type",
+      "name": "IdeMcpTarget",
+      "file": "src/lib/ide-mcp-config.ts",
+      "line": 102,
       "column": 1
     },
     {
@@ -466,35 +523,59 @@
       "column": 1
     },
     {
-      "id": "src/lib/injector.ts:185:export.type:InjectionResult",
+      "id": "src/lib/injector.ts:331:export.type:InjectionResult",
       "kind": "export.type",
       "name": "InjectionResult",
       "file": "src/lib/injector.ts",
-      "line": 185,
+      "line": 331,
       "column": 1
     },
     {
-      "id": "src/lib/reopenspec-config.ts:24:export.type:LocalIdeSetup",
+      "id": "src/lib/injector.ts:351:export.type:InjectForIdesOptions",
+      "kind": "export.type",
+      "name": "InjectForIdesOptions",
+      "file": "src/lib/injector.ts",
+      "line": 351,
+      "column": 1
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:11:export.type:McpSetupLog",
+      "kind": "export.type",
+      "name": "McpSetupLog",
+      "file": "src/lib/mcp-interactive-setup.ts",
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:110:export.type:McpInteractiveOptions",
+      "kind": "export.type",
+      "name": "McpInteractiveOptions",
+      "file": "src/lib/mcp-interactive-setup.ts",
+      "line": 110,
+      "column": 1
+    },
+    {
+      "id": "src/lib/reopenspec-config.ts:30:export.type:LocalIdeSetup",
       "kind": "export.type",
       "name": "LocalIdeSetup",
       "file": "src/lib/reopenspec-config.ts",
-      "line": 24,
+      "line": 30,
       "column": 1
     },
     {
-      "id": "src/lib/reopenspec-config.ts:34:export.type:ReopenSpecConfigFile",
+      "id": "src/lib/reopenspec-config.ts:40:export.type:ReopenSpecConfigFile",
       "kind": "export.type",
       "name": "ReopenSpecConfigFile",
       "file": "src/lib/reopenspec-config.ts",
-      "line": 34,
+      "line": 40,
       "column": 1
     },
     {
-      "id": "src/lib/reopenspec-config.ts:43:export.type:ResolvedReopenSpecConfig",
+      "id": "src/lib/reopenspec-config.ts:49:export.type:ResolvedReopenSpecConfig",
       "kind": "export.type",
       "name": "ResolvedReopenSpecConfig",
       "file": "src/lib/reopenspec-config.ts",
-      "line": 43,
+      "line": 49,
       "column": 1
     },
     {
@@ -702,7 +783,10 @@
       "line": 2,
       "moduleSpecifier": "node:fs",
       "names": [
+        "appendFileSync",
+        "existsSync",
         "mkdirSync",
+        "readFileSync",
         "writeFileSync"
       ]
     },
@@ -780,10 +864,32 @@
       ]
     },
     {
-      "id": "src/commands/init.ts:20:import:../lib/reopenspec-local-profile.js",
+      "id": "src/commands/init.ts:20:import:../lib/mcp-interactive-setup.js",
       "kind": "imports",
       "fromFile": "src/commands/init.ts",
       "line": 20,
+      "moduleSpecifier": "../lib/mcp-interactive-setup.js",
+      "names": [
+        "runMcpInteractiveSetup"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:21:import:../lib/workflow-copy.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 21,
+      "moduleSpecifier": "../lib/workflow-copy.js",
+      "names": [
+        "copyProjectYamlTemplate",
+        "copyReopenSpecModelDocIfMissing",
+        "copyWorkflowCommandsToProject"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:26:import:../lib/reopenspec-local-profile.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 26,
       "moduleSpecifier": "../lib/reopenspec-local-profile.js",
       "names": [
         "resolveHeroEmoji"
@@ -817,7 +923,18 @@
       "line": 3,
       "moduleSpecifier": "../lib/injector.js",
       "names": [
+        "IDE_CATALOG",
         "injectForIdes"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:4:import:../lib/reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/reopenspec-config.js",
+      "names": [
+        "loadLocalProfile"
       ]
     },
     {
@@ -1136,10 +1253,20 @@
       ]
     },
     {
-      "id": "src/lib/drift.ts:4:import:./load-specs.js",
+      "id": "src/lib/drift.ts:4:import:./reopenspec-config.js",
       "kind": "imports",
       "fromFile": "src/lib/drift.ts",
       "line": 4,
+      "moduleSpecifier": "./reopenspec-config.js",
+      "names": [
+        "DEFAULT_SPECS_DIR"
+      ]
+    },
+    {
+      "id": "src/lib/drift.ts:5:import:./load-specs.js",
+      "kind": "imports",
+      "fromFile": "src/lib/drift.ts",
+      "line": 5,
       "moduleSpecifier": "./load-specs.js",
       "names": [
         "loadFeatureSpecs"
@@ -1153,6 +1280,39 @@
       "moduleSpecifier": "node:child_process",
       "names": [
         "execFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/ide-mcp-config.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync",
+        "mkdirSync",
+        "readFileSync",
+        "writeFileSync"
+      ]
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:2:import:node:os",
+      "kind": "imports",
+      "fromFile": "src/lib/ide-mcp-config.ts",
+      "line": 2,
+      "moduleSpecifier": "node:os",
+      "names": [
+        "homedir"
+      ]
+    },
+    {
+      "id": "src/lib/ide-mcp-config.ts:3:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/ide-mcp-config.ts",
+      "line": 3,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join"
       ]
     },
     {
@@ -1195,8 +1355,10 @@
       "line": 1,
       "moduleSpecifier": "node:fs",
       "names": [
+        "appendFileSync",
         "existsSync",
         "mkdirSync",
+        "statSync",
         "writeFileSync"
       ]
     },
@@ -1207,6 +1369,7 @@
       "line": 2,
       "moduleSpecifier": "node:path",
       "names": [
+        "dirname",
         "join",
         "resolve"
       ]
@@ -1235,6 +1398,16 @@
       ]
     },
     {
+      "id": "src/lib/load-specs.ts:4:import:./reopenspec-config.js",
+      "kind": "imports",
+      "fromFile": "src/lib/load-specs.ts",
+      "line": 4,
+      "moduleSpecifier": "./reopenspec-config.js",
+      "names": [
+        "DEFAULT_SPECS_DIR"
+      ]
+    },
+    {
       "id": "src/lib/load-specs.ts:3:import:fast-glob",
       "kind": "imports",
       "fromFile": "src/lib/load-specs.ts",
@@ -1242,6 +1415,51 @@
       "moduleSpecifier": "fast-glob",
       "names": [
         "fg"
+      ]
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/mcp-interactive-setup.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "existsSync"
+      ]
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:2:import:node:readline/promises",
+      "kind": "imports",
+      "fromFile": "src/lib/mcp-interactive-setup.ts",
+      "line": 2,
+      "moduleSpecifier": "node:readline/promises",
+      "names": [
+        "createInterface",
+        "type Interface"
+      ]
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:3:import:node:process",
+      "kind": "imports",
+      "fromFile": "src/lib/mcp-interactive-setup.ts",
+      "line": 3,
+      "moduleSpecifier": "node:process",
+      "names": [
+        "stdin",
+        "stdout"
+      ]
+    },
+    {
+      "id": "src/lib/mcp-interactive-setup.ts:4:import:./ide-mcp-config.js",
+      "kind": "imports",
+      "fromFile": "src/lib/mcp-interactive-setup.ts",
+      "line": 4,
+      "moduleSpecifier": "./ide-mcp-config.js",
+      "names": [
+        "type CursorMcpServerEntry",
+        "getIdeMcpTarget",
+        "mergeMcpServers",
+        "type IdeMcpTargetId"
       ]
     },
     {
@@ -1278,6 +1496,29 @@
         "DEFAULT_ROLE_EMOJI",
         "isLocalUserRole",
         "resolveHeroEmoji"
+      ]
+    },
+    {
+      "id": "src/lib/workflow-copy.ts:1:import:node:fs",
+      "kind": "imports",
+      "fromFile": "src/lib/workflow-copy.ts",
+      "line": 1,
+      "moduleSpecifier": "node:fs",
+      "names": [
+        "copyFileSync",
+        "existsSync",
+        "mkdirSync",
+        "readdirSync"
+      ]
+    },
+    {
+      "id": "src/lib/workflow-copy.ts:2:import:node:path",
+      "kind": "imports",
+      "fromFile": "src/lib/workflow-copy.ts",
+      "line": 2,
+      "moduleSpecifier": "node:path",
+      "names": [
+        "join"
       ]
     },
     {

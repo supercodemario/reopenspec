@@ -1,10 +1,8 @@
 import { Command, Flags } from '@oclif/core'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createInterface } from 'node:readline/promises'
 import { join, relative, resolve } from 'node:path'
 import type { ArchBaseline } from '../lib/baseline.js'
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
 import { buildBaseline } from '../lib/baseline.js'
 import { IDE_CATALOG, injectForIdes } from '../lib/injector.js'
 import { printWelcomeBanner, promptRoleInteractive, runInteractiveIdeSetup } from '../lib/init-tui.js'
@@ -147,8 +145,6 @@ export default class Init extends Command {
     '<%= config.bin %> init --skip-workflow',
     '<%= config.bin %> init --skip-mcp-setup',
   ]
-    'Create specs/.meta, scan TypeScript, write arch-baseline.json, reopenspec.json, and inject IDE workflows. Interactive TTY: hero name (Enter keeps saved name; with saved IDE targets, skips role/IDE setup), role picker, IDE scan + multi-select (reopenspec.local.json), then a workspace snapshot (config, languages, architecture).'
-  static override examples = ['<%= config.bin %> init', '<%= config.bin %> init -c . --force']
 
   static override flags = {
     cwd: Flags.string({
@@ -288,7 +284,12 @@ export default class Init extends Command {
     }
 
     if (!flags.skipInject) {
-      const injections = injectForIdes(cwd)
+      const lpInject = loadLocalProfile(cwd)
+      const injectOpts =
+        lpInject.ideSetup?.targets !== undefined && lpInject.ideSetup.targets.length > 0
+          ? { ideTargets: lpInject.ideSetup.targets }
+          : undefined
+      const injections = injectForIdes(cwd, injectOpts)
       for (const inj of injections) {
         if (inj.paths.length > 0) {
           this.log(`Injected (${inj.ide}): ${inj.paths.join(', ')}`)
@@ -361,9 +362,5 @@ export default class Init extends Command {
       log: (m) => this.log(m),
       warn: (m) => this.warn(m),
     })
-
-    this.log(
-      `Summary: ${baseline.modules.length} module(s), ${baseline.nodes.length} export node(s), languages: ${baseline.meta.languages.join(', ') || '(none)'}`,
-    )
   }
 }
