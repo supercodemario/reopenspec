@@ -1,6 +1,6 @@
 # ReOpenSpec
 
-**Spec-driven development with a deterministic code snapshot.** ReOpenSpec is a small CLI (`reo`) that scans your repo into `arch-baseline.json`, compares each feature’s `api-contracts.json` to that baseline (drift), and injects short IDE rules so agents read those files instead of guessing from RAG alone.
+**Spec-driven development with a deterministic code snapshot.** ReOpenSpec is a small CLI (`reo`) that scans your repo into `arch-baseline.json`, compares each feature’s `api-contracts.json` to that baseline (drift), and injects short IDE rules so agents **ground** structure and contracts in those files (especially for blueprint and spec alignment) while **still reading and editing real code** when implementing.
 
 It sits in the same problem space as [OpenSpec](https://github.com/Fission-AI/OpenSpec) (specs in git, AI-assisted workflows) and adds **AST-grounded structure + drift**. Narrative docs like `architecture.md` stay **author- and agent-written in the IDE**; `reo` assists with facts and structured checks.
 

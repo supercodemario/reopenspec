@@ -5,17 +5,24 @@ export type DetectedIde = 'cursor' | 'windsurf' | 'roo' | 'cline' | 'universal'
 
 const REOPENSPEC_RULES = `# ReOpenSpec
 
-Do not infer architecture from the codebase. Read \`/reopenspec/specs/.meta/arch-baseline.json\` (or the path in \`reopenspec.json\`) and use only what is declared there. If a module or interface you need is not in the baseline, flag it as an open question — do not assume it.
+**What the baseline is:** \`arch-baseline.json\` (path in \`reopenspec.json\`, usually \`reopenspec/specs/.meta/arch-baseline.json\`) is the **AST-grounded export snapshot** from \`reo sync\`. Use it especially for **first-time /reo-blueprint** work and whenever you need **accurate module and public-API structure** without guessing.
+
+**How to use it:** Prefer baseline + \`reopenspec/specs/\` (and \`api-contracts.json\`) for **structural truth** — which files export what, how contracts map to symbols. If something is missing from the baseline, say so and suggest \`reo sync\` or treat it as an open question — do not invent modules or exports.
+
+**Codebase access:** You **may and should** read and edit application source when **implementing** features, fixes, or reviews. The baseline does **not** replace reading code for those tasks; it **grounds** specs and drift checks so structure and contracts stay honest.
+
 `
 
 const WORKFLOW_START = `# ReOpenSpec: Start Feature
 
-Load architectural context from the baseline JSON only (see \`reopenspec.json\` paths). Traceable workflow: \`reo init\` → \`/reo-blueprint\` → \`/reo-plan\` → \`reopenspec/changes/active/<id>/\` → \`/reo-proceed-plan\`. See \`commands/README.md\` in the ReOpenSpec package/repo.
+Use **baseline JSON** + \`reopenspec/specs/\` for initial architecture and planning context (especially **blueprint**). Then follow the traceable workflow: \`reo init\` → \`/reo-blueprint\` → \`/reo-plan\` → \`reopenspec/changes/active/<id>/\` → \`/reo-proceed-plan\`. See \`commands/README.md\` in the ReOpenSpec package/repo.
+
 `
 
 const WORKFLOW_SYNC = `# ReOpenSpec: Sync Spec
 
-Read the baseline and drift report, compare to the chosen feature spec, and reconcile spec vs code with the developer.
+Read the baseline and drift report, compare to the chosen feature spec, and reconcile spec vs code with the developer. Open real source files when you need detail beyond the JSON snapshot.
+
 `
 
 export function detectIdes(workspaceRoot: string): DetectedIde[] {
