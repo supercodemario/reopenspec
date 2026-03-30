@@ -1,0 +1,34 @@
+---
+description: Symfony automated testing standards and guidelines
+globs: "**/*.php, !var/**, !vendor/**"
+alwaysApply: false
+---
+
+# Symfony Testing Standards
+
+These rules define the required testing practices for Symfony applications.
+
+---
+
+## Global Requirements
+- Always start files with `<?php` and `declare(strict_types=1);`.
+- All test files and functions must adhere to the PSR-12 styling guide.
+
+## Testing Framework
+- **PHPUnit** is the required framework for all tests.
+- Maintain a test directory structure that mirrors the `src/` directory.
+
+## Unit Testing
+- Thoroughly test all business logic living in `Service/` and `Domain/`.
+- Isolate the Unit Under Test by mocking dependencies, especially external APIs, Databases, and Repositories.
+- Controllers should not have complex unit tests because they contain no business logic.
+
+## Functional / Integration Testing
+- Functional tests are required for all controllers. Ensure endpoints return expected HTTP status codes and correct payloads.
+- Use Symfony's `WebTestCase` for simulating HTTP requests.
+- Verify that request validation rules work by testing missing payloads or invalid formats.
+- Database tests should use an isolated or in-memory testing database. Do not write test data to the production database schema.
+
+## Code Quality
+- Tests should use early returns and avoid deep nesting.
+- Name tests descriptively following behavior-driven naming (e.g., `testUserRegistrationFailsWhenEmailIsMissing()`).

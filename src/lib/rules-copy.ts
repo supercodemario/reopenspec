@@ -74,7 +74,13 @@ export function copyRulesToProject(opts: RuleCopyOptions): RuleCopyResult {
 
   // 2. Backend-specific rules
   if (effectiveBackend) {
-    const backendDir = join(rulesRoot, 'specific', 'backend', effectiveBackend)
+    // For sub-stacks like 'php/symfony', resolve as base 'php' + sub-folder 'symfony'
+    const parts = effectiveBackend.split('/')
+    const baseStack = parts[0]!
+    const subStack = parts.length > 1 ? parts[1] : null
+
+    // Copy base stack rules (e.g. rules/specific/backend/php/*.mdc)
+    const backendDir = join(rulesRoot, 'specific', 'backend', baseStack)
     if (existsSync(backendDir)) {
       for (const file of readdirSync(backendDir)) {
         if (!file.endsWith('.mdc') && !file.endsWith('.md')) continue
@@ -83,7 +89,22 @@ export function copyRulesToProject(opts: RuleCopyOptions): RuleCopyResult {
         copied.push(join(opts.ideRulesDir, destName))
       }
     } else {
-      skipped.push({ category: `backend/${effectiveBackend}`, reason: 'no rule templates found for this stack yet' })
+      skipped.push({ category: `backend/${baseStack}`, reason: 'no rule templates found for this stack yet' })
+    }
+
+    // Copy sub-stack rules (e.g. rules/specific/backend/php/symfony/*.mdc)
+    if (subStack) {
+      const subDir = join(backendDir, subStack)
+      if (existsSync(subDir)) {
+        for (const file of readdirSync(subDir)) {
+          if (!file.endsWith('.mdc') && !file.endsWith('.md')) continue
+          const destName = sanitizeRuleFilename(file)
+          copyFileSync(join(subDir, file), join(dest, destName))
+          copied.push(join(opts.ideRulesDir, destName))
+        }
+      } else {
+        skipped.push({ category: `backend/${effectiveBackend}`, reason: `no rule templates found for sub-stack '${subStack}' yet` })
+      }
     }
   } else {
     skipped.push({ category: 'backend', reason: 'no backend stack detected or specified' })
