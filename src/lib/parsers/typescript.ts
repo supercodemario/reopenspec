@@ -6,7 +6,8 @@ import type { BaselineNode, BaselineEdge } from '../baseline.js'
 import type { ParserAdapter } from './types.js'
 
 function langForFile(file: string): Lang {
-  return basename(file).endsWith('.tsx') ? Lang.Tsx : Lang.TypeScript
+  // Use Tsx strictly since it flawlessly parses vanilla JS, TS, and JSX interchangeably!
+  return Lang.Tsx
 }
 
 function lineCol(node: SgNode): { line: number; column: number } {
@@ -50,10 +51,10 @@ function namesFromNamedImportNode(n: SgNode): string[] {
 }
 
 export const TypeScriptParser: ParserAdapter = {
-  language: 'TypeScript / TSX',
+  language: 'TypeScript / JavaScript',
   profileName: 'typescript',
-  extensions: ['.ts', '.tsx'],
-  ignore: ['**/*.test.ts', '**/*.spec.ts'],
+  extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'],
+  ignore: ['**/*.test.ts', '**/*.test.js', '**/*.spec.ts', '**/*.spec.js'],
   scanAsync: async (absPath: string, workspaceRoot: string) => {
     const lang = langForFile(absPath)
     const rel = relative(workspaceRoot, absPath).replace(/\\/g, '/')

@@ -1,6 +1,6 @@
 {
   "name": "reopenspec",
-  "version": "0.2.7",
+  "version": "0.2.9",
   "description": "ReOpenSpec CLI — spec-driven architecture baseline, drift checks, and IDE workflow injection.",
   "license": "MIT",
   "author": "Ajithkumar S",
@@ -14,6 +14,7 @@
     "commands",
     "docs",
     "templates",
+    "rules",
     "oclif.manifest.json",
     "LICENSE",
     "README.md"

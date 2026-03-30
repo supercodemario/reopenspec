@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
-export type DetectedIde = 'cursor' | 'windsurf' | 'roo' | 'cline' | 'universal'
+export type DetectedIde = 'cursor' | 'windsurf' | 'roo' | 'cline' | 'antigravity' | 'universal'
 
 const REOPENSPEC_RULES = `# ReOpenSpec
 
@@ -32,6 +32,7 @@ export function detectIdes(workspaceRoot: string): DetectedIde[] {
   if (existsSync(join(root, '.windsurf'))) found.push('windsurf')
   if (existsSync(join(root, '.roo'))) found.push('roo')
   if (existsSync(join(root, '.clinerules'))) found.push('cline')
+  if (existsSync(join(root, '.agents'))) found.push('antigravity')
   return found
 }
 
@@ -44,16 +45,19 @@ export function detectIdesWithFallback(workspaceRoot: string): DetectedIde[] {
 export type InjectionResult = { ide: DetectedIde; paths: string[] }
 
 /** Write IDE workflow files (rules markdown). Does not register MCP servers. */
-export function injectForIdes(workspaceRoot: string): InjectionResult[] {
-  const ides = detectIdesWithFallback(workspaceRoot)
+export function injectForIdes(workspaceRoot: string, explicitIdes?: DetectedIde[]): InjectionResult[] {
+  const ides = explicitIdes && explicitIdes.length > 0 ? explicitIdes : detectIdesWithFallback(workspaceRoot)
   const results: InjectionResult[] = []
 
   for (const ide of ides) {
-    if (ide === 'cursor') {
-      const paths = injectCursor(workspaceRoot)
+    if (ide === 'cursor' || ide === 'windsurf' || ide === 'roo' || ide === 'cline') {
+      const paths = injectCursor(workspaceRoot, ide)
       results.push({ ide, paths })
     } else if (ide === 'universal') {
       const paths = injectUniversal(workspaceRoot)
+      results.push({ ide, paths })
+    } else if (ide === 'antigravity') {
+      const paths = injectAntigravity(workspaceRoot)
       results.push({ ide, paths })
     } else {
       results.push({ ide, paths: [] })
@@ -62,13 +66,20 @@ export function injectForIdes(workspaceRoot: string): InjectionResult[] {
   return results
 }
 
+
 function ensureDir(p: string): void {
   mkdirSync(p, { recursive: true })
 }
 
-function injectCursor(workspaceRoot: string): string[] {
+function injectCursor(workspaceRoot: string, ide: string): string[] {
   const root = resolve(workspaceRoot)
-  const rulesDir = join(root, '.cursor', 'rules')
+  
+  let rulesRel = '.cursor/rules'
+  if (ide === 'windsurf') rulesRel = '.windsurfrules'
+  if (ide === 'roo') rulesRel = '.roo'
+  if (ide === 'cline') rulesRel = '.cline'
+  
+  const rulesDir = join(root, rulesRel)
   ensureDir(rulesDir)
   const out: string[] = []
   const w = (rel: string, body: string) => {
@@ -76,9 +87,9 @@ function injectCursor(workspaceRoot: string): string[] {
     writeFileSync(abs, body, 'utf8')
     out.push(rel)
   }
-  w(join('.cursor', 'rules', 'reopenspec.md'), REOPENSPEC_RULES)
-  w(join('.cursor', 'rules', 'reo-start-feature.md'), WORKFLOW_START)
-  w(join('.cursor', 'rules', 'reo-sync-spec.md'), WORKFLOW_SYNC)
+  w(join(rulesRel, 'reopenspec.md'), REOPENSPEC_RULES)
+  w(join(rulesRel, 'reo-start-feature.md'), WORKFLOW_START)
+  w(join(rulesRel, 'reo-sync-spec.md'), WORKFLOW_SYNC)
   return out
 }
 
@@ -93,4 +104,20 @@ function injectUniversal(workspaceRoot: string): string[] {
   }
   w(join('.ai-context', 'AGENTS.md'), REOPENSPEC_RULES)
   return paths
+}
+
+function injectAntigravity(workspaceRoot: string): string[] {
+  const root = resolve(workspaceRoot)
+  const rulesDir = join(root, '.agents', 'rules')
+  ensureDir(rulesDir)
+  const out: string[] = []
+  const w = (rel: string, body: string) => {
+    const abs = join(root, rel)
+    writeFileSync(abs, body, 'utf8')
+    out.push(rel)
+  }
+  w(join('.agents', 'rules', 'reopenspec.md'), REOPENSPEC_RULES)
+  w(join('.agents', 'rules', 'reo-start-feature.md'), WORKFLOW_START)
+  w(join('.agents', 'rules', 'reo-sync-spec.md'), WORKFLOW_SYNC)
+  return out
 }

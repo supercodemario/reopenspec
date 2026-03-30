@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 
 /**
  * Cursor user MCP config (typically `~/.cursor/mcp.json`).
@@ -20,14 +20,17 @@ export type CursorMcpFile = {
 
 /** Display path for logs (actual path uses {@link cursorMcpPath}). */
 export const CURSOR_MCP_CONFIG_DISPLAY = '~/.cursor/mcp.json'
+export const ANTIGRAVITY_MCP_CONFIG_DISPLAY = '~/.gemini/antigravity/mcp_config.json'
 
 export function cursorMcpPath(): string {
   return join(homedir(), '.cursor', 'mcp.json')
 }
 
-/** `workspaceRoot` is ignored; kept for {@link IdeMcpTarget} compatibility. */
-export function readCursorMcpFile(_workspaceRoot: string): CursorMcpFile | null {
-  const p = cursorMcpPath()
+export function antigravityMcpPath(): string {
+  return join(homedir(), '.gemini', 'antigravity', 'mcp_config.json')
+}
+
+function readMcpFileFromPath(p: string): CursorMcpFile | null {
   if (!existsSync(p)) return null
   let parsed: unknown
   try {
@@ -44,6 +47,15 @@ export function readCursorMcpFile(_workspaceRoot: string): CursorMcpFile | null 
     if (v && typeof v === 'object') mcpServers[name] = v as CursorMcpServerEntry
   }
   return { mcpServers }
+}
+
+/** `workspaceRoot` is ignored; kept for {@link IdeMcpTarget} compatibility. */
+export function readCursorMcpFile(_workspaceRoot: string): CursorMcpFile | null {
+  return readMcpFileFromPath(cursorMcpPath())
+}
+
+export function readAntigravityMcpFile(_workspaceRoot: string): CursorMcpFile | null {
+  return readMcpFileFromPath(antigravityMcpPath())
 }
 
 /** Drop undefined / empty-string values from env objects. */
@@ -87,17 +99,24 @@ export function mergeMcpServers(
   return next
 }
 
-/** `workspaceRoot` is ignored; kept for {@link IdeMcpTarget} compatibility. */
-export function writeCursorMcpFile(_workspaceRoot: string, data: CursorMcpFile): string {
-  const dir = join(homedir(), '.cursor')
+function writeMcpFileToPath(p: string, data: CursorMcpFile): string {
+  const dir = dirname(p)
   mkdirSync(dir, { recursive: true })
-  const p = cursorMcpPath()
   writeFileSync(p, `${JSON.stringify(data, null, 2)}\n`, 'utf8')
   return p
 }
 
-/** Extensible list of IDE targets that support MCP JSON merging (Cursor first). */
-export type IdeMcpTargetId = 'cursor'
+/** `workspaceRoot` is ignored; kept for {@link IdeMcpTarget} compatibility. */
+export function writeCursorMcpFile(_workspaceRoot: string, data: CursorMcpFile): string {
+  return writeMcpFileToPath(cursorMcpPath(), data)
+}
+
+export function writeAntigravityMcpFile(_workspaceRoot: string, data: CursorMcpFile): string {
+  return writeMcpFileToPath(antigravityMcpPath(), data)
+}
+
+/** Extensible list of IDE targets that support MCP JSON merging. */
+export type IdeMcpTargetId = 'cursor' | 'antigravity'
 
 export type IdeMcpTarget = {
   id: IdeMcpTargetId
@@ -118,6 +137,14 @@ export const IDE_MCP_TARGETS: IdeMcpTarget[] = [
     configFilePath: () => cursorMcpPath(),
     read: readCursorMcpFile,
     write: writeCursorMcpFile,
+  },
+  {
+    id: 'antigravity',
+    label: 'Antigravity',
+    relativeConfigPath: ANTIGRAVITY_MCP_CONFIG_DISPLAY,
+    configFilePath: () => antigravityMcpPath(),
+    read: readAntigravityMcpFile,
+    write: writeAntigravityMcpFile,
   },
 ]
 

@@ -184,7 +184,27 @@ export async function buildBaseline(workspaceRoot: string): Promise<ArchBaseline
 
   for (const adapter of ADAPTERS) {
     const globPatterns = adapter.extensions.map(ext => `**/*${ext}`)
-    const ignores = ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/coverage/**']
+    const ignores = [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.git/**',
+      '**/coverage/**',
+      '**/vendor/**',
+      '**/var/**',
+      '**/.venv/**',
+      '**/venv/**',
+      '**/.tox/**',
+      '**/__pycache__/**',
+      '**/.pytest_cache/**',
+      '**/.cache/**',
+      '**/cache/**',
+      '**/.next/**',
+      '**/.nuxt/**',
+      '**/bin/**',
+      '**/obj/**',
+      '**/.dart_tool/**',
+      '**/build/**'
+    ]
     if (adapter.ignore && adapter.ignore.length > 0) {
       ignores.push(...adapter.ignore)
     }

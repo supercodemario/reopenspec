@@ -155,17 +155,32 @@ export function copyRulesToProject(opts: RuleCopyOptions): RuleCopyResult {
   return { copied, skipped, effectiveBackend, effectiveFrontend }
 }
 
-/** Read the IDE preference from .reopenspec.user.yaml (defaults to 'cursor'). */
-export function readIdePreference(workspaceRoot: string): string {
+/** Read the IDE preferences from .reopenspec.user.yaml or auto-detect. */
+export function readIdePreferences(workspaceRoot: string): string[] {
   const userYaml = join(workspaceRoot, '.reopenspec.user.yaml')
-  if (!existsSync(userYaml)) return 'cursor'
+  if (!existsSync(userYaml)) {
+    const prefs: string[] = []
+    if (existsSync(join(workspaceRoot, '.agents'))) prefs.push('antigravity')
+    if (existsSync(join(workspaceRoot, '.cursor'))) prefs.push('cursor')
+    if (existsSync(join(workspaceRoot, '.windsurf'))) prefs.push('windsurf')
+    if (existsSync(join(workspaceRoot, '.roo'))) prefs.push('roo')
+    if (existsSync(join(workspaceRoot, '.clinerules'))) prefs.push('cline')
+    if (prefs.length === 0) prefs.push('cursor')
+    return prefs
+  }
   try {
     const content = readFileSync(userYaml, 'utf8')
-    // Simple YAML key extraction — avoid adding a YAML parser dependency
-    const match = content.match(/^ide:\s*["']?(\w+)["']?/m)
-    return match?.[1] ?? 'cursor'
+    // Match array IDE config (ide: [cursor, roo])
+    const arrayMatch = content.match(/^ide:\s*\[(.*?)\]/m)
+    if (arrayMatch) {
+      return arrayMatch[1]!.split(',').map(s => s.trim().replace(/['"]/g, '')).filter(Boolean)
+    }
+    // Match single IDE config (ide: cursor)
+    const singleMatch = content.match(/^ide:\s*["']?(\w+)["']?/m)
+    if (singleMatch && singleMatch[1]) return [singleMatch[1]]
+    return ['cursor']
   } catch {
-    return 'cursor'
+    return ['cursor']
   }
 }
 
@@ -176,6 +191,7 @@ export function ideRulesDir(ide: string): string {
     case 'windsurf': return '.windsurfrules'
     case 'roo': return '.roo'
     case 'cline': return '.cline'
+    case 'antigravity': return join('.agents', 'rules')
     default: return '.ai-context'
   }
 }

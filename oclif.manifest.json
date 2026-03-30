@@ -314,9 +314,10 @@
     "inject": {
       "aliases": [],
       "args": {},
-      "description": "Write IDE workflow files (Cursor rules, .ai-context) for detected editors.",
+      "description": "Write IDE workflow files (Cursor rules, .ai-context) and categorized .mdc rules for detected editors.",
       "examples": [
-        "<%= config.bin %> inject"
+        "<%= config.bin %> inject",
+        "<%= config.bin %> inject --frontend react --backend node"
       ],
       "flags": {
         "cwd": {
@@ -327,6 +328,49 @@
           "hasDynamicHelp": false,
           "multiple": false,
           "type": "option"
+        },
+        "backend": {
+          "description": "Backend stack override",
+          "name": "backend",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "dotnet",
+            "node",
+            "php",
+            "python"
+          ],
+          "type": "option"
+        },
+        "frontend": {
+          "description": "Frontend stack override",
+          "name": "frontend",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "vue",
+            "react",
+            "flutter"
+          ],
+          "type": "option"
+        },
+        "database": {
+          "description": "Include database/SQL rules",
+          "name": "database",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "devops": {
+          "description": "Include CI/CD and deployment rules",
+          "name": "devops",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "figma": {
+          "description": "Include Figma design rules",
+          "name": "figma",
+          "allowNo": false,
+          "type": "boolean"
         }
       },
       "hasDynamicHelp": false,
@@ -604,5 +648,5 @@
       ]
     }
   },
-  "version": "0.2.7"
+  "version": "0.2.9"
 }

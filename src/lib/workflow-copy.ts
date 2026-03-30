@@ -8,21 +8,29 @@ export function resolvePackageRootFromLib(): string {
 
 const COMMAND_GLOB = /^reo-.*\.md$|^README\.md$/
 
-/** Copy bundled Cursor command templates into `.cursor/commands/`. */
+import { readIdePreferences } from './rules-copy.js'
+
+/** Copy bundled Cursor command templates to all configured IDE workflow paths. */
 export function copyWorkflowCommandsToProject(workspaceRoot: string): string[] {
   const srcDir = join(resolvePackageRootFromLib(), 'commands')
   if (!existsSync(srcDir)) {
     throw new Error(`Workflow commands not found at ${srcDir} (install reopenspec or run from package clone)`)
   }
-  const destDir = join(workspaceRoot, '.cursor', 'commands')
-  mkdirSync(destDir, { recursive: true })
+  const ides = readIdePreferences(workspaceRoot)
   const written: string[] = []
-  for (const name of readdirSync(srcDir)) {
-    if (!COMMAND_GLOB.test(name)) continue
-    const from = join(srcDir, name)
-    const to = join(destDir, name)
-    copyFileSync(from, to)
-    written.push(join('.cursor', 'commands', name))
+  
+  for (const ide of ides) {
+    const destRel = ide === 'antigravity' ? join('.agents', 'workflows') : join('.cursor', 'commands')
+    const destDir = join(workspaceRoot, destRel)
+    mkdirSync(destDir, { recursive: true })
+    
+    for (const name of readdirSync(srcDir)) {
+      if (!COMMAND_GLOB.test(name)) continue
+      const from = join(srcDir, name)
+      const to = join(destDir, name)
+      copyFileSync(from, to)
+      written.push(join(destRel, name))
+    }
   }
   return written
 }

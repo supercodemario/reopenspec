@@ -58,23 +58,19 @@ async function collectEnvVars(rl: Interface): Promise<Record<string, string>> {
 
 async function presetAzureDevOps(rl: Interface): Promise<{ name: string; entry: CursorMcpServerEntry }> {
   const name =
-    (await ask(rl, 'MCP server name in config [azure-devops]: ')) || 'azure-devops'
-  const orgUrl = await ask(rl, 'AZURE_DEVOPS_ORG_URL (e.g. https://dev.azure.com/your-org): ')
-  const pat = await ask(rl, 'AZURE_DEVOPS_PAT: ')
-  const project = await ask(rl, 'AZURE_DEVOPS_DEFAULT_PROJECT (optional): ')
-  const auth =
-    (await ask(rl, 'AZURE_DEVOPS_AUTH_METHOD [pat]: ')) || 'pat'
+    (await ask(rl, 'MCP server name in config [azdo-onprem]: ')) || 'azdo-onprem'
+  const orgUrl = await ask(rl, 'AZURE_BASE_URL (e.g. https://devops.example.com/Collection/MyProject): ')
+  const pat = await ask(rl, 'AZURE_PAT: ')
+  
   const env: Record<string, string> = {
-    AZURE_DEVOPS_ORG_URL: orgUrl,
-    AZURE_DEVOPS_AUTH_METHOD: auth,
-    AZURE_DEVOPS_PAT: pat,
+    AZURE_BASE_URL: orgUrl,
+    AZURE_PAT: pat,
   }
-  if (project) env.AZURE_DEVOPS_DEFAULT_PROJECT = project
   return {
     name,
     entry: {
       command: 'npx',
-      args: ['-y', '@tiberriver256/mcp-server-azure-devops'],
+      args: ['-y', 'azdo-onprem-mcp'],
       env,
     },
   }
@@ -162,7 +158,7 @@ export async function runMcpInteractiveSetup(options: McpInteractiveOptions): Pr
     for (;;) {
       log('')
       log('Add an MCP server:')
-      log('  1) Azure DevOps (npx @tiberriver256/mcp-server-azure-devops)')
+      log('  1) Azure DevOps On-Prem / Cloud (npx azdo-onprem-mcp)')
       log('  2) Custom command (stdio)')
       log('  3) Custom remote URL (HTTPS/SSE) + optional Bearer token')
       log('  4) Done / write file')

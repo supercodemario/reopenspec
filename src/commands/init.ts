@@ -14,8 +14,46 @@ import {
   copyWorkflowCommandsToProject,
 } from '../lib/workflow-copy.js'
 import { detectStackProfile } from '../lib/detect-profile.js'
-import { copyRulesToProject, ideRulesDir, readIdePreference } from '../lib/rules-copy.js'
+import { copyRulesToProject, ideRulesDir, readIdePreferences } from '../lib/rules-copy.js'
 import type { BackendStack, FrontendStack } from '../lib/detect-profile.js'
+import { createInterface } from 'node:readline/promises'
+import { DetectedIde } from '../lib/injector.js'
+
+const IDE_CHOICES: { id: DetectedIde; label: string }[] = [
+  { id: 'cursor', label: 'Cursor (.cursor/rules)' },
+  { id: 'windsurf', label: 'Windsurf (.windsurfrules)' },
+  { id: 'roo', label: 'Roo (.roo)' },
+  { id: 'cline', label: 'Cline (.cline)' },
+  { id: 'antigravity', label: 'Antigravity (.agents/rules)' },
+]
+
+async function promptForIdes(cwd: string): Promise<DetectedIde[]> {
+  const current = readIdePreferences(cwd) as DetectedIde[]
+  if (!process.stdin.isTTY) return current
+
+  const rl = createInterface({ input: process.stdin, output: process.stdout })
+  try {
+    console.log('\nWhich IDEs do you want to route ReOpenSpec rules into?')
+    for (let i = 0; i < IDE_CHOICES.length; i++) {
+       console.log(`  ${i + 1}) ${IDE_CHOICES[i]!.label}`)
+    }
+    const currentList = current.join(', ')
+    const answer = await rl.question(`Enter comma-separated numbers (e.g. 1,5) [Auto-detected: ${currentList}]: `)
+    
+    if (!answer.trim()) return current
+    
+    const selected = answer.split(',')
+      .map(s => parseInt(s.trim(), 10))
+      .filter(n => !isNaN(n) && n >= 1 && n <= IDE_CHOICES.length)
+      
+    if (selected.length === 0) return current
+    return selected.map(n => IDE_CHOICES[n - 1]!.id)
+  } catch {
+    return current
+  } finally {
+    rl.close()
+  }
+}
 
 export default class Init extends Command {
   static override id = 'init'
@@ -109,6 +147,17 @@ export default class Init extends Command {
       this.log('Created .gitignore and added .reopenspec.user.yaml')
     }
 
+    const ides = await promptForIdes(cwd)
+    const userYamlPath = join(cwd, '.reopenspec.user.yaml')
+    let yamlContent = ''
+    if (existsSync(userYamlPath)) {
+      yamlContent = readFileSync(userYamlPath, 'utf8')
+      yamlContent = yamlContent.replace(/^ide:.*(?:(?:\r\n|\n).*)*$/gm, '') // Naive strip of old ide: section
+    }
+    yamlContent = yamlContent.trim() + `\nide: [${ides.join(', ')}]\n`
+    writeFileSync(userYamlPath, yamlContent.trim() + '\n')
+    this.log(`Set active IDE config: ${ides.join(', ')}`)
+
     const before = loadResolvedConfig(cwd)
     if (!before.fileExists || flags.force) {
       const p = writeDefaultConfigFile(cwd, flags.force)
@@ -129,7 +178,7 @@ export default class Init extends Command {
     }
 
     if (!flags.skipInject) {
-      const injections = injectForIdes(cwd)
+      const injections = injectForIdes(cwd, ides)
       for (const inj of injections) {
         if (inj.paths.length > 0) {
           this.log(`Injected (${inj.ide}): ${inj.paths.join(', ')}`)
@@ -181,36 +230,37 @@ export default class Init extends Command {
               hasFigma: false,
             }
 
-        const ide = readIdePreference(cwd)
-        const rulesDir = ideRulesDir(ide)
+        for (const ide of ides) {
+          const rulesDir = ideRulesDir(ide)
 
-        const result = copyRulesToProject({
-          workspaceRoot: cwd,
-          backend: (flags.backend as BackendStack) ?? null,
-          frontend: (flags.frontend as FrontendStack) ?? null,
-          database: flags.database,
-          devops: flags.devops,
-          figma: flags.figma,
-          detected,
-          ideRulesDir: rulesDir,
-        })
+          const result = copyRulesToProject({
+            workspaceRoot: cwd,
+            backend: (flags.backend as BackendStack) ?? null,
+            frontend: (flags.frontend as FrontendStack) ?? null,
+            database: flags.database,
+            devops: flags.devops,
+            figma: flags.figma,
+            detected,
+            ideRulesDir: rulesDir,
+          })
 
-        if (result.copied.length > 0) {
-          this.log(`Rules copied (${ide}, ${rulesDir}):`)
-          for (const r of result.copied) {
-            this.log(`  ${r}`)
+          if (result.copied.length > 0) {
+            this.log(`Rules copied to ${ide} (${rulesDir}):`)
+            for (const r of result.copied) {
+              this.log(`  ${r}`)
+            }
+            if (result.effectiveBackend) {
+              this.log(`  Backend stack: ${result.effectiveBackend}`)
+            }
+            if (result.effectiveFrontend) {
+              this.log(`  Frontend stack: ${result.effectiveFrontend}`)
+            }
           }
-          if (result.effectiveBackend) {
-            this.log(`  Backend stack: ${result.effectiveBackend}`)
-          }
-          if (result.effectiveFrontend) {
-            this.log(`  Frontend stack: ${result.effectiveFrontend}`)
-          }
-        }
-        if (result.skipped.length > 0) {
-          this.log('Rules skipped:')
-          for (const s of result.skipped) {
-            this.log(`  ${s.category}: ${s.reason}`)
+          if (result.skipped.length > 0) {
+            this.log(`Rules skipped for ${ide}:`)
+            for (const s of result.skipped) {
+              this.log(`  ${s.category}: ${s.reason}`)
+            }
           }
         }
       } catch (e) {
@@ -218,13 +268,17 @@ export default class Init extends Command {
       }
     }
 
-    await runMcpInteractiveSetup({
-      workspaceRoot: cwd,
-      skip: flags.skipMcpSetup,
-      ide: 'cursor',
-      log: (m) => this.log(m),
-      warn: (m) => this.warn(m),
-    })
+    for (const ide of ides) {
+      if (ide === 'cursor' || ide === 'antigravity') {
+        await runMcpInteractiveSetup({
+          workspaceRoot: cwd,
+          skip: flags.skipMcpSetup,
+          ide: ide as 'cursor' | 'antigravity',
+          log: (m) => this.log(m),
+          warn: (m) => this.warn(m),
+        })
+      }
+    }
 
     this.log(
       `Summary: ${baseline.modules.length} module(s), ${baseline.nodes.length} export node(s), languages: ${baseline.meta.languages.join(', ') || '(none)'}`,
