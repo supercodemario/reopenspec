@@ -1,0 +1,100 @@
+---
+description: Symfony development standards and architecture guidelines
+globs: "**/*.php, **/*.twig, !var/**, !vendor/**"
+alwaysApply: false
+---
+
+# Symfony Development Standards
+
+These rules enforce strict, modern Symfony practices for Symfony 6+ and PHP 8.2+.
+
+---
+
+## Global PHP Rules
+- Always use `<?php` followed by `declare(strict_types=1);` on a new line.
+- Follow PSR-12 coding standards.
+- Maximum line length is **200 characters**.
+- Use short arrays `[]`.
+- Typed properties and strict types are mandatory.
+- All methods must have return types. Do not use `mixed`.
+- Never return `null` for failure.
+- No `dd()`, `dump()`, `var_dump()`, `print_r()`, or `die()`.
+- Remove unused imports.
+- Prefer early returns over deep nesting.
+
+---
+
+## Naming Conventions
+- **Classes/Services**: `PascalCase`
+- **Controllers**: `PascalCaseController`
+- **Commands**: `PascalCaseCommand`
+- **DTOs**: `PascalCaseDto`
+- **Exceptions**: `PascalCaseException`
+- **Twig Templates**: `snake_case.html.twig`
+- **Routes**: `snake_case`
+
+---
+
+## Directory Structure
+Code should be organized in the `src/` directory following this structure:
+```text
+src/
+  Controller/
+  Service/
+  Domain/
+  Repository/
+  Dto/
+  Event/
+  Listener/
+  Command/
+  Security/
+  Validator/
+  Exception/
+```
+
+---
+
+## Architecture & Layering
+
+### Controllers
+- **Controllers must be extremely thin**.
+- Flow: Request → Service → Response.
+- Do not put business logic in controllers.
+- Use PHP Attributes for routing.
+
+### Services & Domain Logic
+- **All business logic belongs in `Service/` or `Domain/`**.
+- Always use constructor Dependency Injection (DI).
+- **Never** use the Service Locator pattern.
+
+### Repositories (Data Access)
+- Repositories are strictly for Database queries only.
+- No business logic in repositories.
+
+### Doctrine Entities
+- Entities must contain **state only** (no business logic).
+- Typed properties are mandatory.
+- Use PHP Attributes for ORM mapping.
+
+---
+
+## Data Transfer & Return Rules
+- Use DTOs (`PascalCaseDto`) instead of arrays for complex data.
+- Prefer DTOs and Value Objects over associative arrays.
+
+---
+
+## Symfony Practices
+- Use PHP Attributes for routes, DI configuration, and Doctrine mapping.
+- Use Symfony Messenger or Event Subscribers when relevant for decoupled logic.
+
+---
+
+## Exceptions
+- Only throw domain-specific custom exceptions (`PascalCaseException`).
+
+---
+
+## Testing
+- Use PHPUnit.
+- Write functional tests for all controllers.

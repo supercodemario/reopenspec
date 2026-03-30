@@ -6,7 +6,7 @@ export type LanguageProfile = {
   manifests: string[]
 }
 
-export type BackendStack = 'dotnet' | 'node' | 'php' | 'python' | null
+export type BackendStack = 'dotnet' | 'node' | 'php' | 'php/symfony' | 'python' | null
 export type FrontendStack = 'vue' | 'react' | 'flutter' | null
 
 export type StackProfile = {
@@ -99,8 +99,17 @@ export function detectBackendStack(cwd: string): BackendStack {
     return 'python'
   }
   // PHP: composer.json, artisan, or index.php
+  const composerPath = join(cwd, 'composer.json')
+  if (existsSync(composerPath)) {
+    try {
+      const content = readFileSync(composerPath, 'utf8')
+      if (content.includes('"symfony/')) {
+        return 'php/symfony'
+      }
+    } catch { /* ignore */ }
+    return 'php'
+  }
   if (
-    existsSync(join(cwd, 'composer.json')) ||
     existsSync(join(cwd, 'artisan')) ||
     hasFileWithExtension(cwd, '.php')
   ) {

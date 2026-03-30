@@ -98,8 +98,8 @@ export default class Init extends Command {
       default: false,
     }),
     backend: Flags.string({
-      description: 'Backend stack for specific rules (e.g. dotnet, node, php, python). Overrides auto-detection.',
-      options: ['dotnet', 'node', 'php', 'python'],
+      description: 'Backend stack for specific rules (e.g. dotnet, node, php, php/symfony, python). Overrides auto-detection.',
+      options: ['dotnet', 'node', 'php', 'php/symfony', 'python'],
     }),
     frontend: Flags.string({
       description: 'Frontend stack for specific rules (e.g. vue, react, flutter). Overrides auto-detection.',

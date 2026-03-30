@@ -7,7 +7,7 @@ export const PhpParser: ParserAdapter = {
   language: 'PHP',
   profileName: 'php',
   extensions: ['.php'],
-  ignore: ['**/vendor/**'],
+  ignore: ['**/vendor/**', '**/var/**'],
   scanAsync: async (absPath: string, workspaceRoot: string) => {
     const relFile = relative(workspaceRoot, absPath).replace(/\\/g, '/')
     const src = readFileSync(absPath, 'utf8')

@@ -1,0 +1,31 @@
+---
+description: Symfony security standards and best practices
+globs: "**/*.php, !var/**, !vendor/**"
+alwaysApply: false
+---
+
+# Symfony Security Standards
+
+These rules enforce secure coding practices within Symfony applications.
+
+---
+
+## Global Requirements
+- Always start files with `<?php` and `declare(strict_types=1);`.
+- All methods must have a return type. Never return `null` for failure.
+
+## Authentication & Authorization
+- Use Symfony's built-in `Security` component for user authentication and role validation.
+- Access Control must be verified via `#[IsGranted]` attributes on Controller methods.
+- Passwords must be hashed using Symfony's UserPasswordHasherInterface. Never hash passwords manually.
+- Store sensitive configuration and keys in environment variables (e.g. `APP_SECRET`).
+
+## Request Protection
+- Ensure CSRF protection is enabled for all state-changing endpoints (forms and APIs).
+- Never trust raw user input. Validate all incoming data using Symfony's `Validator` component.
+- Output escaping should be handled naturally by Twig; never disable autoescaping unless explicitly necessary and safe.
+- SQL queries and Repositories must use Doctrine ORM or DBAL QueryBuilders with properly bound parameters to prevent SQL injection.
+
+## Exception Handling
+- Only throw domain-specific custom exceptions (`PascalCaseException`).
+- Never expose internal system details or stack traces to the user (ensure proper handling via Symfony's Error events).
