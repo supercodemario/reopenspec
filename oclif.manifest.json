@@ -247,7 +247,7 @@
           "type": "boolean"
         },
         "backend": {
-          "description": "Backend stack for specific rules (e.g. dotnet, node, php, python). Overrides auto-detection.",
+          "description": "Backend stack for specific rules (e.g. dotnet, node, php, php/symfony, python). Overrides auto-detection.",
           "name": "backend",
           "hasDynamicHelp": false,
           "multiple": false,
@@ -255,6 +255,7 @@
             "dotnet",
             "node",
             "php",
+            "php/symfony",
             "python"
           ],
           "type": "option"
@@ -648,5 +649,5 @@
       ]
     }
   },
-  "version": "0.2.9"
+  "version": "0.2.10"
 }
