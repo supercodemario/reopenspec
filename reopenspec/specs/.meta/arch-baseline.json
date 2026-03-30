@@ -2,14 +2,14 @@
   "schemaVersion": "0.2.0",
   "meta": {
     "version": "1",
-    "generated_at": "2026-03-29T16:23:11.765Z",
-    "commit_hash": "c1d084791cba4c75f22666825229a21c568d2a2c",
+    "generated_at": "2026-03-30T14:51:52.483Z",
+    "commit_hash": "fc19e1895e8342da6725cb9d68908dc5a122227f",
     "languages": [
       "typescript"
     ]
   },
-  "generatedAt": "2026-03-29T16:23:11.765Z",
-  "workspaceRoot": "/Users/ajith/Projects/reopenspec",
+  "generatedAt": "2026-03-30T14:51:52.483Z",
+  "workspaceRoot": "/Users/dhiljith/Documents/diljith/reopen_spec/reopenspec",
   "languageProfile": {
     "primary": "typescript",
     "manifests": [
@@ -144,6 +144,15 @@
         "DriftSeverity",
         "DriftFinding",
         "DriftReport"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "src/lib/flutter-skill-prompt",
+      "path": "src/lib/flutter-skill-prompt.ts",
+      "language": "typescript",
+      "exports": [
+        "OfferFlutterSkillsOptions"
       ],
       "depends_on": []
     },
@@ -333,6 +342,7 @@
       "src/lib/baseline-modules",
       "src/lib/detect-profile",
       "src/lib/drift",
+      "src/lib/flutter-skill-prompt",
       "src/lib/ide-mcp-config",
       "src/lib/injector",
       "src/lib/mcp-interactive-setup",
@@ -361,11 +371,11 @@
       "column": 1
     },
     {
-      "id": "src/commands/doctor.ts:9:export.class:Doctor",
+      "id": "src/commands/doctor.ts:10:export.class:Doctor",
       "kind": "export.class",
       "name": "Doctor",
       "file": "src/commands/doctor.ts",
-      "line": 9,
+      "line": 10,
       "column": 1
     },
     {
@@ -377,19 +387,19 @@
       "column": 1
     },
     {
-      "id": "src/commands/init.ts:20:export.class:Init",
+      "id": "src/commands/init.ts:59:export.class:Init",
       "kind": "export.class",
       "name": "Init",
       "file": "src/commands/init.ts",
-      "line": 20,
+      "line": 59,
       "column": 1
     },
     {
-      "id": "src/commands/inject.ts:5:export.class:Inject",
+      "id": "src/commands/inject.ts:9:export.class:Inject",
       "kind": "export.class",
       "name": "Inject",
       "file": "src/commands/inject.ts",
-      "line": 5,
+      "line": 9,
       "column": 1
     },
     {
@@ -545,6 +555,14 @@
       "column": 1
     },
     {
+      "id": "src/lib/flutter-skill-prompt.ts:6:export.type:OfferFlutterSkillsOptions",
+      "kind": "export.type",
+      "name": "OfferFlutterSkillsOptions",
+      "file": "src/lib/flutter-skill-prompt.ts",
+      "line": 6,
+      "column": 1
+    },
+    {
       "id": "src/lib/ide-mcp-config.ts:9:export.type:CursorMcpServerEntry",
       "kind": "export.type",
       "name": "CursorMcpServerEntry",
@@ -561,19 +579,19 @@
       "column": 1
     },
     {
-      "id": "src/lib/ide-mcp-config.ts:100:export.type:IdeMcpTargetId",
+      "id": "src/lib/ide-mcp-config.ts:119:export.type:IdeMcpTargetId",
       "kind": "export.type",
       "name": "IdeMcpTargetId",
       "file": "src/lib/ide-mcp-config.ts",
-      "line": 100,
+      "line": 119,
       "column": 1
     },
     {
-      "id": "src/lib/ide-mcp-config.ts:102:export.type:IdeMcpTarget",
+      "id": "src/lib/ide-mcp-config.ts:121:export.type:IdeMcpTarget",
       "kind": "export.type",
       "name": "IdeMcpTarget",
       "file": "src/lib/ide-mcp-config.ts",
-      "line": 102,
+      "line": 121,
       "column": 1
     },
     {
@@ -585,11 +603,11 @@
       "column": 1
     },
     {
-      "id": "src/lib/injector.ts:44:export.type:InjectionResult",
+      "id": "src/lib/injector.ts:45:export.type:InjectionResult",
       "kind": "export.type",
       "name": "InjectionResult",
       "file": "src/lib/injector.ts",
-      "line": 44,
+      "line": 45,
       "column": 1
     },
     {
@@ -601,11 +619,11 @@
       "column": 1
     },
     {
-      "id": "src/lib/mcp-interactive-setup.ts:110:export.type:McpInteractiveOptions",
+      "id": "src/lib/mcp-interactive-setup.ts:106:export.type:McpInteractiveOptions",
       "kind": "export.type",
       "name": "McpInteractiveOptions",
       "file": "src/lib/mcp-interactive-setup.ts",
-      "line": 110,
+      "line": 106,
       "column": 1
     },
     {
@@ -790,14 +808,26 @@
       "line": 6,
       "moduleSpecifier": "../lib/detect-profile.js",
       "names": [
-        "detectLanguageProfile"
+        "detectLanguageProfile",
+        "detectStackProfile",
+        "isDartOrFlutterStack"
       ]
     },
     {
-      "id": "src/commands/doctor.ts:7:import:../lib/load-specs.js",
+      "id": "src/commands/doctor.ts:7:import:../lib/flutter-skill-prompt.js",
       "kind": "imports",
       "fromFile": "src/commands/doctor.ts",
       "line": 7,
+      "moduleSpecifier": "../lib/flutter-skill-prompt.js",
+      "names": [
+        "offerFlutterSkillsGuidance"
+      ]
+    },
+    {
+      "id": "src/commands/doctor.ts:8:import:../lib/load-specs.js",
+      "kind": "imports",
+      "fromFile": "src/commands/doctor.ts",
+      "line": 8,
       "moduleSpecifier": "../lib/load-specs.js",
       "names": [
         "loadFeatureSpecs"
@@ -974,19 +1004,50 @@
       "line": 16,
       "moduleSpecifier": "../lib/detect-profile.js",
       "names": [
-        "detectStackProfile"
+        "detectStackProfile",
+        "isDartOrFlutterStack"
       ]
     },
     {
-      "id": "src/commands/init.ts:17:import:../lib/rules-copy.js",
+      "id": "src/commands/init.ts:17:import:../lib/flutter-skill-prompt.js",
       "kind": "imports",
       "fromFile": "src/commands/init.ts",
       "line": 17,
+      "moduleSpecifier": "../lib/flutter-skill-prompt.js",
+      "names": [
+        "offerFlutterSkillsGuidance"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:18:import:../lib/rules-copy.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 18,
       "moduleSpecifier": "../lib/rules-copy.js",
       "names": [
         "copyRulesToProject",
         "ideRulesDir",
-        "readIdePreference"
+        "readIdePreferences"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:20:import:node:readline/promises",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 20,
+      "moduleSpecifier": "node:readline/promises",
+      "names": [
+        "createInterface"
+      ]
+    },
+    {
+      "id": "src/commands/init.ts:21:import:../lib/injector.js",
+      "kind": "imports",
+      "fromFile": "src/commands/init.ts",
+      "line": 21,
+      "moduleSpecifier": "../lib/injector.js",
+      "names": [
+        "DetectedIde"
       ]
     },
     {
@@ -1018,6 +1079,39 @@
       "moduleSpecifier": "../lib/injector.js",
       "names": [
         "injectForIdes"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:4:import:../lib/detect-profile.js",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 4,
+      "moduleSpecifier": "../lib/detect-profile.js",
+      "names": [
+        "detectStackProfile",
+        "isDartOrFlutterStack"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:5:import:../lib/flutter-skill-prompt.js",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 5,
+      "moduleSpecifier": "../lib/flutter-skill-prompt.js",
+      "names": [
+        "offerFlutterSkillsGuidance"
+      ]
+    },
+    {
+      "id": "src/commands/inject.ts:6:import:../lib/rules-copy.js",
+      "kind": "imports",
+      "fromFile": "src/commands/inject.ts",
+      "line": 6,
+      "moduleSpecifier": "../lib/rules-copy.js",
+      "names": [
+        "copyRulesToProject",
+        "ideRulesDir",
+        "readIdePreferences"
       ]
     },
     {
@@ -1385,6 +1479,16 @@
       ]
     },
     {
+      "id": "src/lib/flutter-skill-prompt.ts:1:import:node:readline/promises",
+      "kind": "imports",
+      "fromFile": "src/lib/flutter-skill-prompt.ts",
+      "line": 1,
+      "moduleSpecifier": "node:readline/promises",
+      "names": [
+        "createInterface"
+      ]
+    },
+    {
       "id": "src/lib/git.ts:1:import:node:child_process",
       "kind": "imports",
       "fromFile": "src/lib/git.ts",
@@ -1424,6 +1528,7 @@
       "line": 3,
       "moduleSpecifier": "node:path",
       "names": [
+        "dirname",
         "join"
       ]
     },
@@ -1616,6 +1721,16 @@
       "moduleSpecifier": "node:path",
       "names": [
         "join"
+      ]
+    },
+    {
+      "id": "src/lib/workflow-copy.ts:11:import:./rules-copy.js",
+      "kind": "imports",
+      "fromFile": "src/lib/workflow-copy.ts",
+      "line": 11,
+      "moduleSpecifier": "./rules-copy.js",
+      "names": [
+        "readIdePreferences"
       ]
     },
     {

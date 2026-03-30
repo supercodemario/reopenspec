@@ -13,7 +13,8 @@ import {
   copyReopenSpecModelDocIfMissing,
   copyWorkflowCommandsToProject,
 } from '../lib/workflow-copy.js'
-import { detectStackProfile } from '../lib/detect-profile.js'
+import { detectStackProfile, isDartOrFlutterStack } from '../lib/detect-profile.js'
+import { offerFlutterSkillsGuidance } from '../lib/flutter-skill-prompt.js'
 import { copyRulesToProject, ideRulesDir, readIdePreferences } from '../lib/rules-copy.js'
 import type { BackendStack, FrontendStack } from '../lib/detect-profile.js'
 import { createInterface } from 'node:readline/promises'
@@ -266,6 +267,10 @@ export default class Init extends Command {
       } catch (e) {
         this.warn(`Rules copy: ${e instanceof Error ? e.message : String(e)}`)
       }
+    }
+
+    if (isDartOrFlutterStack(detectStackProfile(cwd))) {
+      await offerFlutterSkillsGuidance((m) => this.log(m))
     }
 
     for (const ide of ides) {

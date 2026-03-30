@@ -162,7 +162,13 @@ export async function runMcpInteractiveSetup(options: McpInteractiveOptions): Pr
       log('  2) Custom command (stdio)')
       log('  3) Custom remote URL (HTTPS/SSE) + optional Bearer token')
       log('  4) Done / write file')
-      const choice = await ask(rl, 'Choice [1-4]: ')
+      log('  q) Quit without saving (skip MCP file; continue)')
+      const choice = (await ask(rl, 'Choice [1-4, q=quit]: ')).toLowerCase()
+
+      if (choice === 'q') {
+        log('Quit MCP setup without saving. No changes were written.')
+        return
+      }
 
       if (choice === '4') {
         if (Object.keys(additions).length === 0) {
@@ -172,7 +178,7 @@ export async function runMcpInteractiveSetup(options: McpInteractiveOptions): Pr
         break
       }
       if (choice === '') {
-        warn('Enter a number from 1 to 4.')
+        warn('Enter 1–4, or q to quit without saving.')
         continue
       }
 
@@ -182,7 +188,7 @@ export async function runMcpInteractiveSetup(options: McpInteractiveOptions): Pr
         else if (choice === '2') built = await customStdio(rl)
         else if (choice === '3') built = await customUrl(rl)
         else {
-          warn('Invalid choice.')
+          warn('Invalid choice. Use 1–4 or q.')
           continue
         }
       } catch (e) {

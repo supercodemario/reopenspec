@@ -185,3 +185,8 @@ export function detectStackProfile(cwd: string): StackProfile {
     hasFigma: detectFigma(cwd),
   }
 }
+
+/** True when the workspace looks like Dart and/or Flutter (pubspec / Flutter frontend). */
+export function isDartOrFlutterStack(profile: StackProfile): boolean {
+  return profile.language.primary === 'dart' || profile.frontend === 'flutter'
+}

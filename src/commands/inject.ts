@@ -1,7 +1,8 @@
 import { Command, Flags } from '@oclif/core'
 import { resolve } from 'node:path'
 import { injectForIdes } from '../lib/injector.js'
-import { detectStackProfile } from '../lib/detect-profile.js'
+import { detectStackProfile, isDartOrFlutterStack } from '../lib/detect-profile.js'
+import { offerFlutterSkillsGuidance } from '../lib/flutter-skill-prompt.js'
 import { copyRulesToProject, ideRulesDir, readIdePreferences } from '../lib/rules-copy.js'
 import type { BackendStack, FrontendStack } from '../lib/detect-profile.js'
 
@@ -38,6 +39,9 @@ export default class Inject extends Command {
 
     // Categorized rules injection (.mdc files)
     const detected = detectStackProfile(cwd)
+    if (isDartOrFlutterStack(detected)) {
+      await offerFlutterSkillsGuidance((m) => this.log(m))
+    }
 
     for (const ide of ides) {
       const rulesDir = ideRulesDir(ide)

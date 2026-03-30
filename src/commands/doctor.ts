@@ -3,7 +3,8 @@ import { existsSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import fg from 'fast-glob'
 import { loadResolvedConfig } from '../lib/reopenspec-config.js'
-import { detectLanguageProfile } from '../lib/detect-profile.js'
+import { detectLanguageProfile, detectStackProfile, isDartOrFlutterStack } from '../lib/detect-profile.js'
+import { offerFlutterSkillsGuidance } from '../lib/flutter-skill-prompt.js'
 import { loadFeatureSpecs } from '../lib/load-specs.js'
 
 export default class Doctor extends Command {
@@ -56,7 +57,12 @@ export default class Doctor extends Command {
     this.log('\n⚙️ Checking Language Setup...')
     const profile = detectLanguageProfile(cwd)
     this.log(`  ℹ️ Detected primary language: ${profile.primary}`)
-    
+
+    const stack = detectStackProfile(cwd)
+    if (isDartOrFlutterStack(stack)) {
+      await offerFlutterSkillsGuidance((m) => this.log(m), { linePrefix: '  ' })
+    }
+
     // We import dynamically to avoid huge memory hit or cyclic deps if any
     const { buildBaseline } = await import('../lib/baseline.js')
     if (profile.primary === 'unknown') {
