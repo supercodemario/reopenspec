@@ -1,6 +1,6 @@
 {
   "name": "reopenspec",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "ReOpenSpec CLI — spec-driven architecture baseline, drift checks, and IDE workflow injection.",
   "license": "MIT",
   "author": "Ajithkumar S",
