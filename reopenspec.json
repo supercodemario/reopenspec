@@ -1,0 +1,7 @@
+{
+  "version": "0.1.0",
+  "baselinePath": "reopenspec/specs/.meta/arch-baseline.json",
+  "driftReportPath": "reopenspec/specs/.meta/drift-report.json",
+  "specsDir": "reopenspec/specs",
+  "strictUncovered": false
+}

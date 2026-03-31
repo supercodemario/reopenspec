@@ -1,0 +1,21 @@
+{
+  "heroName": "ggff",
+  "role": "developer",
+  "ideSetup": {
+    "detectedInWorkspace": [
+      "cursor",
+      "antigravity",
+      "amazon-q",
+      "jetbrains-ai"
+    ],
+    "targets": [
+      "cursor",
+      "antigravity",
+      "amazon-q",
+      "qoder",
+      "auggie-cli",
+      "jetbrains-ai"
+    ],
+    "updatedAt": "2026-03-30T11:37:29.590Z"
+  }
+}

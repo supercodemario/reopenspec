@@ -1,0 +1,174 @@
+---
+description: Use when reviewing code — validates architecture compliance and code quality
+alwaysApply: false
+---
+
+# Code Review Guidelines
+
+The `/reo-review` command performs an architectural and quality review of generated code.
+
+The goal is to ensure the implementation follows:
+
+- Project architecture rules
+- Established conventions and patterns
+- Feature structure requirements
+- Code quality rules
+- Testing standards
+
+The review should focus on **architecture correctness, maintainability, and risk detection**.
+
+---
+
+# Review Scope
+
+A review must analyze:
+
+- Backend code changes
+- Frontend code changes (if applicable)
+- Database changes
+- Tests
+- Dependency direction
+
+---
+
+# Architecture Checks
+
+Verify the following rules:
+
+## Layer Boundaries
+
+Dependency direction must follow the project's defined architecture.
+
+Layers must not have reverse dependencies (e.g., domain depending on infrastructure).
+
+---
+
+## Pattern Compliance
+
+Each feature must follow the project's established patterns:
+
+- Handler / service / controller structure
+- Validation approach
+- DTO / response contracts
+
+---
+
+## Controller / Route Design
+
+API endpoints must:
+
+- remain thin
+- delegate to business logic
+- not contain business logic directly
+
+---
+
+# Domain Integrity
+
+Domain / model layer must remain **framework independent** where the project architecture requires it.
+
+---
+
+# Database Checks
+
+Verify that:
+
+- Migrations exist when schema changes occur
+- Migration names reflect feature purpose
+- Raw SQL is not introduced unnecessarily
+
+---
+
+# Frontend Architecture Checks (if applicable)
+
+Verify frontend structure follows project standards:
+
+- Components contain UI logic only
+- Business logic placed in appropriate modules (composables, hooks, services)
+- API calls handled in service modules
+
+---
+
+# Error Handling
+
+Ensure:
+
+- API errors handled gracefully
+- User-friendly messages exist
+- No raw stack traces exposed
+
+---
+
+# Testing Checks
+
+Verify that:
+
+Backend includes:
+- unit tests for business logic
+- validation tests
+
+Frontend includes (if applicable):
+- component tests or E2E tests
+
+Critical features must not be implemented without tests.
+
+---
+
+# Code Quality Checks
+
+Look for:
+
+- overly large classes / files
+- duplicated logic
+- deeply nested conditions
+- poor naming
+
+Recommend refactoring where necessary.
+
+---
+
+# Review Output Format
+
+The review must produce structured output:
+
+REVIEW SUMMARY
+
+Architecture Compliance
+Code Quality Issues
+Testing Coverage
+Potential Risks
+
+If problems exist:
+
+List **recommended fixes** clearly.
+
+---
+
+# Review Result
+
+A review should end with one of:
+
+APPROVED
+APPROVED WITH CHANGES
+REQUIRES FIXES
+
+---
+
+## AI Confidence Declaration
+
+When AI produces:
+
+- Implementation summary
+- Architecture decisions
+- Testing reports
+
+It must include a confidence statement.
+
+Format:
+
+Confidence Level: High | Medium | Low
+
+Example:
+
+Confidence Level: High
+Reason: Implementation directly follows tasks.md and the change plan.
